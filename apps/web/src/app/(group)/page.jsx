@@ -5,19 +5,19 @@ import { Login } from '../../../../../packages/api/login'
 import Link from 'next/link'
 
 const Page = () => {
-  const appLogin = async () => {
-    try {
-      const user = await Login({
-        phone: '+998975790515',
-        password: 'Dd05150515!'
-      })
-      console.log(user)
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error)
-      }
-    }
-  }
+  // const appLogin = async () => {
+  //   try {
+  //     const user = await Login({
+  //       phone: '+998975790515',
+  //       password: 'Dd05150515!'
+  //     })
+  //     console.log(user)
+  //   } catch (error) {
+  //     if (error instanceof AxiosError) {
+  //       console.log(error)
+  //     }
+  //   }
+  // }
 
   // return (
   //   <div
@@ -114,6 +114,25 @@ const Page = () => {
             >
               Login
             </p>
+          </div>
+          <div
+            style={{
+              position: "relative",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontWeight: 700,
+                color: "black",
+              }}
+            >
+              Register
+            </p>
             <div
               style={{
                 width: 270,
@@ -127,17 +146,6 @@ const Page = () => {
             />
           </div>
 
-          <p
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontWeight: 700,
-              color: "black",
-            }}
-          >
-            Register
-          </p>
         </div>
         K.X.M, [20.01.2026 19:13]
         <div
