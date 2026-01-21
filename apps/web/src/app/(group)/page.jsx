@@ -30,7 +30,7 @@ const Page = () => {
         alignItems: 'center'
       }}
     >
-      <Link href='/Login'>
+      <Link href='/Register'>
         <button
           style={{
             width: 289,
@@ -41,7 +41,7 @@ const Page = () => {
             border: 'transparent'
           }}
         >
-          Login
+          Oluvchi
         </button>
       </Link>
       <Link href='/Register'>
@@ -55,7 +55,7 @@ const Page = () => {
             border: 'transparent'
           }}
         >
-          Register
+          Sotuvchi
         </button>
       </Link>
     </div>
