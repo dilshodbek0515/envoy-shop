@@ -33,7 +33,7 @@ const Page = () => {
       <Link href='/Register'>
         <button
           style={{
-            width: 289,
+            width: 290,
             height: 70,
             borderRadius: 20,
             backgroundColor: '#00BEFF',
@@ -47,7 +47,7 @@ const Page = () => {
       <Link href='/Register'>
         <button
           style={{
-            width: 289,
+            width: 290,
             height: 70,
             borderRadius: 20,
             backgroundColor: '#00BEFF',
