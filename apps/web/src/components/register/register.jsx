@@ -11,7 +11,7 @@ const Register = () => {
       <div className='register_box'>
         <div className='top_box'>
           <Link
-            href={'/Register'}
+            href={'/Login'}
             className={`login_selected ${active === 'login' ? 'active' : ''}`}
             onClick={() => setActive('login')}
           >
