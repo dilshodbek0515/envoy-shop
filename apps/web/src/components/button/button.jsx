@@ -1,6 +1,6 @@
-import './appButton.css'
+import './button.css'
 
-const AppButton = ({ label, ...props }) => {
+const Button = ({ label, ...props }) => {
   return (
     <button {...props} className='bottom_btn'>
       {label}
@@ -8,4 +8,4 @@ const AppButton = ({ label, ...props }) => {
   )
 }
 
-export default AppButton
+export default Button

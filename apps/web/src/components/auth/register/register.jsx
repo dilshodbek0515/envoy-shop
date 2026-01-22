@@ -2,10 +2,19 @@
 import './register.css'
 import { useState } from 'react'
 import Link from 'next/link'
-import AppButton from '../../appButton/appButton'
+import Button from '../../button/button'
+import Input from '../../input/input'
 const Register = () => {
   const [active, setActive] = useState('register')
   const [secondRole, setSecondRole] = useState('jismoniy')
+  const [faoliyat, setFaoliyat] = useState('')
+  const [korxona, setKorxona] = useState('')
+  const [stir, setStir] = useState('')
+  const [yuridik, setYuridik] = useState('')
+  const [bank, setBank] = useState('')
+  const [telefon, setTelefon] = useState('')
+  const [parol, setParol] = useState('')
+  const [qaytaParol, setQaytaParol] = useState('')
 
   return (
     <div className='container'>
@@ -52,53 +61,53 @@ const Register = () => {
 
           {secondRole === 'yuridik' && (
             <div className='yuridik_grid'>
-              <input
-                className='yuridik_inputs'
+              <Input
+                label={'Faoliyat turi'}
+                value={faoliyat}
                 type='text'
-                placeholder='Faoliyat turi'
-                required
+                onChange={e => setFaoliyat(e.target.value)}
               />
-              <input
-                className='yuridik_inputs'
+              <Input
+                label={'Korxona nomi'}
+                value={korxona}
                 type='text'
-                placeholder='Korxona nomi'
-                required
+                onChange={e => setKorxona(e.target.value)}
               />
-              <input
-                className='yuridik_inputs'
+              <Input
+                label={'Stir (INN)'}
+                value={stir}
                 type='text'
-                placeholder='Stir (INN)'
-                required
+                onChange={e => setStir(e.target.value)}
               />
-              <input
-                className='yuridik_inputs'
+              <Input
+                label={'Yuridik manzil'}
+                value={yuridik}
                 type='text'
-                placeholder='Yuridik manzil'
-                required
+                onChange={e => setYuridik(e.target.value)}
               />
-              <input
-                className='yuridik_inputs'
+              <Input
+                label={'Bank rekvizitlari'}
+                value={bank}
                 type='text'
-                placeholder='Bank rekvizitlari'
-                required
+                onChange={e => setBank(e.target.value)}
               />
-              <input
-                className='yuridik_inputs'
-                type='number'
-                placeholder='Telefon raqam'
-                required
-              />
-              <input
-                className='yuridik_inputs'
+              <Input
+                label={'Telefon raqam'}
+                value={telefon}
                 type='text'
-                placeholder='Parol'
-                required
+                onChange={e => setTelefon(e.target.value)}
               />
-              <input
-                className='yuridik_inputs'
+              <Input
+                label={'Parol'}
+                value={parol}
                 type='text'
-                placeholder='Parolni qayta kiriting'
-                required
+                onChange={e => setParol(e.target.value)}
+              />
+              <Input
+                label={'Parolni qayta kiriting'}
+                value={qaytaParol}
+                type='text'
+                onChange={e => setQaytaParol(e.target.value)}
               />
             </div>
           )}
@@ -139,7 +148,7 @@ const Register = () => {
           )}
         </div>
 
-        <AppButton label={`Ro'yxatdan o'tish`} />
+        <Button label={`Ro'yxatdan o'tish`} />
       </div>
     </div>
   )
