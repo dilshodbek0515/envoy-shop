@@ -1,11 +1,10 @@
-import Register from "../../../components/register/register";
-
+import Register from '../../../components/register/register'
 const RegisterRoute = () => {
   return (
     <>
       <Register />
     </>
-  );
-};
+  )
+}
 
-export default RegisterRoute;
+export default RegisterRoute
