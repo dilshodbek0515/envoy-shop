@@ -3,13 +3,19 @@
 import Link from "next/link";
 import { useState } from "react"
 
+
+
 const Page = () => {
 
   const [role, setRole] = useState('Sotuvchi');
-  const [tab, setTab] = useState("Register")
+  const [tab, setTab] = useState("Register");
+
+
 
   return (
     <div style={{ height: "100vh" }}>
+
+
 
       <div
         style={{
@@ -30,6 +36,7 @@ const Page = () => {
             position: "relative",
           }}
         >
+
           <div
             style={{
               width: "100%",
@@ -41,59 +48,53 @@ const Page = () => {
               justifyContent: "center",
               alignItems: "center",
               gap: 200,
-              position: 'relative'
+              position: "relative",
             }}
           >
             <div
-              style={{
-                position: "relative",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              onClick={() => setTab("Login")}
+              style={{ position: "relative", cursor: "pointer" }}
             >
-              <p
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  fontSize: 20,
-                  color: "#ffff",
-                }}
-              >
-                Login
-              </p>
+              <p style={{
+                fontSize: 20,
+                color: tab === "Login" ? "#00beff" : "#fff"
+              }}>Login</p>
+
+              {tab === "Login" && (
+                <div
+                  style={{
+                    width: 310,
+                    height: 7,
+                    backgroundColor: "#00beff",
+                    position: "absolute",
+                    bottom: -30,
+                    left: -110,
+                    borderRadius: 10,
+                  }}
+                />
+              )}
             </div>
 
             <div
-              style={{
-                position: "relative",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              onClick={() => setTab("Register")}
+              style={{ position: "relative", cursor: "pointer" }}
             >
-              <p
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  fontSize: 20,
-                  color: "#ffff",
-                }}
-              >
-Ro'yxatdan o'tish              </p>
-              <div
-                style={{
-                  width: 310,
-                  height: 7,
-                  backgroundColor: "#00beff",
-                  position: "absolute",
-                  bottom: -30,
-                  left: -50,
-                  borderRadius: 10,
-                }}
-              />
-            </div>
+              <p style={{ fontSize: 20, color: tab === "Login" ? "#fff" : "#00beff" }}>Ro'yxatdan o'tish</p>
 
+              {tab === "Register" && (
+                <div
+                  style={{
+                    width: 310,
+                    height: 7,
+                    backgroundColor: "#00beff",
+                    position: "absolute",
+                    bottom: -30,
+                    left: -50,
+                    borderRadius: 10,
+                  }}
+                />
+              )}
+            </div>
           </div>
 
           <div style={{
@@ -102,12 +103,11 @@ Ro'yxatdan o'tish              </p>
             gap: 24,
             justifyContent: 'center',
             alignItems: 'center',
-            paddingTop: 63,
+            paddingTop: 30,
             paddingRight: 26,
             paddingLeft: 26
-
-
           }}>
+
             <div
               onClick={() => setRole('Oluvchi')}
               style={{
@@ -119,7 +119,6 @@ Ro'yxatdan o'tish              </p>
                 borderRadius: 20,
                 cursor: 'pointer',
                 backgroundColor: role === "Oluvchi" ? '#00beff' : "#262e3d",
-
               }} >
               <p style={{
                 color: '#ffff',
@@ -128,6 +127,7 @@ Ro'yxatdan o'tish              </p>
                 Oluvchi
               </p>
             </div>
+
             <div
               onClick={() => setRole("Sotuvchi")}
               style={{
@@ -138,8 +138,7 @@ Ro'yxatdan o'tish              </p>
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                backgroundColor: role === "Sotuvchi" ? "#00beff"  : "#262e3d",
-
+                backgroundColor: role === "Sotuvchi" ? "#00beff" : "#262e3d",
               }} >
               <p style={{
                 color: '#ffff',
@@ -152,7 +151,6 @@ Ro'yxatdan o'tish              </p>
 
           <Link href={'/Register'}>
             <button
-
               style={{
                 width: 610,
                 height: 70,
@@ -170,11 +168,8 @@ Ro'yxatdan o'tish              </p>
             >
               Davom etish
             </button>
-
           </Link>
-
         </div>
-
       </div>
     </div>
   )
