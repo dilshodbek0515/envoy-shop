@@ -1,22 +1,12 @@
-'use client'
-
-import Link from "next/link";
-import { useState } from "react"
-
-
+import React from 'react'
 
 const Page = () => {
-
+  return <div>Home Page</div>
   const [role, setRole] = useState('Sotuvchi');
   const [tab, setTab] = useState("Register");
 
-
-
   return (
     <div style={{ height: "100vh" }}>
-
-
-
       <div
         style={{
           height: "100vh",
@@ -80,7 +70,6 @@ const Page = () => {
               style={{ position: "relative", cursor: "pointer" }}
             >
               <p style={{ fontSize: 20, color: tab === "Login" ? "#fff" : "#00beff" }}>Ro'yxatdan o'tish</p>
-
               {tab === "Register" && (
                 <div
                   style={{

@@ -1,5 +1,4 @@
-import Login from '../../../components/login/login'
-import Link from 'next/link'
+import Login from '../../../components/auth/login/login'
 const LoginRoute = () => {
   return (
     <>

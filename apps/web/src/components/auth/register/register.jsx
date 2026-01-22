@@ -1,10 +1,10 @@
 'use client'
-
-import { useState } from 'react'
 import './register.css'
+import { useState } from 'react'
 import Link from 'next/link'
 const Register = () => {
   const [active, setActive] = useState('register')
+  const [secondRole, setSecondRole] = useState('jismoniy')
 
   return (
     <div className='container'>
@@ -33,8 +33,20 @@ const Register = () => {
 
         <div className='center_box'>
           <div className='role_select'>
-            <button className='yuridik'>Yuridik</button>
-            <button className='jismoniy'>Jismoniy</button>
+            <button
+              onClick={() => setSecondRole('yuridik')}
+              className={`yuridik ${secondRole === 'yuridik' ? 'primary' : ''}`}
+            >
+              Yuridik
+            </button>
+            <button
+              onClick={() => setSecondRole('jismoniy')}
+              className={`jismoniy ${
+                secondRole === 'jismoniy' ? 'primary' : ''
+              }`}
+            >
+              Jismoniy
+            </button>
           </div>
           <div className='forma'>
             <input className='inputs' type='text' placeholder='Ism' required />
