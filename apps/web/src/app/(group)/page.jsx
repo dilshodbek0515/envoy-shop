@@ -24,9 +24,9 @@ const Page = () => {
           style={{
             width: 652,
             height: 780,
-            outline: "1px solid silver",
+            outline: "3px solid #262e3d",
             borderRadius: 20,
-            backgroundColor: "#ffff",
+            backgroundColor: "#171c26",
             position: "relative",
           }}
         >
@@ -34,7 +34,7 @@ const Page = () => {
             style={{
               width: "100%",
               height: 85,
-              backgroundColor: "silver",
+              backgroundColor: "#262e3d",
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
               display: "flex",
@@ -56,8 +56,8 @@ const Page = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  fontWeight: 700,
-                  color: "black",
+                  fontSize: 20,
+                  color: "#ffff",
                 }}
               >
                 Login
@@ -76,20 +76,19 @@ const Page = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  fontWeight: 700,
-                  color: "black",
+                  fontSize: 20,
+                  color: "#ffff",
                 }}
               >
-                Register
-              </p>
+Ro'yxatdan o'tish              </p>
               <div
                 style={{
-                  width: 270,
-                  height: 10,
-                  backgroundColor: "black",
+                  width: 310,
+                  height: 7,
+                  backgroundColor: "#00beff",
                   position: "absolute",
-                  bottom: -29,
-                  left: -100,
+                  bottom: -30,
+                  left: -50,
                   borderRadius: 10,
                 }}
               />
@@ -119,12 +118,12 @@ const Page = () => {
                 height: 70,
                 borderRadius: 20,
                 cursor: 'pointer',
-                backgroundColor: role === "Oluvchi" ? 'black' : "silver",
+                backgroundColor: role === "Oluvchi" ? '#00beff' : "#262e3d",
 
               }} >
               <p style={{
-                color: role === "Oluvchi" ? "#ffff" : 'black',
-                fontWeight: 700,
+                color: '#ffff',
+                fontSize: 20,
               }}>
                 Oluvchi
               </p>
@@ -139,12 +138,12 @@ const Page = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                backgroundColor: role === "Sotuvchi" ? "black" : "silver",
+                backgroundColor: role === "Sotuvchi" ? "#00beff"  : "#262e3d",
 
               }} >
               <p style={{
-                color: role === "Sotuvchi" ? "#ffff" : 'black',
-                fontWeight: 700,
+                color: '#ffff',
+                fontSize: 20,
               }}>
                 Sotuvchi
               </p>
@@ -164,9 +163,9 @@ const Page = () => {
                 border: "none",
                 position: "absolute",
                 bottom: 20,
-                backgroundColor: "black",
+                backgroundColor: "#00beff",
                 color: "#ffff",
-                fontWeight: 700,
+                fontSize: 20,
               }}
             >
               Davom etish
