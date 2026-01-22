@@ -33,15 +33,42 @@
     border-radius: 15 15 0 0;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 85 0 140;
 }
 
 .login_selected,
 .register_selected {
-    color: #00BEFF;
-    font-size: 20;
+    color: #FFFFFF;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
 }
 
+.login_selected.active {
+    color: #00BEFF;
+}
+
+.register_selected.active {
+    color: #00BEFF;
+}
+
+.underline {
+    position: absolute;
+    bottom: 0;
+    left: 12;
+    width: 310px;
+    height: 7px;
+    background: #00BEFF;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.underline.right {
+    transform: translateX(310px);
+}
 
 .center_box {
     width: 100%;
@@ -75,6 +102,10 @@
     font-size: 18;
 }
 
+.yuridik:hover {
+    background-color: #00bbff45;
+}
+
 .jismoniy {
     width: 45%;
     height: 100%;
@@ -85,7 +116,6 @@
     font-size: 18;
 }
 
-
 .forma {
     width: 100%;
     height: auto;
@@ -95,7 +125,6 @@
     flex-direction: column;
     gap: 30px;
 }
-
 
 .inputs {
     width: 90%;
@@ -108,7 +137,6 @@
     outline: none;
     color: white;
 }
-
 
 .bottom_btn {
     width: 90%;

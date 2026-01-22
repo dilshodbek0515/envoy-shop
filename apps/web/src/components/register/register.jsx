@@ -1,16 +1,34 @@
+'use client'
+
+import { useState } from 'react'
 import './register.css'
 import Link from 'next/link'
 const Register = () => {
+  const [active, setActive] = useState('register')
+
   return (
     <div className='container'>
       <div className='register_box'>
         <div className='top_box'>
-          <Link href={'/Login'} className='login_selected'>
+          <Link
+            href={'/Login'}
+            className={`login_selected ${active === 'login' ? 'active' : ''}`}
+            onClick={() => setActive('login')}
+          >
             Kirish
           </Link>
-          <Link href={'/Register'} className='register_selected'>
+          <Link
+            href={'/Register'}
+            className={`register_selected ${
+              active === 'register' ? 'active' : ''
+            }`}
+            onClick={() => setActive('register')}
+          >
             Ro'yxatdan o'tish
           </Link>
+          <span
+            className={`underline ${active === 'register' ? 'right' : 'left'}`}
+          />
         </div>
 
         <div className='center_box'>
