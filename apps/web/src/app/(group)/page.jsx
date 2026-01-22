@@ -1,67 +1,14 @@
 'use client'
 
-import { AxiosError } from 'axios'
-import { Login } from '../../../../../packages/api/login'
-import Link from 'next/link'
+import Link from "next/link";
+import { Router } from "next/router";
+import { useState } from "react"
 
 const Page = () => {
-  // const appLogin = async () => {
-  //   try {
-  //     const user = await Login({
-  //       phone: '+998975790515',
-  //       password: 'Dd05150515!'
-  //     })
-  //     console.log(user)
-  //   } catch (error) {
-  //     if (error instanceof AxiosError) {
-  //       console.log(error)
-  //     }
-  //   }
-  // }
-
-  // return (
-  //   <div
-  //     style={{
-  //       height: '100vh',
-  //       display: 'flex',
-  //       flexDirection: 'row',
-  //       gap: 30,
-  //       justifyContent: 'center',
-  //       alignItems: 'center'
-  //     }}
-  //   >
-  //     <Link href='/Login'>
-  //       <button
-  //         style={{
-  //           width: 289,
-  //           height: 70,
-  //           borderRadius: 20,
-  //           backgroundColor: '#00BEFF',
-  //           fontSize: 20,
-  //           border: 'transparent'
-  //         }}
-  //       >
-  //         Login
-  //       </button>
-  //     </Link>
-  //     <Link href='/Register'>
-  //       <button
-  //         style={{
-  //           width: 289,
-  //           height: 70,
-  //           borderRadius: 20,
-  //           backgroundColor: '#00BEFF',
-  //           fontSize: 20,
-  //           border: 'transparent'
-  //         }}
-  //       >
-  //         Register
-  //       </button>
-  //     </Link>
-  //   </div>
-  // )   
   
-  
+  const [role, setRole] = useState('Sotuvchi');
+  const [tab, setTab] = useState("Register")
+ 
   return (
     <div style={{ height: "100vh" }}>
     
@@ -79,7 +26,7 @@ const Page = () => {
           height: 780,
           outline: "1px solid silver",
           borderRadius: 20,
-          backgroundColor: "white",
+          backgroundColor: "#ffff",
           position: "relative",
         }}
       >
@@ -94,6 +41,7 @@ const Page = () => {
             justifyContent: "center",
             alignItems: "center",
             gap: 200,
+            position: 'relative'
           }}
         >
           <div
@@ -115,6 +63,7 @@ const Page = () => {
               Login
             </p>
           </div>
+          
           <div
             style={{
               position: "relative",
@@ -147,36 +96,84 @@ const Page = () => {
           </div>
 
         </div>
-        K.X.M, [20.01.2026 19:13]
-        <div
-          style={{
-            padding: 20,
-            gap: 20,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+        
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 24,
+          justifyContent: 'center',
+          alignItems: 'center',  
+          paddingTop: 63,
+          paddingRight: 26,
+          paddingLeft: 26
          
-         
-        </div>
-        <button
+          
+        }}>
+          <div 
+          onClick={() => setRole('Oluvchi')}
           style={{
-            width: 610,
+             display: 'flex',
+             alignItems: 'center',
+             justifyContent: 'center',
+            width: 270,
             height: 70,
-            marginRight: 20,
-            marginLeft: 20,
             borderRadius: 20,
-            outline: "none",
-            border: "none",
-            position: "absolute",
-            bottom: 20,
-            backgroundColor: "silver",
-            color: "black",
-            fontWeight: 700,
-          }}
-        >
-          Davom etish
-        </button>
+            cursor: 'pointer',
+            backgroundColor: role === "Oluvchi" ? 'black' : "silver",
+            
+          }} >
+            <p style={{
+              color: role === "Oluvchi" ? "#ffff" : 'black',
+              fontWeight: 700,
+            }}>
+              Oluvchi
+            </p>
+          </div>
+          <div 
+          onClick={() => setRole("Sotuvchi")}
+          style={{
+            display: 'flex',
+            width: 270,
+            height: 70,
+            borderRadius: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            backgroundColor: role === "Sotuvchi" ? "black" : "silver",
+            
+          }} >
+            <p style={{
+              color: role === "Sotuvchi" ? "#ffff" : 'black',
+              fontWeight: 700,
+            }}>
+              Sotuvchi
+            </p>
+          </div>
+        </div>
+        
+        <Link href={'/Register'}>
+        <button
+        
+        style={{
+          width: 610,
+          height: 70,
+          marginRight: 20,
+          marginLeft: 20,
+          borderRadius: 20,
+          outline: "none",
+          border: "none",
+          position: "absolute",
+          bottom: 20,
+          backgroundColor: "black",
+          color: "#ffff",
+          fontWeight: 700,
+        }}
+      >
+        Davom etish
+      </button>
+        
+        </Link>
+     
       </div>
     </div>
   </div>
