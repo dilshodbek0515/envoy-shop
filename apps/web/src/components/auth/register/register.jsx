@@ -48,33 +48,94 @@ const Register = () => {
               Jismoniy
             </button>
           </div>
-          <div className='forma'>
-            <input className='inputs' type='text' placeholder='Ism' required />
-            <input
-              className='inputs'
-              type='text'
-              placeholder='Familiya'
-              required
-            />
-            <input
-              className='inputs'
-              type='number'
-              placeholder='Telefon raqam'
-              required
-            />
-            <input
-              className='inputs'
-              type='email'
-              placeholder='Elektron pochta'
-              required
-            />
-            <input
-              className='inputs'
-              type='password'
-              placeholder='Parol'
-              required
-            />
-          </div>
+
+          {secondRole === 'yuridik' && (
+            <div className='yuridik_grid'>
+              <input
+                className='yuridik_inputs'
+                type='text'
+                placeholder='Faoliyat turi'
+                required
+              />
+              <input
+                className='yuridik_inputs'
+                type='text'
+                placeholder='Korxona nomi'
+                required
+              />
+              <input
+                className='yuridik_inputs'
+                type='text'
+                placeholder='Stir (INN)'
+                required
+              />
+              <input
+                className='yuridik_inputs'
+                type='text'
+                placeholder='Yuridik manzil'
+                required
+              />
+              <input
+                className='yuridik_inputs'
+                type='text'
+                placeholder='Bank rekvizitlari'
+                required
+              />
+              <input
+                className='yuridik_inputs'
+                type='number'
+                placeholder='Telefon raqam'
+                required
+              />
+              <input
+                className='yuridik_inputs'
+                type='text'
+                placeholder='Parol'
+                required
+              />
+              <input
+                className='yuridik_inputs'
+                type='text'
+                placeholder='Parolni qayta kiriting'
+                required
+              />
+            </div>
+          )}
+
+          {secondRole === 'jismoniy' && (
+            <div className='forma'>
+              <input
+                className='inputs'
+                type='text'
+                placeholder='Ism'
+                required
+              />
+              <input
+                className='inputs'
+                type='text'
+                placeholder='Familiya'
+                required
+              />
+              <input
+                className='inputs'
+                type='number'
+                placeholder='Telefon raqam'
+                required
+              />
+              <input
+                className='inputs'
+                type='email'
+                placeholder='Elektron pochta'
+                required
+              />
+              <input
+                className='inputs'
+                type='password'
+                placeholder='Parol'
+                required
+              />
+            </div>
+          )}
         </div>
 
         <button className='bottom_btn'>Ro'yxatdan o'tish</button>
