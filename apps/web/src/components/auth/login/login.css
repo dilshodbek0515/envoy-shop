@@ -28,7 +28,7 @@
     align-items: center;
     justify-content: space-between;
     position: relative;
-    padding: 0 85 0 140;
+    padding: 0 50 0 50;
 }
 
 
@@ -39,6 +39,11 @@
     border: none;
     cursor: pointer;
     background-color: transparent;
+    padding: 20 100;
+}
+
+.register_selected {
+    padding: 20 40;
 }
 
 .login_selected.active {
