@@ -100,13 +100,3 @@
     outline: none;
     color: white;
 }
-
-.login_btn {
-    width: 90%;
-    height: 70px;
-    background-color: transparent;
-    color: #00BEFF;
-    font-size: 20px;
-    border: 1px solid #00BEFF;
-    border-radius: 20px;
-}

@@ -2,6 +2,7 @@
 import './register.css'
 import { useState } from 'react'
 import Link from 'next/link'
+import AppButton from '../../appButton/appButton'
 const Register = () => {
   const [active, setActive] = useState('register')
   const [secondRole, setSecondRole] = useState('jismoniy')
@@ -138,7 +139,7 @@ const Register = () => {
           )}
         </div>
 
-        <button className='bottom_btn'>Ro'yxatdan o'tish</button>
+        <AppButton label={`Ro'yxatdan o'tish`} />
       </div>
     </div>
   )
