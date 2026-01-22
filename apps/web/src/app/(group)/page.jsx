@@ -1,63 +1,181 @@
 'use client'
 
-import { AxiosError } from 'axios'
-import { Login } from '../../../../../packages/api/login'
-import Link from 'next/link'
+import Link from "next/link";
+import { useState } from "react"
 
 const Page = () => {
-  const appLogin = async () => {
-    try {
-      const user = await Login({
-        phone: '+998975790515',
-        password: 'Dd05150515!'
-      })
-      console.log(user)
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error)
-      }
-    }
-  }
+
+  const [role, setRole] = useState('Sotuvchi');
+  const [tab, setTab] = useState("Register")
 
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'row',
-        gap: 30,
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
-    >
-      <Link href='/Register'>
-        <button
+    <div style={{ height: "100vh" }}>
+
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+
+        <div
           style={{
-            width: 290,
-            height: 70,
+            width: 652,
+            height: 780,
+            outline: "3px solid #262e3d",
             borderRadius: 20,
-            backgroundColor: '#00BEFF',
-            fontSize: 20,
-            border: 'transparent'
+            backgroundColor: "#171c26",
+            position: "relative",
           }}
         >
-          Oluvchi
-        </button>
-      </Link>
-      <Link href='/Register'>
-        <button
-          style={{
-            width: 290,
-            height: 70,
-            borderRadius: 20,
-            backgroundColor: '#00BEFF',
-            fontSize: 20,
-            border: 'transparent'
-          }}
-        >
-          Sotuvchi
-        </button>
-      </Link>
+          <div
+            style={{
+              width: "100%",
+              height: 85,
+              backgroundColor: "#262e3d",
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 200,
+              position: 'relative'
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <p
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  fontSize: 20,
+                  color: "#ffff",
+                }}
+              >
+                Login
+              </p>
+            </div>
+
+            <div
+              style={{
+                position: "relative",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <p
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  fontSize: 20,
+                  color: "#ffff",
+                }}
+              >
+Ro'yxatdan o'tish              </p>
+              <div
+                style={{
+                  width: 310,
+                  height: 7,
+                  backgroundColor: "#00beff",
+                  position: "absolute",
+                  bottom: -30,
+                  left: -50,
+                  borderRadius: 10,
+                }}
+              />
+            </div>
+
+          </div>
+
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 24,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingTop: 63,
+            paddingRight: 26,
+            paddingLeft: 26
+
+
+          }}>
+            <div
+              onClick={() => setRole('Oluvchi')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 270,
+                height: 70,
+                borderRadius: 20,
+                cursor: 'pointer',
+                backgroundColor: role === "Oluvchi" ? '#00beff' : "#262e3d",
+
+              }} >
+              <p style={{
+                color: '#ffff',
+                fontSize: 20,
+              }}>
+                Oluvchi
+              </p>
+            </div>
+            <div
+              onClick={() => setRole("Sotuvchi")}
+              style={{
+                display: 'flex',
+                width: 270,
+                height: 70,
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                backgroundColor: role === "Sotuvchi" ? "#00beff"  : "#262e3d",
+
+              }} >
+              <p style={{
+                color: '#ffff',
+                fontSize: 20,
+              }}>
+                Sotuvchi
+              </p>
+            </div>
+          </div>
+
+          <Link href={'/Register'}>
+            <button
+
+              style={{
+                width: 610,
+                height: 70,
+                marginRight: 20,
+                marginLeft: 20,
+                borderRadius: 20,
+                outline: "none",
+                border: "none",
+                position: "absolute",
+                bottom: 20,
+                backgroundColor: "#00beff",
+                color: "#ffff",
+                fontSize: 20,
+              }}
+            >
+              Davom etish
+            </button>
+
+          </Link>
+
+        </div>
+
+      </div>
     </div>
   )
 }
