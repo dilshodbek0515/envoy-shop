@@ -19,7 +19,7 @@ const Login = () => {
             Kirish
           </Link>
           <Link
-            href={'/Register'}
+            href={'/Role'}
             className={`register_selected ${
               active === 'register' ? 'active' : ''
             }`}
