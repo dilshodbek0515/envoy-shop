@@ -2,19 +2,46 @@
 import './register.css'
 import { useState } from 'react'
 import Link from 'next/link'
-import Button from '../../button/button'
 import Input from '../../input/input'
+
 const Register = () => {
   const [active, setActive] = useState('register')
-  const [secondRole, setSecondRole] = useState('jismoniy')
-  const [faoliyat, setFaoliyat] = useState('')
-  const [korxona, setKorxona] = useState('')
-  const [stir, setStir] = useState('')
-  const [yuridik, setYuridik] = useState('')
-  const [bank, setBank] = useState('')
-  const [telefon, setTelefon] = useState('')
-  const [parol, setParol] = useState('')
-  const [qaytaParol, setQaytaParol] = useState('')
+  const [secondRole, setSecondRole] = useState('yuridik')
+
+  const [faoliyat, setFaoliyat] = useState('e')
+  const [korxona, setKorxona] = useState('e')
+  const [stir, setStir] = useState('e')
+  const [yuridik, setYuridik] = useState('e')
+  const [bank, setBank] = useState('e')
+  const [telefon, setTelefon] = useState('e')
+  const [parol, setParol] = useState('e')
+  const [qaytaParol, setQaytaParol] = useState('e')
+
+  const isYuridikValid =
+    secondRole === 'yuridik' &&
+    faoliyat.length > 0 &&
+    korxona.length > 0 &&
+    stir.length > 0 &&
+    yuridik.length > 0 &&
+    bank.length > 0 &&
+    telefon.length > 0 &&
+    parol.length > 0 &&
+    qaytaParol.length > 0
+
+  const handleSubmit = () => {
+    const fullValue = {
+      secondRole,
+      faoliyat,
+      korxona,
+      stir,
+      yuridik,
+      bank,
+      telefon,
+      parol,
+      qaytaParol
+    }
+    console.log(fullValue)
+  }
 
   return (
     <div className='container'>
@@ -60,7 +87,13 @@ const Register = () => {
           </div>
 
           {secondRole === 'yuridik' && (
-            <div className='yuridik_grid'>
+            <form
+              onSubmit={e => {
+                e.preventDefault()
+                handleSubmit()
+              }}
+              className='yuridik_grid'
+            >
               <Input
                 label={'Faoliyat turi'}
                 value={faoliyat}
@@ -109,7 +142,7 @@ const Register = () => {
                 type='text'
                 onChange={e => setQaytaParol(e.target.value)}
               />
-            </div>
+            </form>
           )}
 
           {secondRole === 'jismoniy' && (
@@ -148,7 +181,16 @@ const Register = () => {
           )}
         </div>
 
-        <Button label={`Ro'yxatdan o'tish`} />
+        <button
+          type='submit'
+          onClick={handleSubmit}
+          disabled={secondRole === 'yuridik' && !isYuridikValid}
+          className={`bottom_btn ${
+            secondRole === 'yuridik' && isYuridikValid ? 'back' : ''
+          }`}
+        >
+          Ro'yxatdan o'tish
+        </button>
       </div>
     </div>
   )

@@ -5,7 +5,7 @@ import './role.css'
 
 const Role = () => {
   const [active, setActive] = useState('register')
-  const [role, setRole] = useState('oluvchi')
+  const [role, setRole] = useState('sotuvchi')
   return (
     <div className='container'>
       <div className='role_box'>
