@@ -59,7 +59,8 @@ const Login = () => {
                 alignItems: "center",
               }}
             >
-              <p
+              <Link
+                href={"/Login"}
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -69,7 +70,7 @@ const Login = () => {
                 }}
               >
                 Login
-              </p>
+              </Link>
               <div
                 style={{
                   width: 270,
@@ -83,7 +84,8 @@ const Login = () => {
               />
             </div>
 
-            <p
+            <Link
+              href={"/Register"}
               style={{
                 display: "flex",
                 justifyContent: "center",
@@ -93,9 +95,8 @@ const Login = () => {
               }}
             >
               Register
-            </p>
+            </Link>
           </div>
-          K.X.M, [20.01.2026 19:13]
           <div
             style={{
               padding: 20,
