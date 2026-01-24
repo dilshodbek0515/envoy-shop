@@ -1,11 +1,11 @@
-import ResetPassword from "../../../components/auth/ResetPassword/ResetPassword";
+import ResetPassword from '../../../components/auth/ResetPassword/ResetPassword'
 
-const resetPassword = () => {
+const ResetPasswordPage = () => {
   return (
     <>
       <ResetPassword />
     </>
-  );
-};
+  )
+}
 
-export default resetPassword;
+export default ResetPasswordPage

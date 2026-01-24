@@ -1,12 +1,13 @@
-"use client";
-import Sms from "../../../components/auth/Sms/Sms";
+'use client'
+
+import Sms from '../../../components/auth/Sms/Sms'
 
 const SmsPage = () => {
   return (
     <>
       <Sms />
     </>
-  );
-};
+  )
+}
 
-export default SmsPage;
+export default SmsPage
