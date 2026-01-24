@@ -27,7 +27,7 @@ const Login = () => {
             }`}
             onClick={() => setActive("register")}
           >
-            Ro'yxatdan o'tish
+            Royxatdan otish
           </Link>
           <span
             className={`underline ${active === "register" ? "right" : "left"}`}
