@@ -47,7 +47,7 @@ const Role = () => {
             </button>
           </div>
           <Link href={'/Register'} className='role_btn'>
-            Dasturga kirish
+            Davom etish
           </Link>
         </div>
       </div>
