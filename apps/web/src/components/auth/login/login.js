@@ -1,57 +1,77 @@
-'use client'
+
+"use client";
+import Link from "next/link";
+import "./login.css";
+import { useState } from "react";
+import Button from "../../button/button";
+import Input from "../../input/input";
+
 
 import Link from 'next/link'
 import './login.css'
 import { useState } from 'react'
+
 const Login = () => {
-  const [active, setActive] = useState('login')
+  const [active, setActive] = useState("login");
+  const [phone, setPhone] = useState("");
+  const [parol, setParol] = useState("");
 
   return (
-    <div className='container'>
-      <div className='login_box'>
-        <div className='top_box'>
+    <div className="container">
+      <div className="login_box">
+        <div className="top_box">
           <Link
-            href={'/Login'}
-            className={`login_selected ${active === 'login' ? 'active' : ''}`}
-            onClick={() => setActive('login')}
+            href={"/Login"}
+            className={`login_selected ${active === "login" ? "active" : ""}`}
+            onClick={() => setActive("login")}
           >
             Kirish
           </Link>
           <Link
-            href={'/Role'}
+            href={"/Role"}
             className={`register_selected ${
-              active === 'register' ? 'active' : ''
+              active === "register" ? "active" : ""
             }`}
-            onClick={() => setActive('register')}
+            onClick={() => setActive("register")}
           >
             Ro'yxatdan o'tish
           </Link>
           <span
-            className={`underline ${active === 'register' ? 'right' : 'left'}`}
+            className={`underline ${active === "register" ? "right" : "left"}`}
           />
         </div>
 
-        <div className='bottom_box'>
-          <div className='forma'>
-            <input
-              className='inputs'
-              type='number'
-              placeholder='Telefon raqam'
-              required
+        <div className="bottom_box">
+          <div className="forma">
+            <Input
+              label={"Telefon raqam"}
+              value={phone}
+              type="text"
+              onChange={(e) => {
+                setPhone(e.target.value);
+              }}
             />
-
-            <input
-              className='inputs'
-              type='password'
-              placeholder='Parol'
-              required
+            <Input
+              label={"Parol"}
+              value={parol}
+              type="password"
+              onChange={(e) => {
+                setParol(e.target.value);
+              }}
             />
+            <Link href={"/ResetPassword"} className="buton">
+              Parol esdan chiqdimi
+            </Link>
           </div>
+ 
+          <Button label={"Dasturga kirish"} />
+
           <button className='bottom_btn'>Tizimga kirish</button>
+
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
