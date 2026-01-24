@@ -1,9 +1,16 @@
+
 "use client";
 import Link from "next/link";
 import "./login.css";
 import { useState } from "react";
 import Button from "../../button/button";
 import Input from "../../input/input";
+
+
+import Link from 'next/link'
+import './login.css'
+import { useState } from 'react'
+
 const Login = () => {
   const [active, setActive] = useState("login");
   const [phone, setPhone] = useState("");
@@ -56,7 +63,11 @@ const Login = () => {
               Parol esdan chiqdimi
             </Link>
           </div>
+ 
           <Button label={"Dasturga kirish"} />
+
+          <button className='bottom_btn'>Tizimga kirish</button>
+
         </div>
       </div>
     </div>

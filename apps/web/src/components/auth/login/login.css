@@ -90,6 +90,7 @@
 }
 
 .inputs {
+login
   width: 90%;
   height: 70px;
   border-radius: 20px;
@@ -98,7 +99,7 @@
   padding: 5 20;
   font-size: 16px;
   outline: none;
-  color: white;
+  color: #white;
 }
 
 .buton {
@@ -110,3 +111,25 @@
   color: #00beff;
   font-size: 15px;
 }
+
+    width: 90%;
+    height: 70px;
+    border-radius: 20px;
+    background-color: transparent;
+    border: 2px solid #262E3D;
+    padding: 5 20;
+    font-size: 16px;
+    outline: none;
+    color: white;
+}
+
+.bottom_btn {
+    width: 90%;
+    height: 70px;
+    color: #00BEFF;
+    font-size: 20px;
+    border: 1px solid #00BEFF;
+    border-radius: 20px;
+    background-color: transparent;
+}
+
