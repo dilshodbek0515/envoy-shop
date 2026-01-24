@@ -1,6 +1,6 @@
 import ResetPassword from '../../../components/auth/ResetPassword/ResetPassword'
 
-const ResetPassword = () => {
+const ResetPasswordPage = () => {
   return (
     <>
       <ResetPassword />
@@ -8,4 +8,4 @@ const ResetPassword = () => {
   )
 }
 
-export default ResetPassword
+export default ResetPasswordPage
