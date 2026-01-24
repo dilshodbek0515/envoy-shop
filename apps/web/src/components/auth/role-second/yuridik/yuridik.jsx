@@ -1,14 +1,13 @@
 import Input from '../../../input/input'
+import Dropdown from '../../../dropdown/dropdown'
 
-const Yuridik = ({ form, handleChange }) => {
+const Yuridik = ({ form, handleChange, options, handleSelectFaoliyat }) => {
   return (
     <form className='yuridik_grid'>
-      <Input
-        label={'Faoliyat turi'}
-        name='faoliyat'
+      <Dropdown
         value={form.faoliyat}
-        type='text'
-        onChange={handleChange}
+        options={options}
+        onChange={handleSelectFaoliyat}
       />
       <Input
         label={'Korxona nomi'}

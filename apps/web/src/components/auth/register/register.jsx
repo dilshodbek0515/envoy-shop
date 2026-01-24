@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Yuridik from '../role-second/yuridik/yuridik'
 import Jismoniy from '../role-second/jismoniy/jismoniy'
-
 const Register = () => {
   const [active, setActive] = useState('register')
   const [secondRole, setSecondRole] = useState('yuridik')
@@ -20,11 +19,31 @@ const Register = () => {
     qaytaParol: ''
   })
 
+  const options = [
+    'YaTT',
+    'M.CH.J',
+    "Fermer Xo'jaligi",
+    "Dehqon Xo'jaligi",
+    "Shirkat Xo'jaligi",
+    'Unitar Korxona',
+    'Xususiy Korxona',
+    "Qo'shma Korxona",
+    'Oilaviy Korxona',
+    'Boshqa'
+  ]
+
   const handleChange = e => {
     const { name, value } = e.target
     setForm(prev => ({
       ...prev,
       [name]: value
+    }))
+  }
+
+  const handleSelectFaoliyat = value => {
+    setForm(prev => ({
+      ...prev,
+      faoliyat: value
     }))
   }
 
@@ -81,7 +100,12 @@ const Register = () => {
           </div>
 
           {secondRole === 'yuridik' && (
-            <Yuridik form={form} handleChange={handleChange} />
+            <Yuridik
+              form={form}
+              handleChange={handleChange}
+              options={options}
+              handleSelectFaoliyat={handleSelectFaoliyat}
+            />
           )}
 
           {secondRole === 'jismoniy' && <Jismoniy />}
