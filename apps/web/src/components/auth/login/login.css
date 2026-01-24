@@ -110,3 +110,13 @@
   color: #00beff;
   font-size: 15px;
 }
+
+.bottom_btn {
+  width: 90%;
+  height: 70px;
+  color: #00BEFF;
+  font-size: 20px;
+  border: 1px solid #00BEFF;
+  border-radius: 20px;
+  background-color: transparent;
+}
