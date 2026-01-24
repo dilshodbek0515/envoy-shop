@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import './login.css'
 import { useState } from 'react'
-import Button from '../../button/button'
 const Login = () => {
   const [active, setActive] = useState('login')
 
@@ -48,7 +47,7 @@ const Login = () => {
               required
             />
           </div>
-          <Button label={'Dasturga kirish'} />
+          <button className='bottom_btn'>Tizimga kirish</button>
         </div>
       </div>
     </div>
