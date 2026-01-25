@@ -1,11 +1,13 @@
 'use client'
-
 import Link from 'next/link'
 import './login.css'
 import { useState } from 'react'
+import Input from '../../input/input'
 
 const Login = () => {
   const [active, setActive] = useState('login')
+  const [phone, setPhone] = useState('')
+  const [parol, setParol] = useState('')
 
   return (
     <div className='container'>
@@ -19,7 +21,7 @@ const Login = () => {
             Kirish
           </Link>
           <Link
-            href={'/Register'}
+            href={'/Role'}
             className={`register_selected ${
               active === 'register' ? 'active' : ''
             }`}
@@ -34,21 +36,28 @@ const Login = () => {
 
         <div className='bottom_box'>
           <div className='forma'>
-            <input
-              className='inputs'
-              type='number'
-              placeholder='Telefon raqam'
-              required
+            <Input
+              label={'Telefon raqam'}
+              value={phone}
+              type='text'
+              onChange={e => {
+                setPhone(e.target.value)
+              }}
             />
-
-            <input
-              className='inputs'
+            <Input
+              label={'Parol'}
+              value={parol}
               type='password'
-              placeholder='Parol'
-              required
+              onChange={e => {
+                setParol(e.target.value)
+              }}
             />
+            <Link href={'/ResetPassword'} className='buton'>
+              Parol esdan chiqdimi
+            </Link>
           </div>
-          <button className='login_btn'>Dasturga kirish</button>
+
+          <button className='bottom_btn'>Dasturga kirish</button>
         </div>
       </div>
     </div>
