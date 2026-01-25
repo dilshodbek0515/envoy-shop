@@ -40,10 +40,10 @@ const Role = () => {
               Sotuvchi
             </button>
             <button
-              onClick={() => setRole('oluvchi')}
-              className={`oluvchi ${role === 'oluvchi' ? 'primary' : ''}`}
+              onClick={() => setRole('xaridor')}
+              className={`xaridor ${role === 'xaridor' ? 'primary' : ''}`}
             >
-              Oluvchi
+              Xaridor
             </button>
           </div>
           <Link href={'/Register'} className='role_btn'>

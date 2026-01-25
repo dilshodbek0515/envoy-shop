@@ -3,7 +3,7 @@ import { useState, useMemo } from 'react'
 import Input from '../../input/input'
 import './Parol.css'
 import Link from 'next/link'
-import CheckIcon from '../../../assets/icon/checkICon'
+import CheckIcon from '../../../assets/icons/checkICon'
 
 const Parol = () => {
   const [password, setPassword] = useState('')
