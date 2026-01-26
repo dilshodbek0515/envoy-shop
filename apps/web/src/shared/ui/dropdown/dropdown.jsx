@@ -19,7 +19,7 @@ const Dropdown = ({ options, value, onChange }) => {
   const isSelected = value && value !== 'Faoliyat turi'
 
   return (
-    <div className='wrapper'>
+    <div className='wrapperr'>
       <div
         className={`box ${dropOpen ? 'open' : ''} ${
           isSelected ? 'selected' : ''
