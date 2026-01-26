@@ -1,6 +1,7 @@
 .wrapper {
     position: relative;
     width: 100%;
+    height: auto;
 }
 
 .input {
@@ -47,4 +48,14 @@
     font-size: 20px;
     border: 1px solid #00BEFF;
     border-radius: 20px;
+}
+
+.input.error {
+    border-color: #ff4d4f;
+}
+
+.error_text {
+    color: #ff4d4f;
+    font-size: 12px;
+    margin-top: 4px;
 }

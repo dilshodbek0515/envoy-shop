@@ -69,6 +69,15 @@
     transform: translateX(310px);
 }
 
+.center {
+    width: 100%;
+    height: 89%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
 .center_box {
     width: 100%;
     height: auto;
@@ -114,17 +123,6 @@
 
 .primary {
     background-color: #00BEFF;
-}
-
-
-
-.yuridik_grid {
-    width: 90%;
-    height: auto;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
-    margin-bottom: 93px;
 }
 
 .yuridik_inputs {

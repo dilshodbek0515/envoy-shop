@@ -7,8 +7,11 @@ import Jismoniy from '../role-second/jismoniy/jismoniy'
 const Register = () => {
   const [active, setActive] = useState('register')
   const [secondRole, setSecondRole] = useState('yuridik')
+  const [errors, setErrors] = useState({})
 
   const [form, setForm] = useState({
+    ism: '',
+    familiya: '',
     faoliyat: '',
     korxona: '',
     stir: '',
@@ -38,6 +41,14 @@ const Register = () => {
       ...prev,
       [name]: value
     }))
+
+    if (errors[name]) {
+      setErrors(prev => {
+        const copy = { ...prev }
+        delete copy[name]
+        return copy
+      })
+    }
   }
 
   const handleSelectFaoliyat = value => {
@@ -47,13 +58,9 @@ const Register = () => {
     }))
   }
 
-  const isYuridikValid =
-    secondRole === 'yuridik' &&
-    Object.values(form).every(v => v.trim().length > 0)
-
   const handleSubmit = e => {
     e.preventDefault()
-    console.log({ secondRole, ...form })
+    console.log({ secondRole, ...form ``})
   }
 
   return (
@@ -81,46 +88,48 @@ const Register = () => {
           />
         </div>
 
-        <div className='center_box'>
-          <div className='role_select'>
-            <button
-              onClick={() => setSecondRole('yuridik')}
-              className={`yuridik ${secondRole === 'yuridik' ? 'primary' : ''}`}
-            >
-              Yuridik
-            </button>
-            <button
-              onClick={() => setSecondRole('jismoniy')}
-              className={`jismoniy ${
-                secondRole === 'jismoniy' ? 'primary' : ''
-              }`}
-            >
-              Jismoniy
-            </button>
+        <div className='center'>
+          <div className='center_box'>
+            <div className='role_select'>
+              <button
+                onClick={() => setSecondRole('yuridik')}
+                className={`yuridik ${
+                  secondRole === 'yuridik' ? 'primary' : ''
+                }`}
+              >
+                Yuridik
+              </button>
+              <button
+                onClick={() => setSecondRole('jismoniy')}
+                className={`jismoniy ${
+                  secondRole === 'jismoniy' ? 'primary' : ''
+                }`}
+              >
+                Jismoniy
+              </button>
+            </div>
+
+            {secondRole === 'yuridik' && (
+              <Yuridik
+                form={form}
+                handleChange={handleChange}
+                options={options}
+                handleSelectFaoliyat={handleSelectFaoliyat}
+                errors={errors}
+              />
+            )}
+
+            {secondRole === 'jismoniy' && <Jismoniy />}
           </div>
 
-          {secondRole === 'yuridik' && (
-            <Yuridik
-              form={form}
-              handleChange={handleChange}
-              options={options}
-              handleSelectFaoliyat={handleSelectFaoliyat}
-            />
-          )}
-
-          {secondRole === 'jismoniy' && <Jismoniy />}
+          <button
+            type='submit'
+            onClick={handleSubmit}
+            className={`bottom_btn ${secondRole === 'yuridik' ? 'back' : ''}`}
+          >
+            Ro'yxatdan o'tish
+          </button>
         </div>
-
-        <button
-          type='submit'
-          onClick={handleSubmit}
-          disabled={secondRole === 'yuridik' && !isYuridikValid}
-          className={`bottom_btn ${
-            secondRole === 'yuridik' && isYuridikValid ? 'back' : ''
-          }`}
-        >
-          Ro'yxatdan o'tish
-        </button>
       </div>
     </div>
   )
