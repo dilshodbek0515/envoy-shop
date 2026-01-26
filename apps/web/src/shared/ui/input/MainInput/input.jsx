@@ -6,7 +6,7 @@ const MainInput = ({ label, value = "", error, ...props }) => {
   const [focused, setFocused] = useState(false);
   const isActive = focused || value.length > 0;
   return (
-    <div className={`wrapper ${isActive ? "active" : ""}`}>
+    <div className={`wrapperI ${isActive ? "active" : ""}`}>
       <label className={`label ${isActive ? "active" : ""}`}>{label}</label>
       <input
         className="input"
