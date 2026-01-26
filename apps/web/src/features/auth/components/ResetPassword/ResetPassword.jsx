@@ -17,7 +17,6 @@ const ResetPassword = () => {
             label="Telefon raqam"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            required
           />
 
           <Link className="buttonBox" href={"/SmsPage"}>
