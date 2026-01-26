@@ -2,7 +2,7 @@
 import { useState } from "react";
 import "./input.css";
 
-const Input = ({ label, value = "", error, ...props }) => {
+const MainInput = ({ label, value = "", error, ...props }) => {
   const [focused, setFocused] = useState(false);
   const isActive = focused || value.length > 0;
   return (
@@ -21,4 +21,4 @@ const Input = ({ label, value = "", error, ...props }) => {
   );
 };
 
-export default Input;
+export default MainInput;

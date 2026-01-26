@@ -19,7 +19,13 @@ const Register = () => {
     bank: '',
     telefon: '',
     parol: '',
-    qaytaParol: ''
+    qaytaParol: '',
+    jismoniy_ism: '',
+    jismoniy_familiya: '',
+    jismoniy_telefon: '',
+    jismoniy_email: '',
+    jismoniy_parol: '',
+    jismoniy_qaytaParol: ''
   })
 
   const options = [
@@ -119,7 +125,13 @@ const Register = () => {
               />
             )}
 
-            {secondRole === 'jismoniy' && <Jismoniy />}
+            {secondRole === 'jismoniy' && (
+              <Jismoniy
+                form={form}
+                handleChange={handleChange}
+                errors={errors}
+              />
+            )}
           </div>
 
           <button
