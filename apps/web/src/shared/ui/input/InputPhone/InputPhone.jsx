@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import "./InputPhone.css";
+import CloseIcon from "../../../../features/auth/assets/icons/close";
 
 const InputPhone = ({ label, onChange }) => {
   const [focused, setFocused] = useState(false);
@@ -25,6 +26,13 @@ const InputPhone = ({ label, onChange }) => {
     });
   };
 
+  const handleClear = () => {
+    setNumbers("");
+
+    onChange?.({
+      target: { value: "" },
+    });
+  };
   return (
     <div className={`wrapper ${isActive ? "active" : ""}`}>
       <label className={`label ${isActive ? "active" : ""}`}>{label}</label>
@@ -33,7 +41,7 @@ const InputPhone = ({ label, onChange }) => {
         <span className={`prefix ${isActive ? "show" : ""}`}>+998</span>
 
         <input
-          className={`input ${isActive ? "active" : ""}`}
+          className={`inputttt ${isActive ? "active" : ""}`}
           type="tel"
           value={formatNumber(numbers)}
           onChange={handleChange}
@@ -41,6 +49,14 @@ const InputPhone = ({ label, onChange }) => {
           onBlur={() => setFocused(false)}
           inputMode="numeric"
         />
+        <button
+          type="button"
+          className={`closeButton ${isActive ? "show" : ""}`}
+          onClick={handleClear}
+          onMouseDown={(e) => e.preventDefault()}
+        >
+          <CloseIcon className="close" />
+        </button>
       </div>
     </div>
   );

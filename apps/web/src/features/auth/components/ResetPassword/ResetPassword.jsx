@@ -6,6 +6,8 @@ import Link from "next/link";
 import InputPhone from "../../../../shared/ui/input/InputPhone/InputPhone";
 const ResetPassword = () => {
   const [phone, setPhone] = useState("");
+  const isComplete = phone.replace(/\G/g, "").length === 12;
+
   return (
     <div className="container">
       <div className="box">
@@ -19,7 +21,13 @@ const ResetPassword = () => {
             onChange={(e) => setPhone(e.target.value)}
           />
 
-          <Link className="buttonBox" href={"/SmsPage"}>
+          <Link
+            className={`buttonBox ${isComplete ? "primary" : "disabled"}`}
+            href={isComplete ? "/SmsPage" : "#"}
+            onClick={(e) => {
+              if (!isComplete) e.preventDefault(); // to‘liq bo‘lmasa otkazmaydi
+            }}
+          >
             Davom etish
           </Link>
         </div>

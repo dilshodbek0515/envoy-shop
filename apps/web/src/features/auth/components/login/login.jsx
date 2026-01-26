@@ -3,6 +3,7 @@ import Link from "next/link";
 import "./login.css";
 import { useState } from "react";
 import Input from "../../../../shared/ui/input/MainInput/input";
+import InputPhone from "../../../../shared/ui/input/InputPhone/InputPhone";
 
 const Login = () => {
   const [active, setActive] = useState("login");
@@ -36,10 +37,9 @@ const Login = () => {
 
         <div className="bottom_box">
           <div className="forma">
-            <Input
+            <InputPhone
               label={"Telefon raqam"}
               value={phone}
-              type="text"
               onChange={(e) => {
                 setPhone(e.target.value);
               }}
