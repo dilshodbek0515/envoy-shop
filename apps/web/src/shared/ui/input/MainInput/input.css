@@ -2,60 +2,52 @@
     position: relative;
     width: 100%;
     height: auto;
+    display: flex;
+    align-items: center;
 }
 
-.input {
+.main_input {
     width: 100%;
     height: 70px;
     border-radius: 20px;
     background-color: transparent;
     border: 2px solid #262e3d;
-    padding: 5 20;
+    padding: 5px 50px 5px 20px;
     font-size: 16px;
     outline: none;
     color: white;
 }
 
-.wrapper.active .input {
+.wrapperI.active .main_input {
     border-color: #38bdf8;
 }
 
-.label {
+.clear_btn {
     position: absolute;
-    left: 20px;
+    right: 20px;
     top: 50%;
-    transform: translateY(-50%);
-    color: #ffffff;
-    font-size: 16px;
+    transform: translate(16px, -50%);
+    opacity: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
     pointer-events: none;
-    transition: 0.25s ease;
-    background: #171C26;
-    padding: 0 8px;
+    transition:
+        transform 0.25s ease,
+        opacity 0.2s ease;
 }
 
-.label.active {
-    top: 0px;
-    font-size: 13px;
-    color: #38bdf8;
+.clear_btn.show {
+    transform: translate(0, -50%);
+    opacity: 1;
+    pointer-events: auto;
 }
 
-
-.bottom_btn {
-    width: 90%;
-    height: 70px;
-    background-color: transparent;
-    color: #00BEFF;
-    font-size: 20px;
-    border: 1px solid #00BEFF;
-    border-radius: 20px;
+.clear_btn:hover svg {
+    opacity: 0.7;
 }
 
-.input.error {
-    border-color: #ff4d4f;
-}
-
-.error_text {
-    color: #ff4d4f;
-    font-size: 12px;
-    margin-top: 4px;
+.clear_btn svg {
+    width: 20px;
+    height: 20px;
 }

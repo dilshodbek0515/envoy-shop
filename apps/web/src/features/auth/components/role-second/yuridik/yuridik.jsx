@@ -11,7 +11,6 @@ const Yuridik = ({ form, handleChange, options, handleSelectFaoliyat }) => {
         value={form.ism}
         type='text'
         onChange={handleChange}
-        // error={errors.ism}
       />
       <Input
         label={'Familiya'}
@@ -19,7 +18,6 @@ const Yuridik = ({ form, handleChange, options, handleSelectFaoliyat }) => {
         value={form.familiya}
         type='text'
         onChange={handleChange}
-        // error={errors.familiya}
       />
       <InputPhone
         label={'Telefon raqam'}
@@ -27,7 +25,6 @@ const Yuridik = ({ form, handleChange, options, handleSelectFaoliyat }) => {
         value={form.telefon}
         type='number'
         onChange={handleChange}
-        // error={errors.telefon}
       />
       <Dropdown
         value={form.faoliyat}
@@ -40,7 +37,6 @@ const Yuridik = ({ form, handleChange, options, handleSelectFaoliyat }) => {
         value={form.parol}
         type='text'
         onChange={handleChange}
-        // error={errors.parol}
       />
       <Input
         label={'Parolni qayta kiriting'}
@@ -48,7 +44,6 @@ const Yuridik = ({ form, handleChange, options, handleSelectFaoliyat }) => {
         value={form.qaytaParol}
         type='text'
         onChange={handleChange}
-        // error={errors.qaytaParol}
       />
       <Input
         label={'Korxona nomi'}
@@ -56,7 +51,6 @@ const Yuridik = ({ form, handleChange, options, handleSelectFaoliyat }) => {
         value={form.korxona}
         type='text'
         onChange={handleChange}
-        // error={errors.korxona}
       />
       <Input
         label={'Stir (INN)'}
@@ -64,7 +58,6 @@ const Yuridik = ({ form, handleChange, options, handleSelectFaoliyat }) => {
         value={form.stir}
         type='number'
         onChange={handleChange}
-        // error={errors.stir}
       />
       <Input
         label={'Yuridik manzil'}
@@ -72,7 +65,6 @@ const Yuridik = ({ form, handleChange, options, handleSelectFaoliyat }) => {
         value={form.yuridik}
         type='text'
         onChange={handleChange}
-        // error={errors.yuridik}
       />
       <Input
         label={'Bank rekvizitlari'}
@@ -80,7 +72,6 @@ const Yuridik = ({ form, handleChange, options, handleSelectFaoliyat }) => {
         value={form.bank}
         type='number'
         onChange={handleChange}
-        // error={errors.bank}
       />
     </form>
   )
