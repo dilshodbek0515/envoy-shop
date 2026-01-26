@@ -1,24 +1,43 @@
-"use client";
-import { useState } from "react";
-import "./input.css";
+'use client'
+import { useState } from 'react'
+import './input.css'
+import '../inputGlobal.css'
+import CloseIcon from 'apps/web/src/features/auth/assets/icons/close'
 
-const MainInput = ({ label, value = "", error, ...props }) => {
-  const [focused, setFocused] = useState(false);
-  const isActive = focused || value.length > 0;
+const MainInput = ({ label, value = '', onChange, ...props }) => {
+  const [focused, setFocused] = useState(false)
+  const isActive = focused || value.length > 0
+  const clear = value.length > 0
+
+  const handleClear = () => {
+    onChange({
+      target: {
+        name: props.name,
+        value: ''
+      }
+    })
+  }
+
   return (
-    <div className={`wrapperI ${isActive ? "active" : ""}`}>
-      <label className={`label ${isActive ? "active" : ""}`}>{label}</label>
+    <div className={`wrapperI ${isActive && 'active'}`}>
+      <label className={`label ${isActive && 'active'}`}>{label}</label>
       <input
-        className="input"
-        value={value}
         {...props}
+        value={value}
+        onChange={onChange}
+        className='main_input'
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
       />
-
-      {error && <span className="error_text">{error}</span>}
+      <button
+        type='button'
+        className={`clear_btn ${clear ? 'show' : ''}`}
+        onClick={handleClear}
+      >
+        <CloseIcon />
+      </button>
     </div>
-  );
-};
+  )
+}
 
-export default MainInput;
+export default MainInput

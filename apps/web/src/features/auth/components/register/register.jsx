@@ -47,14 +47,6 @@ const Register = () => {
       ...prev,
       [name]: value
     }))
-
-    if (errors[name]) {
-      setErrors(prev => {
-        const copy = { ...prev }
-        delete copy[name]
-        return copy
-      })
-    }
   }
 
   const handleSelectFaoliyat = value => {
