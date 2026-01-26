@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import './login.css'
 import { useState } from 'react'
-import Input from '../../input/input'
+import Input from '../../../../shared/ui/input/input'
 
 const Login = () => {
   const [active, setActive] = useState('login')

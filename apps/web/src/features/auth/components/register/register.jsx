@@ -60,7 +60,7 @@ const Register = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    console.log({ secondRole, ...form ``})
+    console.log({ secondRole, ...form })
   }
 
   return (

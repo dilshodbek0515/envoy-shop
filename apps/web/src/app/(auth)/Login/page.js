@@ -1,4 +1,4 @@
-import Login from "../../../components/auth/login/login";
+import Login from "../../../features/auth/components/login/login";
 
 const LoginRoute = () => {
   return (

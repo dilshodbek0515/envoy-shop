@@ -1,5 +1,5 @@
-import Input from '../../../input/input'
-import Dropdown from '../../../dropdown/dropdown'
+import Input from '../../../../../shared/ui/input/input'
+import Dropdown from '../../../../../shared/ui/dropdown/dropdown'
 import './yuridik.css'
 const Yuridik = ({
   form,

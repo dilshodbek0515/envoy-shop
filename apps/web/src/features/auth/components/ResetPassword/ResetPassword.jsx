@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Input from '../../input/input'
+import Input from '../../../../shared/ui/input/input'
 import './ResetPassword.css'
 import Link from 'next/link'
 const ResetPassword = () => {

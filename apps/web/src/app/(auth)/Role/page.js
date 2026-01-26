@@ -1,4 +1,4 @@
-import Role from '../../../components/auth/role/role'
+import Role from '../../../features/auth/components/role/role'
 const RolePage = () => {
   return (
     <>

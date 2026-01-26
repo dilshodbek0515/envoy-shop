@@ -1,4 +1,4 @@
-import Register from '../../../components/auth/register/register'
+import Register from '../../../features/auth/components/register/register'
 const RegisterRoute = () => {
   return (
     <>

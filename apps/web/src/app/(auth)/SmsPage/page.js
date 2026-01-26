@@ -1,6 +1,6 @@
 'use client'
 
-import Sms from '../../../components/auth/Sms/Sms'
+import Sms from '../../../features/auth/components/Sms/Sms'
 
 const SmsPage = () => {
   return (

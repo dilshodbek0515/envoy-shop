@@ -1,7 +1,7 @@
 'use client'
 import './dropdown.css'
-import ChevronTop from '../../assets/icons/chevron-top'
-import ChevronBottom from '../../assets/icons/chevron-bottom'
+import ChevronTop from '../../../features/auth/assets/icons/chevron-top'
+import ChevronBottom from '../../../features/auth/assets/icons/chevron-bottom'
 import { useState } from 'react'
 
 const Dropdown = ({ options, value, onChange }) => {

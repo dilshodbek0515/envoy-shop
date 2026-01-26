@@ -1,9 +1,9 @@
 'use client'
 import { useState, useMemo } from 'react'
-import Input from '../../input/input'
+import Input from '../../../../shared/ui/input/input'
 import './Parol.css'
 import Link from 'next/link'
-import CheckIcon from '../../../assets/icons/checkICon'
+import CheckIcon from '../../assets/icons/checkICon'
 
 const Parol = () => {
   const [password, setPassword] = useState('')
