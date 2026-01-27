@@ -81,6 +81,12 @@ const Register = () => {
           )}
         </Pressable>
       </View>
+      <Text
+        style={styles.link}
+        onPress={() => router.push("/Register/Sotuvchi")}
+      >
+        Sotuvchi
+      </Text>
     </View>
   );
 };
@@ -138,5 +144,21 @@ const styles = StyleSheet.create({
   linkActive: {
     color: "#FFFFFF",
     fontWeight: "600",
+  header: {
+    width: "100%",
+    height: 102,
+    backgroundColor: "#262e3d",
+    position: "absolute",
+    top: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 35,
+    gap: 20,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  headerTitle: {
+    fontSize: 18,
+    color: "#00beff",
   },
 });
