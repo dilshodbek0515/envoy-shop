@@ -3,11 +3,11 @@
     left: 20px;
     top: 50%;
     transform: translateY(-50%);
-    color: #ffffff;
+    color: #000000;
     font-size: 16px;
     pointer-events: none;
     transition: 0.25s ease;
-    background: #171C26;
+    background: #ededed;
     padding: 0 8px;
 }
 
@@ -50,7 +50,7 @@
 }
 
 .prefix {
-    color: white;
+    color: #4fc3f7;
     font-size: 18px;
     opacity: 0;
     transform: translateX(-6px);
@@ -61,4 +61,9 @@
 .prefix.show {
     opacity: 1;
     transform: translateX(0);
+}
+
+.login_title {
+    font-size: 32px;
+    color: #000000;
 }
