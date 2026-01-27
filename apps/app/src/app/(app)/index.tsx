@@ -5,8 +5,13 @@ const EnvoyShop = () => {
     <View style={styles.log}>
      <Link 
      style={styles.login}
-     href={'#/'}>
+     href={'/Login'}>
         Login In 
+     </Link>
+     <Link 
+     style={styles.login}
+     href={'/Register'}>
+        Register 
      </Link>
     </View>
   )

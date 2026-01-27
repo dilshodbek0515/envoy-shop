@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 const Login = () => {
   return (
     <View>
-      <Text style={{ color: 'red' }} onPress={() => router.back()}>Login</Text>
+      <Text style={{ color: "red" }} onPress={() => router.back()}>Register</Text>
     </View>
   )
 }
