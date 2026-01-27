@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
-import { Link } from 'expo-router'
-const EnvoyShop = () => {
+
+const Index = () => {
   return (
-    <View style={styles.log}>
+    <View>
      <Link 
      style={styles.login}
      href={'/Login'}>
@@ -13,23 +13,12 @@ const EnvoyShop = () => {
      href={'/Register'}>
         Register 
      </Link>
+    <View>
+      <Text>Index</Text>
     </View>
   )
 }
 
-export default EnvoyShop
+export default Index
 
-const styles = StyleSheet.create({
-    log: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center' 
-    },
-    login: {
-     width: 200,
-     height: 80,
-     backgroundColor: 'black',
-     color: '#ffff',
-     fontSize: 50,
-    }
-})
+const styles = StyleSheet.create({})

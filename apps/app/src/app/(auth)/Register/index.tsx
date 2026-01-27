@@ -5,6 +5,12 @@ const Login = () => {
   return (
     <View>
       <Text style={{ color: "red" }} onPress={() => router.back()}>Register</Text>
+
+
+const Register = () => {
+  return (
+    <View>
+      <Text>Register</Text>
     </View>
   )
 }
