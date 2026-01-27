@@ -1,31 +1,31 @@
-"use client";
+'use client'
 
-import "./ResetPassword.css";
-import { useState } from "react";
-import Link from "next/link";
-import InputPhone from "../../../../shared/ui/input/InputPhone/InputPhone";
+import './ResetPassword.css'
+import { useState } from 'react'
+import Link from 'next/link'
+import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
 const ResetPassword = () => {
-  const [phone, setPhone] = useState("");
-  const isComplete = phone.replace(/\G/g, "").length === 12;
+  const [phone, setPhone] = useState('')
+  const isComplete = phone.replace(/\G/g, '').length === 12
 
   return (
-    <div className="container">
-      <div className="box">
-        <div className="header">
+    <div className='container'>
+      <div className='box'>
+        <div className='header'>
           <p>Parolni tiklash</p>
         </div>
-        <div className="inputBox">
+        <div className='inputBox'>
           <InputPhone
-            label="Telefon raqam"
+            label='Telefon raqam'
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={e => setPhone(e.target.value)}
           />
 
           <Link
-            className={`buttonBox ${isComplete ? "primary" : "disabled"}`}
-            href={isComplete ? "/SmsPage" : "#"}
-            onClick={(e) => {
-              if (!isComplete) e.preventDefault(); // to‘liq bo‘lmasa otkazmaydi
+            className={`buttonBox ${isComplete ? 'primary' : 'disabled'}`}
+            href={isComplete ? '/SmsPage' : '#'}
+            onClick={e => {
+              if (!isComplete) e.preventDefault()
             }}
           >
             Davom etish
@@ -33,7 +33,7 @@ const ResetPassword = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ResetPassword;
+export default ResetPassword
