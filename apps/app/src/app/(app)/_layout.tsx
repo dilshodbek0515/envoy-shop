@@ -1,16 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
-import { Stack } from 'expo-router'
+import { StyleSheet, Text, View } from "react-native";
+import { Stack } from "expo-router";
 const AppLayout = () => {
   return (
-   <Stack
-   screenOptions={{
-    headerShown: false,
-   }}>
-    
-   </Stack>
-  )
-}
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: "#171c26" },
+      }}
+    ></Stack>
+  );
+};
 
-export default AppLayout
+export default AppLayout;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
