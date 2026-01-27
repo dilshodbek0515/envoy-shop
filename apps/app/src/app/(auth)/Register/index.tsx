@@ -1,22 +1,16 @@
-import { router } from 'expo-router'
-import { StyleSheet, Text, View } from 'react-native'
+import { router } from "expo-router";
+import { StyleSheet, Text, View } from "react-native";
 
 const Login = () => {
   return (
     <View>
-      <Text style={{ color: "red" }} onPress={() => router.back()}>Register</Text>
-
-
-const Register = () => {
-  return (
-    <View>
-      <Text>Register</Text>
+      <Text style={{ color: "red" }} onPress={() => router.back()}>
+        Register
+      </Text>
     </View>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
 
-const styles = StyleSheet.create({
-
-})
+const styles = StyleSheet.create({});
