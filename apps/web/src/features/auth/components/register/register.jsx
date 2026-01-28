@@ -4,6 +4,8 @@ import { useState } from 'react'
 import Button from '../../../../shared/ui/button/button'
 import Link from 'next/link'
 import CustomSelect from '../../../../shared/ui/select/select'
+import Buyer from './buyer/buyer'
+import Seller from './seller/seller'
 const Register = () => {
   const [registerForm, setRegisterForm] = useState({
     role: ''
@@ -34,10 +36,7 @@ const Register = () => {
           onChange={handleSelectChange}
         />
 
-        {registerForm.role === 'seller' && <p>Sotuvchi malumotlari</p>}
-        {registerForm.role === 'buyer' && <p>Xaridor malumotlari</p>}
-
-        <Button type='submit' label={'Kirish'} path='/' />
+        <Button type='submit' label={'SMS kod yuborish'} path='/' />
         <div className='route_bottom'>
           <Link href='/Login' className='route_button_style'>
             Akkountingiz bormi? Kirish
