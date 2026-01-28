@@ -1,9 +1,9 @@
 .wrapper {
   width: 100%;
-  height: 70px;
-  border-radius: 20px;
+  height: 55px;
+  border-radius: 15px;
   background-color: transparent;
-  border: 2px solid #b4b4b4;
+  border: 2px solid #d1d1d1;
   position: relative;
 }
 
@@ -22,12 +22,12 @@
 
 .inputt {
   width: 100%;
-  height: 68px;
+  height: 53px;
   background: transparent;
   border: none;
   outline: none;
   color: #38bdf8;
   font-size: 18px;
-  border-radius: 20px;
+  border-radius: 15px;
   padding-left: 8px;
 }

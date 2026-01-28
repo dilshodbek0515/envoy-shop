@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 120,
   },
   button: {
-    // flex: 1,
     height: 50,
     minWidth: 175,
     maxWidth: (screenWidth - 60) / 2,
