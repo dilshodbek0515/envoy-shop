@@ -1,7 +1,11 @@
-import React from 'react'
 import './button.css'
-const Button = ({label}) => {
-  return <div>{label}</div>
+import Link from 'next/link'
+const Button = ({ label, path }) => {
+  return (
+    <Link href={path} className='web_button'>
+      {label}
+    </Link>
+  )
 }
 
 export default Button

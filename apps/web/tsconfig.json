@@ -33,6 +33,6 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "src/app/(group)/page.jsx"
-, "src/features/auth/components/role/role.jsx", "src/components/button/appButton.jsx", "src/features/auth/components/role-second/jismoniy/jismoniy.jsx"  ],
+, "src/features/auth/components/resetPassword/role/role.jsx", "src/components/button/appsrc/features/auth/components/resetPassword/role-second/jismoniy/jismoniy.jsxy/jismoniy.jsx"  ],
   "exclude": ["node_modules"]
 }
