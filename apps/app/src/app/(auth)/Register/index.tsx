@@ -1,3 +1,5 @@
+import { StyleSheet, Text, View } from 'react-native'
+
 import { router } from "expo-router";
 import { useRef } from "react";
 import {
