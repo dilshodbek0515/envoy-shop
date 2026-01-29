@@ -3,8 +3,8 @@ import PageHeader from 'src/components/header/PageHeader'
 
 const Login = () => {
   return (
-    <View  style={styles.log}>
-      <PageHeader title="Login" isEnableBack/>
+    <View style={styles.log}>
+      <PageHeader title='Login' isEnableBack />
     </View>
   )
 }
@@ -12,8 +12,7 @@ const Login = () => {
 export default Login
 
 const styles = StyleSheet.create({
- log: {
-  flex: 1
- }
+  log: {
+    flex: 1
+  }
 })
-
