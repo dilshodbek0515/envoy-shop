@@ -5,6 +5,7 @@ import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import Button from '../../../../../shared/ui/button/button'
 import Link from 'next/link'
 import { useState } from 'react'
+
 const InterPhone = () => {
   const [interPhoneForm, setInterPhoneForm] = useState({
     phone: '',
@@ -18,6 +19,11 @@ const InterPhone = () => {
       [name]: value
     }))
   }
+
+  const isPhoneValid = interPhoneForm.phone.length === 9
+  const isPasswordValid = interPhoneForm.smsPassword.length === 4
+  const isFormValid = isPhoneValid && isPasswordValid
+
   return (
     <div className='container'>
       <div className='login_box'>
@@ -35,13 +41,15 @@ const InterPhone = () => {
           value={interPhoneForm.smsPassword}
           label={'SMS kod'}
           handleChange={handleChange}
+          maxLength={4}
         />
 
         <Button
           type='submit'
           label={'SMS ni tasdiqlash'}
-          path='/ResetPassword/ChangePassword'
+          disabled={!isFormValid}
         />
+
         <div className='route_bottom'>
           <Link href='/Login' className='route_button_style'>
             Kirish

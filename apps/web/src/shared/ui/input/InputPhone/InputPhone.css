@@ -1,4 +1,4 @@
-.wrapper {
+.wrapperIP {
   width: 100%;
   height: 55px;
   border-radius: 15px;
@@ -7,11 +7,11 @@
   position: relative;
 }
 
-.wrapper.active {
+.wrapperIP.active {
   border: 2px solid #4fc3f7;
 }
 
-.wrapper.active .inputt {
+.wrapperIP.active .inputt {
   border-color: #38bdf8;
 }
 
