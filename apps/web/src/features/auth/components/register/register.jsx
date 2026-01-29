@@ -3,8 +3,8 @@ import './register.css'
 import { useState } from 'react'
 import Button from '../../../../shared/ui/button/button'
 import Link from 'next/link'
-import Seller from './seller/seller'
 import Buyer from './buyer/buyer'
+import Seller from './seller/seller'
 const Register = () => {
   const [role, setRole] = useState('seller')
 
@@ -36,7 +36,6 @@ const Register = () => {
           label={'SMS kod yuborish'}
           path='/Register/RegisterSms'
         />
-        <Button type='submit' label={'SMS kod yuborish'} path='/' />
         <div className='route_bottom'>
           <Link href='/Login' className='route_button_style'>
             <span className='acc'>Akkountingiz bormi? </span> Kirish
