@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
 import { Stack } from "expo-router";
-const AppLayout = () => {
+import { StyleSheet } from "react-native";
+const Layout = () => {
   return (
     <Stack
       screenOptions={{
@@ -11,6 +11,6 @@ const AppLayout = () => {
   );
 };
 
-export default AppLayout;
+export default Layout;
 
 const styles = StyleSheet.create({});

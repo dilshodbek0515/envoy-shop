@@ -1,138 +1,47 @@
 'use client'
 import './register.css'
 import { useState } from 'react'
+import Button from '../../../../shared/ui/button/button'
 import Link from 'next/link'
-import Yuridik from '../role-second/yuridik/yuridik'
-import Jismoniy from '../role-second/jismoniy/jismoniy'
+import Seller from './seller/seller'
+import Buyer from './buyer/buyer'
 const Register = () => {
-  const [active, setActive] = useState('register')
-  const [secondRole, setSecondRole] = useState('yuridik')
-  const [errors, setErrors] = useState({})
-
-  const [form, setForm] = useState({
-    ism: '',
-    familiya: '',
-    faoliyat: '',
-    korxona: '',
-    stir: '',
-    yuridik: '',
-    bank: '',
-    telefon: '',
-    parol: '',
-    qaytaParol: '',
-    jismoniy_ism: '',
-    jismoniy_familiya: '',
-    jismoniy_telefon: '',
-    jismoniy_email: '',
-    jismoniy_parol: '',
-    jismoniy_qaytaParol: ''
-  })
-
-  const options = [
-    'YaTT',
-    'M.CH.J',
-    "Fermer Xo'jaligi",
-    "Dehqon Xo'jaligi",
-    "Shirkat Xo'jaligi",
-    'Unitar Korxona',
-    'Xususiy Korxona',
-    "Qo'shma Korxona",
-    'Oilaviy Korxona',
-    'Boshqa'
-  ]
-
-  const handleChange = e => {
-    const { name, value } = e.target
-    setForm(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  const handleSelectFaoliyat = value => {
-    setForm(prev => ({
-      ...prev,
-      faoliyat: value
-    }))
-  }
-
-  const handleSubmit = e => {
-    e.preventDefault()
-    console.log({ secondRole, ...form })
-  }
+  const [role, setRole] = useState('seller')
 
   return (
     <div className='container'>
       <div className='register_box'>
-        <div className='top_box'>
-          <Link
-            href={'/Login'}
-            className={`login_selected ${active === 'login' ? 'active' : ''}`}
-            onClick={() => setActive('login')}
+        <h2 className='login_title'>Ro'yxatdan o'tish</h2>
+
+        <div className='roleBox'>
+          <div
+            className={`seller_style ${role === 'seller' && 'select_role'}`}
+            onClick={() => setRole('seller')}
           >
-            Kirish
-          </Link>
-          <Link
-            href={'/Register'}
-            className={`register_selected ${
-              active === 'register' ? 'active' : ''
-            }`}
-            onClick={() => setActive('register')}
+            Sotuvchi
+          </div>
+          <div
+            className={`buyer_style ${role === 'buyer' && 'select_role'}`}
+            onClick={() => setRole('buyer')}
           >
-            Ro'yxatdan o'tish
-          </Link>
-          <span
-            className={`underline ${active === 'register' ? 'right' : 'left'}`}
-          />
+            Xaridor
+          </div>
         </div>
 
-        <div className='center'>
-          <div className='center_box'>
-            <div className='role_select'>
-              <button
-                onClick={() => setSecondRole('yuridik')}
-                className={`yuridik ${
-                  secondRole === 'yuridik' ? 'primary' : ''
-                }`}
-              >
-                Yuridik
-              </button>
-              <button
-                onClick={() => setSecondRole('jismoniy')}
-                className={`jismoniy ${
-                  secondRole === 'jismoniy' ? 'primary' : ''
-                }`}
-              >
-                Jismoniy
-              </button>
-            </div>
+        {role === 'seller' && <Seller />}
+        {role === 'buyer' && <Buyer />}
 
-            {secondRole === 'yuridik' && (
-              <Yuridik
-                form={form}
-                handleChange={handleChange}
-                options={options}
-                handleSelectFaoliyat={handleSelectFaoliyat}
-                errors={errors}
-              />
-            )}
-
-            {secondRole === 'jismoniy' && (
-              <Jismoniy
-                form={form}
-                handleChange={handleChange}
-                errors={errors}
-              />
-            )}
-          </div>
-
-          <button
-            type='submit'
-            onClick={handleSubmit}
-            className={`bottom_btn ${secondRole === 'yuridik' ? 'back' : ''}`}
-          >
-            Ro'yxatdan o'tish
-          </button>
+        <Button
+          type='submit'
+          label={'SMS kod yuborish'}
+          path='/Register/RegisterSms'
+        />
+        <Button type='submit' label={'SMS kod yuborish'} path='/' />
+        <div className='route_bottom'>
+          <Link href='/Login' className='route_button_style'>
+            <span className='acc'>Akkountingiz bormi? </span> Kirish
+          </Link>
+          <span />
         </div>
       </div>
     </div>

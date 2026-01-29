@@ -1,21 +1,18 @@
-import { Stack } from 'expo-router'
-import { StyleSheet, Text, View } from 'react-native'
-import { Colors } from 'src/shared/token'
-
+import { StyleSheet, Text, View } from "react-native";
+import { Stack } from "expo-router";
 const LoginLayout = () => {
   return (
-   <Stack
-   screenOptions={{ 
-    headerShown: false,
-    contentStyle: {
-      backgroundColor: Colors.pageBackground
-    }
-   }}>
-    
-   </Stack>
-  )
-}
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: "#fff"
+        }
+      }}
+    />
+  );
+};
 
-export default LoginLayout
+export default LoginLayout;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
