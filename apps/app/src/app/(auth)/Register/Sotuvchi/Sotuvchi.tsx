@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import Yuridik from "./Yuridik/Yuridik";
+import Jismoniy from "./Jismoniy/Jismoniy";
+
+const { width: screenWidth } = Dimensions.get("window");
 
 const Register = () => {
-  const [activeButton, setActiveButton] = useState("");
+  const [activeButton, setActiveButton] = useState("yuridik");
 
   return (
     <>
@@ -54,6 +58,10 @@ const Register = () => {
           </Pressable>
         </View>
       </View>
+
+      {activeButton === "Yuridik" && <Yuridik />}
+
+      {activeButton === "Jismoniy" && <Jismoniy />}
     </>
   );
 };
@@ -86,15 +94,17 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
     height: 56,
-    backgroundColor: "#EEEEEE",
+    backgroundColor: "#2E3749",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 18,
     marginTop: 120,
+    paddingHorizontal: 10,
   },
   button: {
-    width: 160,
+    minWidth: 182,
+    maxWidth: (screenWidth - 60) / 2,
     borderRadius: 14,
     alignItems: "center",
   },
@@ -104,17 +114,18 @@ const styles = StyleSheet.create({
   buttonActiveColor: {
     height: 48,
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#262E3D",
   },
   buttonActiveColorText: {
     color: "#00beff",
   },
   buttonInActiveColor: {
+    // width: "100%",
     height: 48,
     justifyContent: "center",
-    backgroundColor: "#eee",
+    backgroundColor: "#2E3749",
   },
   buttonInActiveColorText: {
-    color: "#000",
+    color: "white",
   },
 });

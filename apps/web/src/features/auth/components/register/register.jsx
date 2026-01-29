@@ -36,6 +36,7 @@ const Register = () => {
           label={'SMS kod yuborish'}
           path='/Register/RegisterSms'
         />
+        <Button type='submit' label={'SMS kod yuborish'} path='/' />
         <div className='route_bottom'>
           <Link href='/Login' className='route_button_style'>
             <span className='acc'>Akkountingiz bormi? </span> Kirish
