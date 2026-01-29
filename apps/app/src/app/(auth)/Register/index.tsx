@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 122
   },
-
   header: {
     width: '100%',
     height: 102,
@@ -105,12 +104,10 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     gap: 20
   },
-
   headerTitle: {
     fontSize: 18,
     color: '#00beff'
   },
-
   button_container: {
     flexDirection: 'row',
     gap: 25,
@@ -137,7 +134,7 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.98 }]
   },
   linkActive: {
-    color: '#FFFFFF',
-    fontWeight: '600'
-  }
-})
+    color: "#FFFFFF",
+    fontWeight: "600",
+  },
+});
