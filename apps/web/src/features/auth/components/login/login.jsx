@@ -6,7 +6,7 @@ import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
 import MainInput from '../../../../shared/ui/input/MainInput/input'
 import Link from 'next/link'
 import { AxiosError } from 'axios'
-import { LoginFn } from '../../../../../../../packages/api/login'
+import { LoginFn } from '../../../../../../../packages/api/login/login'
 import { useRouter } from 'next/navigation'
 
 const Login = () => {
