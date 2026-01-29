@@ -81,12 +81,6 @@ const Register = () => {
           )}
         </Pressable>
       </View>
-      <Text
-        style={styles.link}
-        onPress={() => router.push("/Register/Sotuvchi")}
-      >
-        Sotuvchi
-      </Text>
     </View>
   );
 };
@@ -109,8 +103,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 35,
     gap: 20,
-    // borderBottomLeftRadius: 10,
-    // borderBottomRightRadius: 10,
   },
   headerTitle: {
     fontSize: 18,
