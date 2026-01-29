@@ -1,10 +1,5 @@
-import { router } from 'expo-router'
 import { StyleSheet, Text, View } from 'react-native'
 
-const Login = () => {
-  return (
-    <View>
-      <Text style={{ color: "red" }} onPress={() => router.back()}>Register</Text>
 
 
 const Register = () => {
@@ -15,7 +10,7 @@ const Register = () => {
   )
 }
 
-export default Login
+export default Register
 
 const styles = StyleSheet.create({
 
