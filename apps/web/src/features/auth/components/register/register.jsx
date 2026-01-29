@@ -3,43 +3,43 @@ import './register.css'
 import { useState } from 'react'
 import Button from '../../../../shared/ui/button/button'
 import Link from 'next/link'
-import CustomSelect from '../../../../shared/ui/select/select'
-import Buyer from './buyer/buyer'
 import Seller from './seller/seller'
+import Buyer from './buyer/buyer'
 const Register = () => {
-  const [registerForm, setRegisterForm] = useState({
-    role: ''
-  })
-
-  const roleOptions = [
-    { value: 'seller', label: 'Sotuvchi' },
-    { value: 'buyer', label: 'Xaridor' }
-  ]
-
-  const handleSelectChange = value => {
-    setRegisterForm(prev => ({
-      ...prev,
-      role: value
-    }))
-    console.log('Role:', value)
-  }
+  const [role, setRole] = useState('seller')
 
   return (
     <div className='container'>
-      <div className='login_box'>
+      <div className='register_box'>
         <h2 className='login_title'>Ro'yxatdan o'tish</h2>
 
-        <CustomSelect
-          label={'Rolni tanlang'}
-          options={roleOptions}
-          value={registerForm.role}
-          onChange={handleSelectChange}
-        />
+        <div className='roleBox'>
+          <div
+            className={`seller_style ${role === 'seller' && 'select_role'}`}
+            onClick={() => setRole('seller')}
+          >
+            Sotuvchi
+          </div>
+          <div
+            className={`buyer_style ${role === 'buyer' && 'select_role'}`}
+            onClick={() => setRole('buyer')}
+          >
+            Xaridor
+          </div>
+        </div>
 
+        {role === 'seller' && <Seller />}
+        {role === 'buyer' && <Buyer />}
+
+        <Button
+          type='submit'
+          label={'SMS kod yuborish'}
+          path='/Register/RegisterSms'
+        />
         <Button type='submit' label={'SMS kod yuborish'} path='/' />
         <div className='route_bottom'>
           <Link href='/Login' className='route_button_style'>
-            Akkountingiz bormi? Kirish
+            <span className='acc'>Akkountingiz bormi? </span> Kirish
           </Link>
           <span />
         </div>

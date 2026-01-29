@@ -1,10 +1,14 @@
 import './button.css'
-import Link from 'next/link'
-const Button = ({ label, path }) => {
+const Button = ({ label, handleSubmit, type = 'button', disabled = false }) => {
   return (
-    <Link href={path} className='web_button'>
+    <button
+      type={type}
+      onClick={handleSubmit}
+      disabled={disabled}
+      className={`web_button ${disabled && 'disabled'}`}
+    >
       {label}
-    </Link>
+    </button>
   )
 }
 
