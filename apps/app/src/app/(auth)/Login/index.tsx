@@ -1,11 +1,10 @@
-import { router } from 'expo-router'
 import { StyleSheet, Text, View } from 'react-native'
+import PageHeader from 'src/components/header/PageHeader'
 
 const Login = () => {
   return (
-    <View>
-      <Text style={{ color: 'red' }} onPress={() => router.back()}>Login</Text>
-      <Text>Login</Text>
+    <View style={styles.log}>
+      <PageHeader title='Login' isEnableBack />
     </View>
   )
 }
@@ -13,6 +12,7 @@ const Login = () => {
 export default Login
 
 const styles = StyleSheet.create({
-
+  log: {
+    flex: 1
+  }
 })
-

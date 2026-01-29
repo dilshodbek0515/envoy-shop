@@ -1,7 +1,7 @@
 .container {
     width: 1440px;
     height: 100vh;
-    background-color: #171C26;
+    background-color: #ededed;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -9,163 +9,75 @@
 }
 
 .register_box {
-    width: 652px;
-    height: 780px;
-    border-radius: 20px;
-    border: 3px solid #262E3D;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-}
-
-.top_box {
-    width: 100%;
-    height: 85px;
-    background-color: #262E3D;
-    border-radius: 15 15 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    padding: 0 50 0 50;
-}
-
-.login_selected,
-.register_selected {
-    color: #FFFFFF;
-    font-size: 20px;
-    border: none;
-    cursor: pointer;
-    background-color: transparent;
-    padding: 20 100;
-}
-
-.register_selected {
-    padding: 20 40;
-}
-
-.login_selected.active {
-    color: #00BEFF;
-}
-
-.register_selected.active {
-    color: #00BEFF;
-}
-
-.underline {
-    position: absolute;
-    bottom: 0;
-    left: 12;
-    width: 310px;
-    height: 7px;
-    background: #00BEFF;
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-}
-
-.underline.right {
-    transform: translateX(310px);
-}
-
-.center {
-    width: 100%;
-    height: 89%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
-}
-
-.center_box {
-    width: 100%;
+    width: 550px;
     height: auto;
+    border-radius: 20px;
     display: flex;
-    align-items: center;
     flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     gap: 20px;
-    padding: 25px 0px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    padding: 30px;
 }
 
-.role_select {
-    width: 90%;
-    height: 70px;
+.roleBox {
+    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    background-color: #262E3D;
-    padding: 10 0;
-    border-radius: 15px;
+    justify-content: space-around;
+    gap: 20px;
+
 }
 
-.yuridik {
-    width: 45%;
-    height: 100%;
-    background-color: transparent;
-    border-radius: 15px;
-    border: transparent;
-    color: #FFFFFF;
-    font-size: 18;
+.roleItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
     cursor: pointer;
+    margin-bottom: 8px;
 }
 
-.jismoniy {
-    width: 45%;
-    height: 100%;
-    background-color: transparent;
-    border-radius: 15px;
-    border: transparent;
-    color: #fff;
-    font-size: 18;
+.roleItem input {
+    accent-color: #1e88ff;
     cursor: pointer;
+    width: 18px;
+    height: 18px;
 }
 
-.primary {
-    background-color: #00BEFF;
-}
-
-.yuridik_inputs {
-    height: 70px;
-    border-radius: 20px;
-    background-color: transparent;
-    border: 2px solid #262E3D;
-    padding: 5 20;
-    font-size: 16px;
-    outline: none;
-    color: white;
-}
-
-.forma {
-    width: 90%;
-    height: auto;
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 22px;
-}
-
-.inputs {
+.route_bottom {
     width: 100%;
-    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.route_button_style {
+    border: transparent;
+    color: dodgerblue;
+    text-align: center;
+}
+
+.acc {
+    color: black;
+}
+
+.legal_style,
+.physical_style,
+.seller_style,
+.buyer_style {
+    width: 100%;
+    height: 55px;
     border-radius: 20px;
-    background-color: transparent;
-    border: 2px solid #262E3D;
-    padding: 5 20;
-    font-size: 16px;
-    outline: none;
+    background-color: #ededed;
+    border: 1px solid #b4b2b2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select_role {
+    background-color: dodgerblue;
     color: white;
-}
-
-.bottom_btn {
-    width: 90%;
-    height: 70px;
-    color: #00BEFF;
-    font-size: 20px;
-    border: 1px solid #00BEFF;
-    border-radius: 20px;
-}
-
-.bottom_btn.back {
-    background-color: #00BEFF;
-    color: #FFFFFF;
 }

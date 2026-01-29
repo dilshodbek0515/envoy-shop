@@ -1,0 +1,26 @@
+.web_button {
+    width: 99%;
+    height: 55px;
+    background-color: dodgerblue;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+    border: transparent;
+}
+
+.web_button:hover {
+    background-color: rgb(6, 113, 219);
+
+}
+
+
+.web_button.disabled {
+    background-color: #9bbcf3;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

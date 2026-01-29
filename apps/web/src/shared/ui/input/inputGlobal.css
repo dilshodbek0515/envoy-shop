@@ -1,9 +1,9 @@
 .label {
     position: absolute;
-    left: 20px;
+    left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: #000000;
+    color: #b4b2b2;
     font-size: 16px;
     pointer-events: none;
     transition: 0.25s ease;
@@ -13,6 +13,7 @@
 
 .label.active {
     top: 0px;
+    left: 15px;
     font-size: 13px;
     color: #38bdf8;
 }
