@@ -3,6 +3,7 @@ import './seller.css'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import { useState } from 'react'
 import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
+import CustomSelect from '../../../../../shared/ui/select/select'
 import Button from '../../../../../shared/ui/button/button'
 import { RegisterFn } from '../../../../../../../../packages/api/register/register'
 import { AxiosError } from 'axios'
@@ -10,6 +11,7 @@ import { useRouter } from 'next/navigation'
 const Seller = ({ role }) => {
   const [sellerRole, setSellerRole] = useState('legal')
   const router = useRouter()
+
   const [sellerForm, setSellerForm] = useState({
     firstName: '',
     lastName: '',
@@ -30,6 +32,7 @@ const Seller = ({ role }) => {
       [name]: value
     }))
   }
+  const isRoleValid = role === 'seller' || role === 'buyer'
   const isFirstName = sellerForm.firstName.trim().length >= 2
   const isLastName = sellerForm.lastName.trim().length >= 2
   const isStir = sellerForm.stir.length === 9
@@ -37,7 +40,7 @@ const Seller = ({ role }) => {
   const isCompanyName = sellerForm.companyName.trim().length >= 3
   const isLegalAddress = sellerForm.legalAddress.trim().length >= 5
   const isBankDetails = sellerForm.bankDetails.trim().length >= 20
-  const isPhoneNumber = sellerForm.phoneNumber.length === 9
+  const isPhoneNumber = sellerForm.phoneNumber.toString().length === 9
   const isPassword = sellerForm.password.length >= 8
   const isConfirmPassword = sellerForm.confirmPassword === sellerForm.password
 
@@ -62,6 +65,7 @@ const Seller = ({ role }) => {
 
     if (!registerFormValid) {
       console.log('Form valid emas:', {
+        isRoleValid,
         isFirstName,
         isLastName,
         isStir,
@@ -77,16 +81,36 @@ const Seller = ({ role }) => {
     }
 
     try {
-      const res = await RegisterFn({ registerFormValid })
+      const registrationData = {
+        role: sellerRole,
+        userType: role,
+        ...sellerForm
+      }
+
+      const res = await RegisterFn({ registrationData })
       console.log('Ishladi', res)
       router.push('/Register/RegisterSms')
+      console.log(registrationData)
     } catch (error) {
       if (error instanceof AxiosError) {
-        error.response.data || error.message
+        error.response.data || error.messageregistrationData
         console.log('Ishlamadi')
       }
     }
   }
+
+  const option = [
+    { value: 'yatt', label: 'YaTT' },
+    { value: 'fermer', label: 'Fermer xo‘jaligi' },
+    { value: 'dehqon', label: 'Dehqon xo‘jaligi' },
+    { value: 'shirkat', label: 'Shirkat xo‘jaligi' },
+    { value: 'mchj', label: 'MCHJ' },
+    { value: 'unitar', label: 'Unitar korxona' },
+    { value: 'xususiy', label: 'Xususiy korxona' },
+    { value: 'qoshma', label: 'Qo‘shma korxona' },
+    { value: 'oilaviy', label: 'Oilaviy korxona' },
+    { value: 'boshqa', label: 'Boshqa' }
+  ]
 
   return (
     <>
@@ -95,8 +119,8 @@ const Seller = ({ role }) => {
           <input
             type='radio'
             name='sellerRole'
-            value='xaridor'
-            checked={sellerRole === 'xaridor'}
+            value='legal'
+            checked={sellerRole === 'legal'}
             onChange={e => setSellerRole(e.target.value)}
           />
           Yuridik
@@ -106,13 +130,14 @@ const Seller = ({ role }) => {
           <input
             type='radio'
             name='sellerRole'
-            value='sotuvchi'
-            checked={sellerRole === 'sotuvchi'}
+            value='physical'
+            checked={sellerRole === 'physical'}
             onChange={e => setSellerRole(e.target.value)}
           />
           Jismoniy
         </label>
       </div>
+
       <div className='seller_wrapper'>
         <MainInput
           name='firstName'
@@ -128,12 +153,16 @@ const Seller = ({ role }) => {
           handleChange={handleChange}
           type='text'
         />
-        <MainInput
-          name='activityType'
-          value={sellerForm.activityType}
+        <CustomSelect
           label={'Faoliyat turi'}
-          handleChange={handleChange}
-          type='text'
+          value={sellerForm.activityType}
+          options={option}
+          onChange={value =>
+            setSellerForm(prev => ({
+              ...prev,
+              activityType: value
+            }))
+          }
         />
         <MainInput
           name='companyName'
@@ -185,6 +214,7 @@ const Seller = ({ role }) => {
           type='text'
         />
       </div>
+
       <Button
         type='submit'
         label={'SMS kod yuborish'}
