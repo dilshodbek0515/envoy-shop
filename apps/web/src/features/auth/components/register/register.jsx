@@ -1,7 +1,6 @@
 'use client'
 import './register.css'
 import { useState } from 'react'
-import Button from '../../../../shared/ui/button/button'
 import Link from 'next/link'
 import Buyer from './buyer/buyer'
 import Seller from './seller/seller'
@@ -28,19 +27,14 @@ const Register = () => {
           </div>
         </div>
 
-        {role === 'seller' && <Seller />}
+        {role === 'seller' && <Seller role={role} />}
         {role === 'buyer' && <Buyer />}
 
-        <Button
-          type='submit'
-          label={'SMS kod yuborish'}
-          path='/Register/RegisterSms'
-        />
         <div className='route_bottom'>
           <Link href='/Login' className='route_button_style'>
             <span className='acc'>Akkountingiz bormi? </span> Kirish
           </Link>
-          <span />
+          <Link href={'/Register/RegisterSms'}>➡️</Link>
         </div>
       </div>
     </div>
