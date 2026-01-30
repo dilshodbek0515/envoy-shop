@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import PageHeader from 'src/components/header/PageHeader'
 
 const Login = () => {
