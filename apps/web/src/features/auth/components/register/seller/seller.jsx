@@ -12,6 +12,7 @@ const Seller = ({ role }) => {
   const [sellerRole, setSellerRole] = useState('legal')
   const router = useRouter()
 
+  //yuridik
   const [sellerForm, setSellerForm] = useState({
     firstName: '',
     lastName: '',
@@ -25,6 +26,16 @@ const Seller = ({ role }) => {
     confirmPassword: ''
   })
 
+  //jismoniy
+  const [physicalForm, setPhysicalForm] = useState({
+    firstNamePhysical: '',
+    lastNamePhysical: '',
+    phoneNumberPhysical: '',
+    passwordPhysical: '',
+    emailPhysical: '',
+    confirmPasswordPhysical: ''
+  })
+
   const handleChange = e => {
     const { name, value } = e.target
     setSellerForm(prev => ({
@@ -32,6 +43,7 @@ const Seller = ({ role }) => {
       [name]: value
     }))
   }
+  //yuridik
   const isRoleValid = role === 'seller' || role === 'buyer'
   const isFirstName = sellerForm.firstName.trim().length >= 2
   const isLastName = sellerForm.lastName.trim().length >= 2
@@ -43,8 +55,17 @@ const Seller = ({ role }) => {
   const isPhoneNumber = sellerForm.phoneNumber.toString().length === 9
   const isPassword = sellerForm.password.length >= 8
   const isConfirmPassword = sellerForm.confirmPassword === sellerForm.password
-
   let registerFormValid = false
+
+  //jismoniy
+  const isPhysicalFirstName = physicalForm.firstNamePhysical.trim().length >= 2
+  const isPhysicalLastName = physicalForm.lastNamePhysical.trim().length >= 2
+  const isPhysicalPhone =
+    physicalForm.phoneNumberPhysical.toString().length === 9
+  const isPhysicalEmail = physicalForm.emailPhysical.includes('@')
+  const isPhysicalPassword = physicalForm.passwordPhysical.length >= 8
+  const isPhysicalConfirmPassword =
+    physicalForm.passwordPhysical === physicalForm.confirmPasswordPhysical
 
   if (sellerRole === 'legal') {
     registerFormValid =
@@ -58,6 +79,16 @@ const Seller = ({ role }) => {
       isPhoneNumber &&
       isPassword &&
       isConfirmPassword
+  }
+
+  if (sellerRole === 'physical') {
+    registerFormValid =
+      isPhysicalFirstName &&
+      isPhysicalLastName &&
+      isPhysicalPhone &&
+      isPhysicalEmail &&
+      isPhysicalPassword &&
+      isPhysicalConfirmPassword
   }
 
   const handleRegister = async e => {
@@ -81,11 +112,10 @@ const Seller = ({ role }) => {
     }
 
     try {
-      const registrationData = {
-        role: sellerRole,
-        userType: role,
-        ...sellerForm
-      }
+      const registrationData =
+        sellerRole === 'legal'
+          ? { role: sellerRole, userType: role, ...sellerForm }
+          : { role: sellerRole, userType: role, ...physicalForm }
 
       const res = await RegisterFn({ registrationData })
       console.log('Ishladi', res)
@@ -111,6 +141,14 @@ const Seller = ({ role }) => {
     { value: 'oilaviy', label: 'Oilaviy korxona' },
     { value: 'boshqa', label: 'Boshqa' }
   ]
+
+  const physicalhandleChange = e => {
+    const { name, value } = e.target
+    setPhysicalForm(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
   return (
     <>
@@ -138,82 +176,131 @@ const Seller = ({ role }) => {
         </label>
       </div>
 
-      <div className='seller_wrapper'>
-        <MainInput
-          name='firstName'
-          value={sellerForm.firstName}
-          label={'Ism'}
-          handleChange={handleChange}
-          type='text'
-        />
-        <MainInput
-          name='lastName'
-          value={sellerForm.lastName}
-          label={'Familiya'}
-          handleChange={handleChange}
-          type='text'
-        />
-        <CustomSelect
-          label={'Faoliyat turi'}
-          value={sellerForm.activityType}
-          options={option}
-          onChange={value =>
-            setSellerForm(prev => ({
-              ...prev,
-              activityType: value
-            }))
-          }
-        />
-        <MainInput
-          name='companyName'
-          value={sellerForm.companyName}
-          label={'Korxona nomi'}
-          handleChange={handleChange}
-          type='text'
-        />
-        <MainInput
-          name='stir'
-          value={sellerForm.stir}
-          label={'Stir (INN)'}
-          handleChange={handleChange}
-          type='number'
-        />
-        <MainInput
-          name='bankDetails'
-          value={sellerForm.bankDetails}
-          label={'Bank rekvizitlari'}
-          handleChange={handleChange}
-          type='number'
-        />
-        <MainInput
-          name='legalAddress'
-          value={sellerForm.legalAddress}
-          label={'Yuridik manzil'}
-          handleChange={handleChange}
-          type='text'
-        />
-        <InputPhone
-          name='phoneNumber'
-          value={sellerForm.phoneNumber}
-          label={'Telefon raqam'}
-          handleChange={handleChange}
-          type='number'
-        />
-        <MainInput
-          name='password'
-          value={sellerForm.password}
-          label={'Parol'}
-          handleChange={handleChange}
-          type='text'
-        />
-        <MainInput
-          name='confirmPassword'
-          value={sellerForm.confirmPassword}
-          label={'Qayta parol'}
-          handleChange={handleChange}
-          type='text'
-        />
-      </div>
+      {sellerRole === 'legal' && (
+        <div className='seller_wrapper'>
+          <MainInput
+            name='firstName'
+            value={sellerForm.firstName}
+            label={'Ism'}
+            handleChange={handleChange}
+            type='text'
+          />
+          <MainInput
+            name='lastName'
+            value={sellerForm.lastName}
+            label={'Familiya'}
+            handleChange={handleChange}
+            type='text'
+          />
+          <CustomSelect
+            label={'Faoliyat turi'}
+            value={sellerForm.activityType}
+            options={option}
+            onChange={value =>
+              setSellerForm(prev => ({
+                ...prev,
+                activityType: value
+              }))
+            }
+          />
+          <MainInput
+            name='companyName'
+            value={sellerForm.companyName}
+            label={'Korxona nomi'}
+            handleChange={handleChange}
+            type='text'
+          />
+          <MainInput
+            name='stir'
+            value={sellerForm.stir}
+            label={'Stir (INN)'}
+            handleChange={handleChange}
+            type='number'
+          />
+          <MainInput
+            name='bankDetails'
+            value={sellerForm.bankDetails}
+            label={'Bank rekvizitlari'}
+            handleChange={handleChange}
+            type='number'
+          />
+          <MainInput
+            name='legalAddress'
+            value={sellerForm.legalAddress}
+            label={'Yuridik manzil'}
+            handleChange={handleChange}
+            type='text'
+          />
+          <InputPhone
+            name='phoneNumber'
+            value={sellerForm.phoneNumber}
+            label={'Telefon raqam'}
+            handleChange={handleChange}
+            type='number'
+          />
+          <MainInput
+            name='password'
+            value={sellerForm.password}
+            label={'Parol'}
+            handleChange={handleChange}
+            type='text'
+          />
+          <MainInput
+            name='confirmPassword'
+            value={sellerForm.confirmPassword}
+            label={'Qayta parol'}
+            handleChange={handleChange}
+            type='text'
+          />
+        </div>
+      )}
+
+      {sellerRole === 'physical' && (
+        <div className='seller_wrapper'>
+          <MainInput
+            type='text'
+            label={'Ism'}
+            name='firstNamePhysical'
+            value={physicalForm.firstNamePhysical}
+            handleChange={physicalhandleChange}
+          />
+          <MainInput
+            type='text'
+            label={'Familiya'}
+            name='lastNamePhysical'
+            value={physicalForm.lastNamePhysical}
+            handleChange={physicalhandleChange}
+          />
+          <InputPhone
+            type='number'
+            label={'Telefon raqam'}
+            name='phoneNumberPhysical'
+            value={physicalForm.phoneNumberPhysical}
+            handleChange={physicalhandleChange}
+          />
+          <MainInput
+            type='email'
+            label={'Email'}
+            name='emailPhysical'
+            value={physicalForm.emailPhysical}
+            handleChange={physicalhandleChange}
+          />
+          <MainInput
+            type='text'
+            label={'Parol'}
+            name='passwordPhysical'
+            value={physicalForm.passwordPhysical}
+            handleChange={physicalhandleChange}
+          />
+          <MainInput
+            type='text'
+            label={'Parolni takrorlash'}
+            name='confirmPasswordPhysical'
+            value={physicalForm.confirmPasswordPhysical}
+            handleChange={physicalhandleChange}
+          />
+        </div>
+      )}
 
       <Button
         type='submit'

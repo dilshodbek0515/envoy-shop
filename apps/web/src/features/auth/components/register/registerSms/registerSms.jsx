@@ -2,37 +2,46 @@
 import './registerSms.css'
 import { useState } from 'react'
 import Button from '../../../../../shared/ui/button/button'
-import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import Link from 'next/link'
 const RegisterSms = () => {
-  const [form, setForm] = useState({
-    phone: '',
-    password: ''
-  })
+  const [smsCode, setSmsCode] = useState('')
 
   const handleChange = e => {
-    const { name, value } = e.target
-    setForm(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    let value = e.target.value.replace(/\D/g, '')
+    if (value.length <= 4) {
+      setSmsCode(value)
+    }
+  }
+
+  const isSmsValid = smsCode.length === 4
+  const handleSubmit = e => {
+    e.preventDefault()
+
+    if (!isSmsValid) return
+
+    console.log('SMS tasdiqlandi:', smsCode)
   }
 
   return (
     <div className='container'>
       <div className='login_box'>
-      <h2 className='login_title'>SMS</h2>
+        <h2 className='login_title'>SMS</h2>
 
         <MainInput
-          label={'Parol'}
-          name='password'
-          type={'password'}
-          value={form.password}
+          label={'SMS kod'}
+          name='sms'
+          type='text'
+          value={smsCode}
           handleChange={handleChange}
         />
 
-        <Button type='submit' label={'SMS ni tasdiqlash'} path='/' />
+        <Button
+          type='submit'
+          label={'SMS ni tasdiqlash'}
+          handleSubmit={handleSubmit}
+          disabled={!isSmsValid}
+        />
 
         <div className='route_bottom'>
           <Link href='/Login' className='route_button_style'>
