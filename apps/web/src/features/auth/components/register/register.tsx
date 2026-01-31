@@ -1,12 +1,13 @@
 'use client'
 import './register.css'
-import { useState } from 'react'
-import Button from '../../../../shared/ui/button/button'
+import { FC, useState } from 'react'
 import Link from 'next/link'
-import Seller from './seller/seller'
 import Buyer from './buyer/buyer'
-const Register = () => {
-  const [role, setRole] = useState('seller')
+import Seller from './seller/seller'
+type Role = 'seller' | 'buyer'
+
+const Register: FC = () => {
+  const [role, setRole] = useState<Role>('seller')
 
   return (
     <div className='container'>
@@ -15,33 +16,27 @@ const Register = () => {
 
         <div className='roleBox'>
           <div
-            className={`seller_style ${role === 'seller' && 'select_role'}`}
+            className={`seller_style ${role === 'seller' ? 'select_role' : ''}`}
             onClick={() => setRole('seller')}
           >
             Sotuvchi
           </div>
           <div
-            className={`buyer_style ${role === 'buyer' && 'select_role'}`}
+            className={`buyer_style ${role === 'buyer' ? 'select_role' : ''}`}
             onClick={() => setRole('buyer')}
           >
             Xaridor
           </div>
         </div>
 
-        {role === 'seller' && <Seller />}
+        {role === 'seller' && <Seller role={role} />}
         {role === 'buyer' && <Buyer />}
 
-        <Button
-          type='submit'
-          label={'SMS kod yuborish'}
-          path='/Register/RegisterSms'
-        />
-        <Button type='submit' label={'SMS kod yuborish'} path='/' />
         <div className='route_bottom'>
           <Link href='/Login' className='route_button_style'>
             <span className='acc'>Akkountingiz bormi? </span> Kirish
           </Link>
-          <span />
+          <Link href={'/Register/RegisterSms'}>➡️</Link>
         </div>
       </div>
     </div>

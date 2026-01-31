@@ -4,7 +4,20 @@ import './input.css'
 import '../inputGlobal.css'
 import CloseIcon from 'apps/web/src/features/auth/assets/icons/close'
 
-const MainInput = ({ label, value, handleChange, ...props }) => {
+interface MainInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string
+  value: string
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  type?: string
+}
+
+const MainInput: React.FC<MainInputProps> = ({
+  label,
+  value,
+  handleChange,
+  type = 'text',
+  ...props
+}) => {
   const [focused, setFocused] = useState(false)
   const isActive = focused || value.length > 0
   const clear = value.length > 0
@@ -15,14 +28,15 @@ const MainInput = ({ label, value, handleChange, ...props }) => {
         name: props.name,
         value: ''
       }
-    }
+    } as unknown as React.ChangeEvent<HTMLInputElement>
     handleChange(fakeEvent)
   }
 
   return (
-    <div className={`wrapperI ${isActive && 'active'}`}>
-      <label className={`label ${isActive && 'active'}`}>{label}</label>
+    <div className={`wrapperI ${isActive ? 'active' : ''}`}>
+      <label className={`label ${isActive ? 'active' : ''}`}>{label}</label>
       <input
+        type={type}
         {...props}
         value={value}
         onChange={handleChange}
