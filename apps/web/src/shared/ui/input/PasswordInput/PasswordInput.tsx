@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PasswordInput = () => {
+const PasswordInput: React.FC = () => {
   return <div>PasswordInput</div>
 }
 
