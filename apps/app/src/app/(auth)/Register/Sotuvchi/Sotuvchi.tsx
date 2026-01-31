@@ -1,8 +1,15 @@
 import { useState } from "react";
-import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
-import Yuridik from "./Yuridik/Yuridik";
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Jismoniy from "./Jismoniy/Jismoniy";
 import { Spacing } from "src/shared/token";
+import Yuridik from "./Yuridik/Yuridik";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -63,6 +70,12 @@ const Register = () => {
       {activeButton === "Yuridik" && <Yuridik />}
 
       {activeButton === "Jismoniy" && <Jismoniy />}
+
+      <View style={styles.touchableView}>
+        <TouchableOpacity style={styles.touchable}>
+          <Text style={styles.touchableTitle}>Davom etish</Text>
+        </TouchableOpacity>
+      </View>
     </>
   );
 };
@@ -73,6 +86,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     paddingHorizontal: Spacing.horizontal,
+    marginBottom: 5,
   },
 
   header: {
@@ -131,5 +145,30 @@ const styles = StyleSheet.create({
   },
   buttonInActiveColorText: {
     color: "white",
+  },
+  touchableView: {
+    width: "100%",
+    height: 102,
+    backgroundColor: "#262E3D",
+    position: "absolute",
+    bottom: 0,
+    borderTopRightRadius: 18,
+    borderTopLeftRadius: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: Spacing.horizontal,
+  },
+  touchable: {
+    width: "100%",
+    height: 55,
+    borderWidth: 1.5,
+    borderColor: "#00beff",
+    borderRadius: 18,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  touchableTitle: {
+    fontSize: 20,
+    color: "#00beff",
   },
 });
