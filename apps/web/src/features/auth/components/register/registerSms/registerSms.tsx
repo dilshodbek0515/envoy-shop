@@ -4,10 +4,11 @@ import { useState } from 'react'
 import Button from '../../../../../shared/ui/button/button'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import Link from 'next/link'
-const RegisterSms = () => {
+
+const RegisterSms: React.FC = () => {
   const [smsCode, setSmsCode] = useState('')
 
-  const handleChange = e => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, '')
     if (value.length <= 4) {
       setSmsCode(value)
@@ -15,7 +16,7 @@ const RegisterSms = () => {
   }
 
   const isSmsValid = smsCode.length === 4
-  const handleSubmit = e => {
+  const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
     if (!isSmsValid) return
@@ -47,7 +48,8 @@ const RegisterSms = () => {
           <Link href='/Login' className='route_button_style'>
             <span className='acc'>Akkountingiz bormi? </span> Kirish
           </Link>
-          <span />
+
+          <Link href={'/'}>➡️</Link>
         </div>
       </div>
     </div>

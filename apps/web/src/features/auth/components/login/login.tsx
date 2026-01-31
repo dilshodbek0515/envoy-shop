@@ -1,6 +1,6 @@
 'use client'
 import './login.css'
-import { useState } from 'react'
+import { useState, ChangeEvent, FC } from 'react'
 import Button from '../../../../shared/ui/button/button'
 import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
 import MainInput from '../../../../shared/ui/input/MainInput/input'
@@ -9,13 +9,15 @@ import { AxiosError } from 'axios'
 import { LoginFn } from '../../../../../../../packages/api/login/login'
 import { useRouter } from 'next/navigation'
 
-const Login = () => {
-  const [form, setForm] = useState({
-    phone: '',
-    password: ''
-  })
+interface LoginForm {
+  phone: string
+  password: string
+}
+
+const Login: FC = () => {
+  const [form, setForm] = useState<LoginForm>({ phone: '', password: '' })
   const router = useRouter()
-  const handleChange = e => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setForm(prev => ({
       ...prev,
@@ -27,7 +29,7 @@ const Login = () => {
   const isPasswordValid = form.password.length >= 8
   const isFormValid = isPhoneValid && isPasswordValid
 
-  const handleLogin = async () => {
+  const handleLogin = async (): Promise<void> => {
     if (!isFormValid) return
     const { phone, password } = form
     const formattedPhone = `+998${phone}`
@@ -38,7 +40,7 @@ const Login = () => {
       console.log('Ishladi', res)
     } catch (error) {
       if (error instanceof AxiosError) {
-        error.response.data || error.message
+        error.response?.data || error.message
         console.log('Ishlamadi')
       }
     }

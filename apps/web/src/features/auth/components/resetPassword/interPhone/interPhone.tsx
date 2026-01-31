@@ -1,21 +1,27 @@
 'use client'
 import './interPhone.css'
 import Link from 'next/link'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Button from '../../../../../shared/ui/button/button'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
 import { SmsFn } from '../../../../../../../../packages/api/resetPassword/reset-password'
 import { AxiosError } from 'axios'
-const InterPhone = () => {
+
+interface InterPhoneForm {
+  phone: string
+  smsPassword: string
+}
+
+const InterPhone: React.FC = () => {
   const router = useRouter()
-  const [interPhoneForm, setInterPhoneForm] = useState({
+  const [interPhoneForm, setInterPhoneForm] = useState<InterPhoneForm>({
     phone: '',
     smsPassword: ''
   })
 
-  const handleChange = e => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setInterPhoneForm(prev => ({
       ...prev,
@@ -38,8 +44,7 @@ const InterPhone = () => {
       console.log('Ishladi', res)
     } catch (error) {
       if (error instanceof AxiosError) {
-        error.response.data || error.message
-        console.log('Ishlamadi')
+        console.log('Ishlamadi', error.response?.data || error.message)
       }
     }
   }
