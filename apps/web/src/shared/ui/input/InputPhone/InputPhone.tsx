@@ -6,7 +6,7 @@ import CloseIcon from '../../../../features/auth/assets/icons/close'
 
 const MAX_LENGTH = 9
 
-const formatPhone = value => {
+const formatPhone = (value: string): string => {
   if (!value) return ''
 
   let v = value
@@ -16,17 +16,24 @@ const formatPhone = value => {
   return v
 }
 
-const InputPhone = ({
+interface InputPhoneProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string
+  name?: string
+  value: string
+  handleChange?: (e: { target: { name: string; value: string } }) => void
+}
+
+const InputPhone: React.FC<InputPhoneProps> = ({
   label,
   name = 'phone',
   value = '',
   handleChange,
   ...props
 }) => {
-  const [focused, setFocused] = useState(false)
+  const [focused, setFocused] = useState<boolean>(false)
   const isActive = focused || value.length > 0
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const onlyNumbers = e.target.value.replace(/\D/g, '').slice(0, MAX_LENGTH)
 
     handleChange?.({
@@ -72,7 +79,7 @@ const InputPhone = ({
             onMouseDown={e => e.preventDefault()}
             onClick={clear}
           >
-            <CloseIcon className='close' />
+            <CloseIcon />
           </button>
         )}
       </div>

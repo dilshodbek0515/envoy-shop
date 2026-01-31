@@ -3,15 +3,34 @@ import { useEffect, useRef, useState } from 'react'
 import { clsx } from 'clsx'
 import styles from './select.module.css'
 
-const CustomSelect = ({ value, onChange, options, label, error }) => {
+interface Option {
+  value: string
+  label: string
+}
+
+interface CustomSelectProps {
+  value: string
+  onChange: (value: string) => void
+  options: Option[]
+  label: string
+  error?: string
+}
+
+const CustomSelect: React.FC<CustomSelectProps> = ({
+  value,
+  onChange,
+  options,
+  label,
+  error
+}) => {
   const [open, setOpen] = useState(false)
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null)
 
   const selected = options.find(o => o.value === value)
 
   useEffect(() => {
-    const handler = e => {
-      if (ref.current && !ref.current.contains(e.target)) {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false)
       }
     }

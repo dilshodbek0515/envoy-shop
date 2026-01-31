@@ -1,11 +1,13 @@
 'use client'
 import './register.css'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import Link from 'next/link'
 import Buyer from './buyer/buyer'
 import Seller from './seller/seller'
-const Register = () => {
-  const [role, setRole] = useState('seller')
+type Role = 'seller' | 'buyer'
+
+const Register: FC = () => {
+  const [role, setRole] = useState<Role>('seller')
 
   return (
     <div className='container'>
@@ -14,13 +16,13 @@ const Register = () => {
 
         <div className='roleBox'>
           <div
-            className={`seller_style ${role === 'seller' && 'select_role'}`}
+            className={`seller_style ${role === 'seller' ? 'select_role' : ''}`}
             onClick={() => setRole('seller')}
           >
             Sotuvchi
           </div>
           <div
-            className={`buyer_style ${role === 'buyer' && 'select_role'}`}
+            className={`buyer_style ${role === 'buyer' ? 'select_role' : ''}`}
             onClick={() => setRole('buyer')}
           >
             Xaridor

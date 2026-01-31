@@ -1,6 +1,6 @@
-import React from 'react'
+import { FC } from 'react'
 
-const Buyer = () => {
+const Buyer: FC = () => {
   return <div>Xaridor malumotlari</div>
 }
 
