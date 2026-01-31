@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import Yuridik from "./Yuridik/Yuridik";
 import Jismoniy from "./Jismoniy/Jismoniy";
+import { Spacing } from "src/shared/token";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -70,10 +71,10 @@ export default Register;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    paddingHorizontal: 20,
+    width: "100%",
+    paddingHorizontal: Spacing.horizontal,
   },
+
   header: {
     width: "100%",
     height: 102,
@@ -93,21 +94,25 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
-    height: 56,
-    backgroundColor: "#2E3749",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
-    borderRadius: 18,
-    marginTop: 120,
-    paddingHorizontal: 10,
+    borderRadius: 20,
+    backgroundColor: "#2E3749",
+    paddingHorizontal: Spacing.horizontal,
+    marginTop: 118,
+    height: 56,
   },
+
   button: {
-    minWidth: 182,
-    maxWidth: (screenWidth - 60) / 2,
-    borderRadius: 14,
+    flex: 1,
+    height: "100%",
+    borderRadius: 20,
     alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#4A90E2",
   },
+
   buttonText: {
     fontSize: 16,
   },
@@ -120,7 +125,6 @@ const styles = StyleSheet.create({
     color: "#00beff",
   },
   buttonInActiveColor: {
-    // width: "100%",
     height: 48,
     justifyContent: "center",
     backgroundColor: "#2E3749",
