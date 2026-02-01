@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Platform } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AppInput from "src/components/AppInput/input";
+import CompanySelect from "src/components/CompaniySelect/CompanySelect";
 import PasswordInput from "src/components/PasswordInput/PasswordInput";
 import { Spacing } from "src/shared/token";
 
@@ -16,6 +17,7 @@ const Yuridik = () => {
     TelefonRaqam: "",
     Kompaniya: "",
   });
+  const [company, setCompany] = useState(null);
 
   return (
     <KeyboardAwareScrollView
@@ -31,11 +33,7 @@ const Yuridik = () => {
         paddingBottom: 120,
       }}
     >
-      <AppInput
-        label="Kompaniya"
-        value={form.Kompaniya}
-        onChangeText={(text: string) => setForm({ ...form, Kompaniya: text })}
-      />
+      <CompanySelect value={company} onSelect={setCompany} />
 
       <AppInput
         label="Korxona nomi"
