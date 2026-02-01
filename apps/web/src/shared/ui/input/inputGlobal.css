@@ -46,12 +46,8 @@
     pointer-events: auto;
 }
 
-.close {
-    color: #4fc3f7;
-}
-
 .prefix {
-    color: #4fc3f7;
+    color: black;
     font-size: 18px;
     opacity: 0;
     transform: translateX(-6px);

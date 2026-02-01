@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, forwardRef } from 'react'
 import './InputPhone.css'
 import '../inputGlobal.css'
 import CloseIcon from '../../../../features/auth/assets/icons/close'
@@ -16,75 +16,85 @@ const formatPhone = (value: string): string => {
   return v
 }
 
-interface InputPhoneProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type InputPhoneProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onBlur'> & {
   label: string
   name?: string
   value: string
-  handleChange?: (e: { target: { name: string; value: string } }) => void
+  onChange?: (value: string) => void
+  onBlur?: () => void
 }
 
-const InputPhone: React.FC<InputPhoneProps> = ({
-  label,
-  name = 'phone',
-  value = '',
-  handleChange,
-  ...props
-}) => {
-  const [focused, setFocused] = useState<boolean>(false)
-  const isActive = focused || value.length > 0
+const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
+  ({ label, name = 'phone', value = '', onChange, onBlur, ...props }, ref) => {
+    const [focused, setFocused] = useState<boolean>(false)
+    const hasValue = value.length > 0
+    const shouldShowLabel = focused || hasValue
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const onlyNumbers = e.target.value.replace(/\D/g, '').slice(0, MAX_LENGTH)
-
-    handleChange?.({
-      target: {
-        name,
-        value: onlyNumbers
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const onlyNumbers = e.target.value.replace(/\D/g, '').slice(0, MAX_LENGTH)
+      if (onChange) {
+        onChange(onlyNumbers)
       }
-    })
-  }
+    }
 
-  const clear = () => {
-    handleChange?.({
-      target: {
-        name,
-        value: ''
+    const handleClear = () => {
+      if (onChange) {
+        onChange('')
       }
-    })
-  }
+    }
 
-  return (
-    <div className={`wrapperIP ${isActive ? 'active' : ''}`}>
-      <label className={`label ${isActive ? 'active' : ''}`}>{label}</label>
+    const handleFocus = () => {
+      setFocused(true)
+    }
 
-      <div className='inputContainer'>
-        <span className={`prefix ${isActive ? 'show' : ''}`}>+998</span>
+    const handleBlur = () => {
+      setFocused(false)
+      if (onBlur) {
+        onBlur()
+      }
+    }
 
-        <input
-          {...props}
-          type='tel'
-          className={`inputt ${isActive ? 'active' : ''}`}
-          value={formatPhone(value)}
-          onChange={onChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          inputMode='numeric'
-          autoComplete='off'
-        />
+    return (
+      <div className={`wrapperIP ${focused ? 'active' : ''}`}>
+        <label className={`label ${shouldShowLabel ? 'active' : ''}`}>
+          {label}
+        </label>
 
-        {value && (
-          <button
-            type='button'
-            className='closeButton show'
-            onMouseDown={e => e.preventDefault()}
-            onClick={clear}
-          >
-            <CloseIcon />
-          </button>
-        )}
+        <div className='inputContainer'>
+          <span className={`prefix ${focused || hasValue ? 'show' : ''}`}>
+            +998
+          </span>
+
+          <input
+            {...props}
+            ref={ref}
+            type='tel'
+            className={`inputt ${focused ? 'active' : ''}`}
+            value={formatPhone(value)}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            inputMode='numeric'
+            autoComplete='off'
+            name={name}
+          />
+
+          {hasValue && (
+            <button
+              type='button'
+              className={`closeButton show ${focused ? 'active' : ''}`}
+              onMouseDown={e => e.preventDefault()}
+              onClick={handleClear}
+            >
+              <CloseIcon />
+            </button>
+          )}
+        </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
+)
+
+InputPhone.displayName = 'InputPhone'
 
 export default InputPhone

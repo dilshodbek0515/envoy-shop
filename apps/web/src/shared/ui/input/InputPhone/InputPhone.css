@@ -26,8 +26,36 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #38bdf8;
+  color: black;
   font-size: 18px;
   border-radius: 15px;
   padding-left: 8px;
+}
+
+.closeButton {
+  position: absolute;
+  right: 15px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.25s ease;
+}
+
+.closeButton.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.closeButton.active svg path {
+  fill: #38bdf8;
+}
+
+.closeButton:not(.active) svg path {
+  fill: #d1d1d1;
+}
+
+.closeButton:hover svg path {
+  opacity: 0.7;
 }

@@ -1,77 +1,119 @@
 'use client'
 import './login.css'
-import { useState, ChangeEvent, FC } from 'react'
+import { FC } from 'react'
 import Button from '../../../../shared/ui/button/button'
 import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
 import MainInput from '../../../../shared/ui/input/MainInput/input'
 import Link from 'next/link'
-import { AxiosError } from 'axios'
-import { LoginFn } from '../../../../../../../packages/api/login/login'
 import { useRouter } from 'next/navigation'
+import { useForm, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { useMutation } from '@tanstack/react-query'
+import { LoginFn } from '../../../../../../../packages/api/login/login'
 
-interface LoginForm {
-  phone: string
-  password: string
-}
+// Schema
+const loginSchema = z.object({
+  phone: z
+    .string()
+    .min(9, "Telefon raqam 9 ta raqamdan iborat bo'lishi kerak")
+    .max(9, "Telefon raqam 9 ta raqamdan iborat bo'lishi kerak")
+    .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
+  password: z
+    .string()
+    .min(8, "Parol kamida 8 ta belgidan iborat bo'lishi kerak")
+})
+
+type LoginFormData = z.infer<typeof loginSchema>
 
 const Login: FC = () => {
-  const [form, setForm] = useState<LoginForm>({ phone: '', password: '' })
   const router = useRouter()
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setForm(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
 
-  const isPhoneValid = form.phone.length === 9
-  const isPasswordValid = form.password.length >= 8
-  const isFormValid = isPhoneValid && isPasswordValid
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid },
+    watch
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onChange',
+    defaultValues: {
+      phone: '',
+      password: ''
+    }
+  })
 
-  const handleLogin = async (): Promise<void> => {
-    if (!isFormValid) return
-    const { phone, password } = form
-    const formattedPhone = `+998${phone}`
-
-    try {
-      const res = await LoginFn({ phone: formattedPhone, password })
+  const loginMutation = useMutation({
+    mutationFn: (data: { phone: string; password: string }) =>
+      LoginFn({ phone: `+998${data.phone}`, password: data.password }),
+    onSuccess: () => {
       router.push('/')
-      console.log('Ishladi', res)
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        error.response?.data || error.message
-        console.log('Ishlamadi')
-      }
+    },
+    onError: (error: any) => {
+      console.log('Ishlamadi', error)
+    }
+  })
+
+  const phoneValue = watch('phone') || ''
+  const passwordValue = watch('password') || ''
+
+  const onSubmit = (data: LoginFormData) => {
+    if (isValid && data.phone && data.password) {
+      loginMutation.mutate({ phone: data.phone, password: data.password })
     }
   }
+
+  const isFormValid = phoneValue.length === 9 && passwordValue.length >= 8
 
   return (
     <div className='container'>
       <div className='login_box'>
         <h2 className='login_title'>Kirish</h2>
 
-        <InputPhone
-          name='phone'
-          value={form.phone}
-          label={'Telefon raqam'}
-          handleChange={handleChange}
-        />
+        <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+          <div className='input_group'>
+            <Controller
+              name='phone'
+              control={control}
+              render={({ field }) => (
+                <InputPhone
+                  label='Telefon raqam'
+                  {...field}
+                  value={field.value || ''}
+                  onChange={value => field.onChange(value)}
+                />
+              )}
+            />
+            {errors.phone && phoneValue.length > 0 && (
+              <div className='error_text'>{errors.phone.message}</div>
+            )}
+          </div>
 
-        <MainInput
-          label={'Parol'}
-          name='password'
-          type={'password'}
-          value={form.password}
-          handleChange={handleChange}
-        />
+          <div className='input_group'>
+            <Controller
+              name='password'
+              control={control}
+              render={({ field }) => (
+                <MainInput
+                  label='Parol'
+                  type='password'
+                  {...field}
+                  value={field.value || ''}
+                  onChange={value => field.onChange(value)}
+                />
+              )}
+            />
+            {errors.password && passwordValue.length > 0 && (
+              <div className='error_text'>{errors.password.message}</div>
+            )}
+          </div>
 
-        <Button
-          label={'Kirish'}
-          type='submit'
-          handleSubmit={handleLogin}
-          disabled={!isFormValid}
-        />
+          <Button
+            label={loginMutation.isPending ? 'Kutilmoqda...' : 'Kirish'}
+            type='submit'
+            disabled={!isFormValid || loginMutation.isPending}
+          />
+        </form>
 
         <div className='route_bottom'>
           <Link href='/ResetPassword/InterPhone' className='route_button_style'>

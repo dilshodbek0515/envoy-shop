@@ -15,11 +15,15 @@
     padding: 5px 50px 5px 20px;
     font-size: 16px;
     outline: none;
-    color: #38bdf8;
+    color: black;
 }
 
 .wrapperI.active .main_input {
     border-color: #38bdf8;
+}
+
+.wrapperI .www {
+    background-color: black;
 }
 
 .clear_btn {
@@ -35,6 +39,7 @@
     transition:
         transform 0.25s ease,
         opacity 0.2s ease;
+
 }
 
 .clear_btn.show {
@@ -43,7 +48,15 @@
     pointer-events: auto;
 }
 
-.clear_btn:hover svg {
+.clear_btn.active svg path {
+    fill: #38bdf8;
+}
+
+.clear_btn:not(.active) svg path {
+    fill: #d1d1d1;
+}
+
+.clear_btn:hover svg path {
     opacity: 0.7;
 }
 

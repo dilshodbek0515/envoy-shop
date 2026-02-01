@@ -2,12 +2,12 @@ import axios, { AxiosResponse } from 'axios'
 
 const API = 'https://my.example.uz.webcoder.uz/user/sign-in/'
 
-interface PasswordArgs {
+export interface PasswordArgs {
   password: string
   confirmPassword: string
 }
 
-interface PasswordResponse {
+export interface PasswordResponse {
   success?: boolean
   message?: string
   [key: string]: any
