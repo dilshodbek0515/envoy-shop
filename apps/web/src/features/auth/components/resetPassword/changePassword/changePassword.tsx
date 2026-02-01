@@ -6,13 +6,21 @@ import Button from '../../../../../shared/ui/button/button'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import { PasswordFn } from '../../../../../../../../packages/api/resetPassword/change-password'
 import { AxiosError } from 'axios'
-const ChangePassword = () => {
+import { useRouter } from 'next/navigation'
+
+interface ChangePasswordForm {
+  firstPassword: string
+  secondPassword: string
+}
+
+const ChangePassword: React.FC = () => {
+  const router = useRouter()
   const [changePasswordForm, setChangePasswordForm] = useState({
     firstPassword: '',
     secondPassword: ''
   })
 
-  const handleChange = e => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setChangePasswordForm(prev => ({
       ...prev,
@@ -21,7 +29,8 @@ const ChangePassword = () => {
   }
 
   const isFirstPasswordValid = changePasswordForm.firstPassword.length >= 8
-  const isSecondPasswordValid = changePasswordForm.secondPassword.length >= 8
+  const isSecondPasswordValid =
+    changePasswordForm.secondPassword === changePasswordForm.firstPassword
   const isFormValid = isFirstPasswordValid && isSecondPasswordValid
 
   const handleChangePassword = async () => {
@@ -29,13 +38,15 @@ const ChangePassword = () => {
     const { firstPassword, secondPassword } = changePasswordForm
 
     try {
-      const res = await PasswordFn({ firstPassword, secondPassword })
+      const res = await PasswordFn({
+        password: firstPassword,
+        confirmPassword: secondPassword
+      })
       router.push('/Login')
       console.log('Ishladi', res)
     } catch (error) {
       if (error instanceof AxiosError) {
-        error.response.data || error.message
-        console.log('Ishlamadi')
+        console.log('Ishlamadi', error.response?.data || error.message)
       }
     }
   }
@@ -62,7 +73,6 @@ const ChangePassword = () => {
         <Button
           type='submit'
           label={'Parolni tasdiqlash'}
-          path='/Login'
           disabled={!isFormValid}
           handleSubmit={handleChangePassword}
         />

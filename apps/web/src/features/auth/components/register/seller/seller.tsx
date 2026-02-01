@@ -1,19 +1,46 @@
 'use client'
 import './seller.css'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
 import CustomSelect from '../../../../../shared/ui/select/select'
 import Button from '../../../../../shared/ui/button/button'
 import { RegisterFn } from '../../../../../../../../packages/api/register/register'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
-const Seller = ({ role }) => {
-  const [sellerRole, setSellerRole] = useState('legal')
+
+interface SellerProps {
+  role: 'seller' | 'buyer'
+}
+
+interface LegalForm {
+  firstName: string
+  lastName: string
+  stir: string
+  activityType: string
+  companyName: string
+  legalAddress: string
+  bankDetails: string
+  phoneNumber: string
+  password: string
+  confirmPassword: string
+}
+
+interface PhysicalForm {
+  firstNamePhysical: string
+  lastNamePhysical: string
+  phoneNumberPhysical: string
+  passwordPhysical: string
+  emailPhysical: string
+  confirmPasswordPhysical: string
+}
+
+const Seller: React.FC<SellerProps> = ({ role }) => {
+  const [sellerRole, setSellerRole] = useState<'legal' | 'physical'>('legal')
   const router = useRouter()
 
   //yuridik
-  const [sellerForm, setSellerForm] = useState({
+  const [sellerForm, setSellerForm] = useState<LegalForm>({
     firstName: '',
     lastName: '',
     stir: '',
@@ -27,7 +54,7 @@ const Seller = ({ role }) => {
   })
 
   //jismoniy
-  const [physicalForm, setPhysicalForm] = useState({
+  const [physicalForm, setPhysicalForm] = useState<PhysicalForm>({
     firstNamePhysical: '',
     lastNamePhysical: '',
     phoneNumberPhysical: '',
@@ -36,13 +63,26 @@ const Seller = ({ role }) => {
     confirmPasswordPhysical: ''
   })
 
-  const handleChange = e => {
+  //yuridik
+  const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target
     setSellerForm(prev => ({
       ...prev,
       [name]: value
     }))
   }
+
+  //jismoniy
+  const physicalhandleChange = (e: {
+    target: { name: string; value: string }
+  }) => {
+    const { name, value } = e.target
+    setPhysicalForm(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
   //yuridik
   const isRoleValid = role === 'seller' || role === 'buyer'
   const isFirstName = sellerForm.firstName.trim().length >= 2
@@ -91,7 +131,7 @@ const Seller = ({ role }) => {
       isPhysicalConfirmPassword
   }
 
-  const handleRegister = async e => {
+  const handleRegister = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
     if (!registerFormValid) {
@@ -123,8 +163,7 @@ const Seller = ({ role }) => {
       console.log(registrationData)
     } catch (error) {
       if (error instanceof AxiosError) {
-        error.response.data || error.messageregistrationData
-        console.log('Ishlamadi')
+        console.log('Ishlamadi', error.response?.data || error.message)
       }
     }
   }
@@ -142,14 +181,6 @@ const Seller = ({ role }) => {
     { value: 'boshqa', label: 'Boshqa' }
   ]
 
-  const physicalhandleChange = e => {
-    const { name, value } = e.target
-    setPhysicalForm(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
   return (
     <>
       <div className='roleBox'>
@@ -159,7 +190,9 @@ const Seller = ({ role }) => {
             name='sellerRole'
             value='legal'
             checked={sellerRole === 'legal'}
-            onChange={e => setSellerRole(e.target.value)}
+            onChange={e =>
+              setSellerRole(e.target.value as 'legal' | 'physical')
+            }
           />
           Yuridik
         </label>
@@ -170,7 +203,9 @@ const Seller = ({ role }) => {
             name='sellerRole'
             value='physical'
             checked={sellerRole === 'physical'}
-            onChange={e => setSellerRole(e.target.value)}
+            onChange={e =>
+              setSellerRole(e.target.value as 'legal' | 'physical')
+            }
           />
           Jismoniy
         </label>
