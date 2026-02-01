@@ -1,170 +1,159 @@
 'use client'
 import './seller.css'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
-import React, { useState } from 'react'
+import { FC } from 'react'
 import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
 import CustomSelect from '../../../../../shared/ui/select/select'
 import Button from '../../../../../shared/ui/button/button'
 import { RegisterFn } from '../../../../../../../../packages/api/register/register'
-import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
+import { useForm, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { useMutation } from '@tanstack/react-query'
+import { useState } from 'react'
 
 interface SellerProps {
   role: 'seller' | 'buyer'
 }
 
-interface LegalForm {
-  firstName: string
-  lastName: string
-  stir: string
-  activityType: string
-  companyName: string
-  legalAddress: string
-  bankDetails: string
-  phoneNumber: string
-  password: string
-  confirmPassword: string
-}
+// Yuridik schema
+const legalSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(2, "Ism kamida 2 ta belgidan iborat bo'lishi kerak"),
+    lastName: z
+      .string()
+      .min(2, "Familiya kamida 2 ta belgidan iborat bo'lishi kerak"),
+    stir: z
+      .string()
+      .length(9, "STIR 9 ta raqam bo'lishi kerak")
+      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
+    activityType: z.string().min(1, 'Faoliyat turini tanlang'),
+    companyName: z
+      .string()
+      .min(3, "Korxona nomi kamida 3 ta belgidan iborat bo'lishi kerak"),
+    legalAddress: z
+      .string()
+      .min(5, "Yuridik manzil kamida 5 ta belgidan iborat bo'lishi kerak"),
+    bankDetails: z
+      .string()
+      .min(20, "Bank rekvizitlari kamida 20 ta belgidan iborat bo'lishi kerak"),
+    phoneNumber: z
+      .string()
+      .length(9, "Telefon raqam 9 ta bo'lishi kerak")
+      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
+    password: z
+      .string()
+      .min(8, "Parol kamida 8 ta belgidan iborat bo'lishi kerak"),
+    confirmPassword: z.string()
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Parollar mos kelmayapti',
+    path: ['confirmPassword']
+  })
 
-interface PhysicalForm {
-  firstNamePhysical: string
-  lastNamePhysical: string
-  phoneNumberPhysical: string
-  passwordPhysical: string
-  emailPhysical: string
-  confirmPasswordPhysical: string
-}
+// Jismoniy schema
+const physicalSchema = z
+  .object({
+    firstNamePhysical: z
+      .string()
+      .min(2, "Ism kamida 2 ta belgidan iborat bo'lishi kerak"),
+    lastNamePhysical: z
+      .string()
+      .min(2, "Familiya kamida 2 ta belgidan iborat bo'lishi kerak"),
+    phoneNumberPhysical: z
+      .string()
+      .length(9, "Telefon raqam 9 ta bo'lishi kerak")
+      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
+    emailPhysical: z.string().email("Noto'g'ri email format"),
+    passwordPhysical: z
+      .string()
+      .min(8, "Parol kamida 8 ta belgidan iborat bo'lishi kerak"),
+    confirmPasswordPhysical: z.string()
+  })
+  .refine(data => data.passwordPhysical === data.confirmPasswordPhysical, {
+    message: 'Parollar mos kelmayapti',
+    path: ['confirmPasswordPhysical']
+  })
 
-const Seller: React.FC<SellerProps> = ({ role }) => {
+type LegalFormData = z.infer<typeof legalSchema>
+type PhysicalFormData = z.infer<typeof physicalSchema>
+
+const Seller: FC<SellerProps> = ({ role }) => {
   const [sellerRole, setSellerRole] = useState<'legal' | 'physical'>('legal')
   const router = useRouter()
 
-  //yuridik
-  const [sellerForm, setSellerForm] = useState<LegalForm>({
-    firstName: '',
-    lastName: '',
-    stir: '',
-    activityType: '',
-    companyName: '',
-    legalAddress: '',
-    bankDetails: '',
-    phoneNumber: '',
-    password: '',
-    confirmPassword: ''
-  })
-
-  //jismoniy
-  const [physicalForm, setPhysicalForm] = useState<PhysicalForm>({
-    firstNamePhysical: '',
-    lastNamePhysical: '',
-    phoneNumberPhysical: '',
-    passwordPhysical: '',
-    emailPhysical: '',
-    confirmPasswordPhysical: ''
-  })
-
-  //yuridik
-  const handleChange = (e: { target: { name: string; value: string } }) => {
-    const { name, value } = e.target
-    setSellerForm(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  //jismoniy
-  const physicalhandleChange = (e: {
-    target: { name: string; value: string }
-  }) => {
-    const { name, value } = e.target
-    setPhysicalForm(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  //yuridik
-  const isRoleValid = role === 'seller' || role === 'buyer'
-  const isFirstName = sellerForm.firstName.trim().length >= 2
-  const isLastName = sellerForm.lastName.trim().length >= 2
-  const isStir = sellerForm.stir.length === 9
-  const isActivityType = sellerForm.activityType.trim().length >= 2
-  const isCompanyName = sellerForm.companyName.trim().length >= 3
-  const isLegalAddress = sellerForm.legalAddress.trim().length >= 5
-  const isBankDetails = sellerForm.bankDetails.trim().length >= 20
-  const isPhoneNumber = sellerForm.phoneNumber.toString().length === 9
-  const isPassword = sellerForm.password.length >= 8
-  const isConfirmPassword = sellerForm.confirmPassword === sellerForm.password
-  let registerFormValid = false
-
-  //jismoniy
-  const isPhysicalFirstName = physicalForm.firstNamePhysical.trim().length >= 2
-  const isPhysicalLastName = physicalForm.lastNamePhysical.trim().length >= 2
-  const isPhysicalPhone =
-    physicalForm.phoneNumberPhysical.toString().length === 9
-  const isPhysicalEmail = physicalForm.emailPhysical.includes('@')
-  const isPhysicalPassword = physicalForm.passwordPhysical.length >= 8
-  const isPhysicalConfirmPassword =
-    physicalForm.passwordPhysical === physicalForm.confirmPasswordPhysical
-
-  if (sellerRole === 'legal') {
-    registerFormValid =
-      isFirstName &&
-      isLastName &&
-      isStir &&
-      isActivityType &&
-      isCompanyName &&
-      isLegalAddress &&
-      isBankDetails &&
-      isPhoneNumber &&
-      isPassword &&
-      isConfirmPassword
-  }
-
-  if (sellerRole === 'physical') {
-    registerFormValid =
-      isPhysicalFirstName &&
-      isPhysicalLastName &&
-      isPhysicalPhone &&
-      isPhysicalEmail &&
-      isPhysicalPassword &&
-      isPhysicalConfirmPassword
-  }
-
-  const handleRegister = async (e: React.FormEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
-    if (!registerFormValid) {
-      console.log('Form valid emas:', {
-        isRoleValid,
-        isFirstName,
-        isLastName,
-        isStir,
-        isActivityType,
-        isCompanyName,
-        isLegalAddress,
-        isBankDetails,
-        isPhoneNumber,
-        isPassword,
-        isConfirmPassword
-      })
-      return
+  // Yuridik form
+  const {
+    control: legalControl,
+    handleSubmit: handleLegalSubmit,
+    formState: { errors: legalErrors, isValid: legalIsValid },
+    watch: legalWatch
+  } = useForm<LegalFormData>({
+    resolver: zodResolver(legalSchema),
+    mode: 'onChange',
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      stir: '',
+      activityType: '',
+      companyName: '',
+      legalAddress: '',
+      bankDetails: '',
+      phoneNumber: '',
+      password: '',
+      confirmPassword: ''
     }
+  })
 
-    try {
-      const registrationData =
-        sellerRole === 'legal'
-          ? { role: sellerRole, userType: role, ...sellerForm }
-          : { role: sellerRole, userType: role, ...physicalForm }
+  // Jismoniy form
+  const {
+    control: physicalControl,
+    handleSubmit: handlePhysicalSubmit,
+    formState: { errors: physicalErrors, isValid: physicalIsValid },
+    watch: physicalWatch
+  } = useForm<PhysicalFormData>({
+    resolver: zodResolver(physicalSchema),
+    mode: 'onChange',
+    defaultValues: {
+      firstNamePhysical: '',
+      lastNamePhysical: '',
+      phoneNumberPhysical: '',
+      emailPhysical: '',
+      passwordPhysical: '',
+      confirmPasswordPhysical: ''
+    }
+  })
 
-      const res = await RegisterFn({ registrationData })
-      console.log('Ishladi', res)
+  const registerMutation = useMutation({
+    mutationFn: (data: any) => RegisterFn({ registrationData: data }),
+    onSuccess: () => {
       router.push('/Register/RegisterSms')
-      console.log(registrationData)
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log('Ishlamadi', error.response?.data || error.message)
-      }
+    },
+    onError: (error: any) => {
+      console.log('Ishlamadi', error)
+    }
+  })
+
+  // Watch values
+  const legalFirstName = legalWatch('firstName') || ''
+  const legalPassword = legalWatch('password') || ''
+  const legalConfirmPassword = legalWatch('confirmPassword') || ''
+  const physicalFirstName = physicalWatch('firstNamePhysical') || ''
+  const physicalPassword = physicalWatch('passwordPhysical') || ''
+  const physicalConfirmPassword = physicalWatch('confirmPasswordPhysical') || ''
+
+  const onLegalSubmit = (data: LegalFormData) => {
+    if (legalIsValid) {
+      registerMutation.mutate({ role: 'legal', userType: role, ...data })
+    }
+  }
+
+  const onPhysicalSubmit = (data: PhysicalFormData) => {
+    if (physicalIsValid) {
+      registerMutation.mutate({ role: 'physical', userType: role, ...data })
     }
   }
 
@@ -182,7 +171,7 @@ const Seller: React.FC<SellerProps> = ({ role }) => {
   ]
 
   return (
-    <>
+    <div className='seller_container'>
       <div className='roleBox'>
         <label className='roleItem'>
           <input
@@ -212,138 +201,386 @@ const Seller: React.FC<SellerProps> = ({ role }) => {
       </div>
 
       {sellerRole === 'legal' && (
-        <div className='seller_wrapper'>
-          <MainInput
-            name='firstName'
-            value={sellerForm.firstName}
-            label={'Ism'}
-            handleChange={handleChange}
-            type='text'
-          />
-          <MainInput
-            name='lastName'
-            value={sellerForm.lastName}
-            label={'Familiya'}
-            handleChange={handleChange}
-            type='text'
-          />
-          <CustomSelect
-            label={'Faoliyat turi'}
-            value={sellerForm.activityType}
-            options={option}
-            onChange={value =>
-              setSellerForm(prev => ({
-                ...prev,
-                activityType: value
-              }))
-            }
-          />
-          <MainInput
-            name='companyName'
-            value={sellerForm.companyName}
-            label={'Korxona nomi'}
-            handleChange={handleChange}
-            type='text'
-          />
-          <MainInput
-            name='stir'
-            value={sellerForm.stir}
-            label={'Stir (INN)'}
-            handleChange={handleChange}
-            type='number'
-          />
-          <MainInput
-            name='bankDetails'
-            value={sellerForm.bankDetails}
-            label={'Bank rekvizitlari'}
-            handleChange={handleChange}
-            type='number'
-          />
-          <MainInput
-            name='legalAddress'
-            value={sellerForm.legalAddress}
-            label={'Yuridik manzil'}
-            handleChange={handleChange}
-            type='text'
-          />
-          <InputPhone
-            name='phoneNumber'
-            value={sellerForm.phoneNumber}
-            label={'Telefon raqam'}
-            handleChange={handleChange}
-            type='number'
-          />
-          <MainInput
-            name='password'
-            value={sellerForm.password}
-            label={'Parol'}
-            handleChange={handleChange}
-            type='text'
-          />
-          <MainInput
-            name='confirmPassword'
-            value={sellerForm.confirmPassword}
-            label={'Qayta parol'}
-            handleChange={handleChange}
-            type='text'
-          />
+        <div className='seller_form_container'>
+          <form
+            onSubmit={handleLegalSubmit(onLegalSubmit)}
+            className='seller_form'
+          >
+            <div className='seller_wrapper'>
+              <div className='input_group'>
+                <Controller
+                  name='firstName'
+                  control={legalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Ism'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {legalErrors.firstName && legalFirstName.length > 0 && (
+                  <div className='error_text'>
+                    {legalErrors.firstName.message}
+                  </div>
+                )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='lastName'
+                  control={legalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Familiya'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {legalErrors.lastName && legalWatch('lastName')?.length > 0 && (
+                  <div className='error_text'>
+                    {legalErrors.lastName.message}
+                  </div>
+                )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='activityType'
+                  control={legalControl}
+                  render={({ field }) => (
+                    <CustomSelect
+                      label='Faoliyat turi'
+                      value={field.value || ''}
+                      options={option}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {legalErrors.activityType &&
+                  legalWatch('activityType')?.length > 0 && (
+                    <div className='error_text'>
+                      {legalErrors.activityType.message}
+                    </div>
+                  )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='companyName'
+                  control={legalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Korxona nomi'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {legalErrors.companyName &&
+                  legalWatch('companyName')?.length > 0 && (
+                    <div className='error_text'>
+                      {legalErrors.companyName.message}
+                    </div>
+                  )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='stir'
+                  control={legalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Stir (INN)'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {legalErrors.stir && legalWatch('stir')?.length > 0 && (
+                  <div className='error_text'>{legalErrors.stir.message}</div>
+                )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='bankDetails'
+                  control={legalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Bank rekvizitlari'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {legalErrors.bankDetails &&
+                  legalWatch('bankDetails')?.length > 0 && (
+                    <div className='error_text'>
+                      {legalErrors.bankDetails.message}
+                    </div>
+                  )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='legalAddress'
+                  control={legalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Yuridik manzil'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {legalErrors.legalAddress &&
+                  legalWatch('legalAddress')?.length > 0 && (
+                    <div className='error_text'>
+                      {legalErrors.legalAddress.message}
+                    </div>
+                  )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='phoneNumber'
+                  control={legalControl}
+                  render={({ field }) => (
+                    <InputPhone
+                      label='Telefon raqam'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {legalErrors.phoneNumber &&
+                  legalWatch('phoneNumber')?.length > 0 && (
+                    <div className='error_text'>
+                      {legalErrors.phoneNumber.message}
+                    </div>
+                  )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='password'
+                  control={legalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Parol'
+                      type='password'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {legalErrors.password && legalPassword.length > 0 && (
+                  <div className='error_text'>
+                    {legalErrors.password.message}
+                  </div>
+                )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='confirmPassword'
+                  control={legalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Qayta parol'
+                      type='password'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {legalErrors.confirmPassword &&
+                  legalConfirmPassword.length > 0 && (
+                    <div className='error_text'>
+                      {legalErrors.confirmPassword.message}
+                    </div>
+                  )}
+              </div>
+            </div>
+
+            <div className='form_button_container'>
+              <Button
+                type='submit'
+                label={
+                  registerMutation.isPending
+                    ? 'Kutilmoqda...'
+                    : 'SMS kod yuborish'
+                }
+                disabled={!legalIsValid || registerMutation.isPending}
+              />
+            </div>
+          </form>
         </div>
       )}
 
       {sellerRole === 'physical' && (
-        <div className='seller_wrapper'>
-          <MainInput
-            type='text'
-            label={'Ism'}
-            name='firstNamePhysical'
-            value={physicalForm.firstNamePhysical}
-            handleChange={physicalhandleChange}
-          />
-          <MainInput
-            type='text'
-            label={'Familiya'}
-            name='lastNamePhysical'
-            value={physicalForm.lastNamePhysical}
-            handleChange={physicalhandleChange}
-          />
-          <InputPhone
-            type='number'
-            label={'Telefon raqam'}
-            name='phoneNumberPhysical'
-            value={physicalForm.phoneNumberPhysical}
-            handleChange={physicalhandleChange}
-          />
-          <MainInput
-            type='email'
-            label={'Email'}
-            name='emailPhysical'
-            value={physicalForm.emailPhysical}
-            handleChange={physicalhandleChange}
-          />
-          <MainInput
-            type='text'
-            label={'Parol'}
-            name='passwordPhysical'
-            value={physicalForm.passwordPhysical}
-            handleChange={physicalhandleChange}
-          />
-          <MainInput
-            type='text'
-            label={'Parolni takrorlash'}
-            name='confirmPasswordPhysical'
-            value={physicalForm.confirmPasswordPhysical}
-            handleChange={physicalhandleChange}
-          />
+        <div className='seller_form_container'>
+          <form
+            onSubmit={handlePhysicalSubmit(onPhysicalSubmit)}
+            className='seller_form'
+          >
+            <div className='seller_wrapper'>
+              <div className='input_group'>
+                <Controller
+                  name='firstNamePhysical'
+                  control={physicalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Ism'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {physicalErrors.firstNamePhysical &&
+                  physicalFirstName.length > 0 && (
+                    <div className='error_text'>
+                      {physicalErrors.firstNamePhysical.message}
+                    </div>
+                  )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='lastNamePhysical'
+                  control={physicalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Familiya'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {physicalErrors.lastNamePhysical &&
+                  physicalWatch('lastNamePhysical')?.length > 0 && (
+                    <div className='error_text'>
+                      {physicalErrors.lastNamePhysical.message}
+                    </div>
+                  )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='phoneNumberPhysical'
+                  control={physicalControl}
+                  render={({ field }) => (
+                    <InputPhone
+                      label='Telefon raqam'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {physicalErrors.phoneNumberPhysical &&
+                  physicalWatch('phoneNumberPhysical')?.length > 0 && (
+                    <div className='error_text'>
+                      {physicalErrors.phoneNumberPhysical.message}
+                    </div>
+                  )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='emailPhysical'
+                  control={physicalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Email'
+                      type='email'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {physicalErrors.emailPhysical &&
+                  physicalWatch('emailPhysical')?.length > 0 && (
+                    <div className='error_text'>
+                      {physicalErrors.emailPhysical.message}
+                    </div>
+                  )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='passwordPhysical'
+                  control={physicalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Parol'
+                      type='password'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {physicalErrors.passwordPhysical &&
+                  physicalPassword.length > 0 && (
+                    <div className='error_text'>
+                      {physicalErrors.passwordPhysical.message}
+                    </div>
+                  )}
+              </div>
+
+              <div className='input_group'>
+                <Controller
+                  name='confirmPasswordPhysical'
+                  control={physicalControl}
+                  render={({ field }) => (
+                    <MainInput
+                      label='Parolni takrorlash'
+                      type='password'
+                      {...field}
+                      value={field.value || ''}
+                      onChange={value => field.onChange(value)}
+                    />
+                  )}
+                />
+                {physicalErrors.confirmPasswordPhysical &&
+                  physicalConfirmPassword.length > 0 && (
+                    <div className='error_text'>
+                      {physicalErrors.confirmPasswordPhysical.message}
+                    </div>
+                  )}
+              </div>
+            </div>
+
+            <div className='form_button_container'>
+              <Button
+                type='submit'
+                label={
+                  registerMutation.isPending
+                    ? 'Kutilmoqda...'
+                    : 'SMS kod yuborish'
+                }
+                disabled={!physicalIsValid || registerMutation.isPending}
+              />
+            </div>
+          </form>
         </div>
       )}
-
-      <Button
-        type='submit'
-        label={'SMS kod yuborish'}
-        handleSubmit={handleRegister}
-        disabled={!registerFormValid}
-      />
-    </>
+    </div>
   )
 }
 
