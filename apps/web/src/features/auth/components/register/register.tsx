@@ -12,7 +12,9 @@ const Register: FC = () => {
   return (
     <div className='container'>
       <div className='register_box'>
-        <h2 className='login_title'>Ro'yxatdan o'tish</h2>
+        <h2 style={{ padding: 10 }} className='login_title'>
+          Ro'yxatdan o'tish
+        </h2>
 
         <div className='roleBox'>
           <div
