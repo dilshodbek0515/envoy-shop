@@ -1,7 +1,7 @@
 'use client'
 import './interPhone.css'
 import Link from 'next/link'
-import React, { FC } from 'react'
+import { FC, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Button from '../../../../../shared/ui/button/button'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
@@ -12,31 +12,40 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 
-// Schema
-const interPhoneSchema = z.object({
-  phone: z
-    .string()
-    .min(9, "Telefon raqam 9 ta bo'lishi kerak")
-    .max(9, "Telefon raqam 9 ta bo'lishi kerak")
-    .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-  smsPassword: z
-    .string()
-    .length(4, "SMS kod 4 ta bo'lishi kerak")
-    .regex(/^\d+$/, 'Faqat raqamlar kiriting')
-})
+/* ✅ Step based schema */
+const getSchema = (step: number) =>
+  z.object({
+    phone: z
+      .string()
+      .min(9, "Telefon raqam 9 ta bo'lishi kerak")
+      .max(9, "Telefon raqam 9 ta bo'lishi kerak")
+      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
 
-type InterPhoneFormData = z.infer<typeof interPhoneSchema>
+    smsPassword:
+      step === 2
+        ? z
+            .string()
+            .length(4, "SMS kod 4 ta bo'lishi kerak")
+            .regex(/^\d+$/, 'Faqat raqamlar kiriting')
+        : z.string().optional()
+  })
+
+type InterPhoneFormData = {
+  phone: string
+  smsPassword: string | undefined
+}
 
 const InterPhone: FC = () => {
   const router = useRouter()
+  const [step, setStep] = useState<1 | 2>(1)
 
   const {
     handleSubmit,
     control,
-    formState: { errors, isValid },
+    formState: { errors },
     watch
   } = useForm<InterPhoneFormData>({
-    resolver: zodResolver(interPhoneSchema),
+    resolver: zodResolver(getSchema(step)),
     mode: 'onChange',
     defaultValues: {
       phone: '',
@@ -44,27 +53,45 @@ const InterPhone: FC = () => {
     }
   })
 
+  /* ✅ mutation */
   const smsMutation = useMutation({
     mutationFn: (data: { phone: string; smsPassword: string }) =>
       SmsFn({ phone: `+998${data.phone}`, smsPassword: data.smsPassword }),
+
     onSuccess: () => {
       router.push('/ResetPassword/ChangePassword')
     },
-    onError: (error: any) => {
-      console.log('Ishlamadi', error)
+
+    onError: err => {
+      console.log('Xato:', err)
     }
   })
 
   const phoneValue = watch('phone') || ''
-  const smsPasswordValue = watch('smsPassword') || ''
+  const smsValue = watch('smsPassword') || ''
 
+  /* ✅ submit logic */
   const onSubmit = (data: InterPhoneFormData) => {
-    if (isValid && data.phone && data.smsPassword) {
-      smsMutation.mutate({ phone: data.phone, smsPassword: data.smsPassword })
+    if (step === 1) {
+      setStep(2)
+      return
     }
+
+    if (!data.smsPassword) return
+
+    smsMutation.mutate({
+      phone: data.phone,
+      smsPassword: data.smsPassword
+    })
   }
 
-  const isFormValid = phoneValue.length === 9 && smsPasswordValue.length === 4
+  const isPhoneValid = phoneValue.length === 9
+  const isSmsValid = smsValue.length === 4
+
+  const disabled =
+    step === 1
+      ? !isPhoneValid
+      : !isPhoneValid || !isSmsValid || smsMutation.isPending
 
   return (
     <div className='container'>
@@ -72,6 +99,7 @@ const InterPhone: FC = () => {
         <h2 className='login_title'>Parolni tiklash</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+          {/* PHONE */}
           <div className='input_group'>
             <Controller
               name='phone'
@@ -79,42 +107,47 @@ const InterPhone: FC = () => {
               render={({ field }) => (
                 <InputPhone
                   label='Telefon raqam'
-                  {...field}
                   value={field.value || ''}
-                  onChange={value => field.onChange(value)}
+                  onChange={field.onChange}
                 />
               )}
             />
-            {errors.phone && phoneValue.length > 0 && (
+            {errors.phone && (
               <div className='error_text'>{errors.phone.message}</div>
             )}
           </div>
 
-          <div className='input_group'>
-            <Controller
-              name='smsPassword'
-              control={control}
-              render={({ field }) => (
-                <MainInput
-                  label='SMS kod'
-                  {...field}
-                  value={field.value || ''}
-                  onChange={value => field.onChange(value)}
-                  maxLength={4}
-                />
+          {/* SMS STEP */}
+          {step === 2 && (
+            <div className='input_group'>
+              <Controller
+                name='smsPassword'
+                control={control}
+                render={({ field }) => (
+                  <MainInput
+                    label='SMS kod'
+                    value={field.value || ''}
+                    onChange={field.onChange}
+                    maxLength={4}
+                  />
+                )}
+              />
+              {errors.smsPassword && (
+                <div className='error_text'>{errors.smsPassword.message}</div>
               )}
-            />
-            {errors.smsPassword && smsPasswordValue.length > 0 && (
-              <div className='error_text'>{errors.smsPassword.message}</div>
-            )}
-          </div>
+            </div>
+          )}
 
           <Button
             type='submit'
             label={
-              smsMutation.isPending ? 'Kutilmoqda...' : 'SMS ni tasdiqlash'
+              step === 1
+                ? 'SMS yuborish'
+                : smsMutation.isPending
+                ? 'Kutilmoqda...'
+                : 'SMS ni tasdiqlash'
             }
-            disabled={!isFormValid || smsMutation.isPending}
+            disabled={disabled}
           />
         </form>
 
@@ -122,7 +155,7 @@ const InterPhone: FC = () => {
           <Link href='/Login' className='route_button_style'>
             Kirish
           </Link>
-          <Link href={'/ResetPassword/ChangePassword'}>➡️</Link>
+
           <Link href='/Register' className='route_button_style'>
             Ro'yxatdan o'tish
           </Link>
