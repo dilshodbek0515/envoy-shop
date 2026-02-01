@@ -19,8 +19,9 @@ const MainInput: React.FC<MainInputProps> = ({
   ...props
 }) => {
   const [focused, setFocused] = useState(false)
-  const isActive = focused || value.length > 0
-  const clear = value.length > 0
+  const hasValue = value.length > 0
+  const shouldShowLabel = focused || hasValue
+  const clear = hasValue
 
   const handleClear = () => {
     const fakeEvent = {
@@ -32,9 +33,15 @@ const MainInput: React.FC<MainInputProps> = ({
     handleChange(fakeEvent)
   }
 
+  const handleBlur = () => {
+    setFocused(false)
+  }
+
   return (
-    <div className={`wrapperI ${isActive ? 'active' : ''}`}>
-      <label className={`label ${isActive ? 'active' : ''}`}>{label}</label>
+    <div className={`wrapperI ${focused ? 'active' : ''}`}>
+      <label className={`label ${shouldShowLabel ? 'active' : ''}`}>
+        {label}
+      </label>
       <input
         type={type}
         {...props}
@@ -42,11 +49,13 @@ const MainInput: React.FC<MainInputProps> = ({
         onChange={handleChange}
         className='main_input'
         onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onBlur={handleBlur}
       />
       <button
         type='button'
-        className={`clear_btn ${clear ? 'show' : ''}`}
+        className={`clear_btn ${clear ? 'show' : ''} ${
+          focused ? 'active' : ''
+        }`}
         onClick={handleClear}
         onMouseDown={e => e.preventDefault()}
       >

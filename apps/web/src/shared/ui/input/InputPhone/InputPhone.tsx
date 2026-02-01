@@ -20,7 +20,7 @@ interface InputPhoneProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
   name?: string
   value: string
-  handleChange?: (e: { target: { name: string; value: string } }) => void
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const InputPhone: React.FC<InputPhoneProps> = ({
@@ -31,51 +31,64 @@ const InputPhone: React.FC<InputPhoneProps> = ({
   ...props
 }) => {
   const [focused, setFocused] = useState<boolean>(false)
-  const isActive = focused || value.length > 0
+  const hasValue = value.length > 0
+  const shouldShowLabel = focused || hasValue
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const onlyNumbers = e.target.value.replace(/\D/g, '').slice(0, MAX_LENGTH)
 
-    handleChange?.({
-      target: {
-        name,
-        value: onlyNumbers
-      }
-    })
+    if (handleChange) {
+      handleChange({
+        target: {
+          name,
+          value: onlyNumbers
+        }
+      } as React.ChangeEvent<HTMLInputElement>)
+    }
   }
 
   const clear = () => {
-    handleChange?.({
-      target: {
-        name,
-        value: ''
-      }
-    })
+    if (handleChange) {
+      handleChange({
+        target: {
+          name,
+          value: ''
+        }
+      } as React.ChangeEvent<HTMLInputElement>)
+    }
+  }
+
+  const handleBlur = () => {
+    setFocused(false)
   }
 
   return (
-    <div className={`wrapperIP ${isActive ? 'active' : ''}`}>
-      <label className={`label ${isActive ? 'active' : ''}`}>{label}</label>
+    <div className={`wrapperIP ${focused ? 'active' : ''}`}>
+      <label className={`label ${shouldShowLabel ? 'active' : ''}`}>
+        {label}
+      </label>
 
       <div className='inputContainer'>
-        <span className={`prefix ${isActive ? 'show' : ''}`}>+998</span>
+        <span className={`prefix ${focused || hasValue ? 'show' : ''}`}>
+          +998
+        </span>
 
         <input
           {...props}
           type='tel'
-          className={`inputt ${isActive ? 'active' : ''}`}
+          className={`inputt ${focused ? 'active' : ''}`}
           value={formatPhone(value)}
           onChange={onChange}
           onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onBlur={handleBlur}
           inputMode='numeric'
           autoComplete='off'
         />
 
-        {value && (
+        {hasValue && (
           <button
             type='button'
-            className='closeButton show'
+            className={`closeButton show ${focused ? 'active' : ''}`}
             onMouseDown={e => e.preventDefault()}
             onClick={clear}
           >
