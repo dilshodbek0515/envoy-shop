@@ -1,30 +1,19 @@
 'use client'
 import './login.css'
 import { FC } from 'react'
-import Button from '../../../../shared/ui/button/button'
-import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
-import MainInput from '../../../../shared/ui/input/MainInput/input'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
+import Button from '../../../../shared/ui/button/button'
 import { LoginFn } from '../../../../../../../packages/api/login/login'
-
-// Schema
-const loginSchema = z.object({
-  phone: z
-    .string()
-    .min(9, "Telefon raqam 9 ta raqamdan iborat bo'lishi kerak")
-    .max(9, "Telefon raqam 9 ta raqamdan iborat bo'lishi kerak")
-    .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-  password: z
-    .string()
-    .min(8, "Parol kamida 8 ta belgidan iborat bo'lishi kerak")
-})
-
-type LoginFormData = z.infer<typeof loginSchema>
+import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
+import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
+import {
+  loginSchema,
+  LoginFormData
+} from '../../../../../../../packages/schema/schema'
 
 const Login: FC = () => {
   const router = useRouter()
@@ -94,9 +83,8 @@ const Login: FC = () => {
               name='password'
               control={control}
               render={({ field }) => (
-                <MainInput
+                <PasswordInput
                   label='Parol'
-                  type='password'
                   {...field}
                   value={field.value || ''}
                   onChange={value => field.onChange(value)}

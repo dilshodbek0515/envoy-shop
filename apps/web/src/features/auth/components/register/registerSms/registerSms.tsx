@@ -9,17 +9,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-
-// SMS schema
-const smsSchema = z.object({
-  smsCode: z
-    .string()
-    .length(4, "SMS kod 4 ta bo'lishi kerak")
-    .regex(/^\d+$/, 'Faqat raqamlar kiriting')
-})
-
-type SmsFormData = z.infer<typeof smsSchema>
-
+import {
+  registerSmsSchema,
+  RegisterSmsFormData
+} from '../../../../../../../../packages/schema/schema'
 const RegisterSms: FC = () => {
   const router = useRouter()
 
@@ -28,8 +21,8 @@ const RegisterSms: FC = () => {
     control,
     formState: { errors, isValid },
     watch
-  } = useForm<SmsFormData>({
-    resolver: zodResolver(smsSchema),
+  } = useForm<RegisterSmsFormData>({
+    resolver: zodResolver(registerSmsSchema),
     mode: 'onChange',
     defaultValues: {
       smsCode: ''
@@ -39,7 +32,6 @@ const RegisterSms: FC = () => {
 
   const smsMutation = useMutation({
     mutationFn: (data: { smsCode: string }) => {
-      // Bu yerda SMS tasdiqlash API'si chaqiriladi
       console.log('SMS tasdiqlandi:', data.smsCode)
       return Promise.resolve({ success: true })
     },
@@ -53,7 +45,7 @@ const RegisterSms: FC = () => {
 
   const smsCodeValue = watch('smsCode') || ''
 
-  const onSubmit = (data: SmsFormData) => {
+  const onSubmit = (data: RegisterSmsFormData) => {
     if (isValid && data.smsCode) {
       smsMutation.mutate({ smsCode: data.smsCode })
     }

@@ -17,7 +17,7 @@
 }
 
 .inputBox:focus-within {
-    border-color: #2563eb;
+    border-color: #38bdf8;
 }
 
 .inputBoxError {
@@ -55,7 +55,7 @@
 .input:not(:placeholder-shown)+.label {
     top: 0;
     font-size: 13px;
-    color: #2563eb;
+    color: #38bdf8;
 }
 
 .arrow {
