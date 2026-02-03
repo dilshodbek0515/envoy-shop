@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import AppInput from "src/components/AppInput/input";
 import CompanySelect from "src/components/CompaniySelect/CompanySelect";
 import PasswordInput from "src/components/PasswordInput/PasswordInput";
+import PhoneInput from "src/components/PhoneInput/PhoneInput";
 import { Spacing } from "src/shared/token";
 
 const Yuridik = () => {
@@ -59,7 +60,7 @@ const Yuridik = () => {
         onChangeText={(text: string) => setForm({ ...form, bank: text })}
       />
 
-      <AppInput
+      <PhoneInput
         label="Telefon raqam"
         value={form.TelefonRaqam}
         onChangeText={(text: string) =>
