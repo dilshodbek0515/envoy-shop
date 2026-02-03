@@ -45,26 +45,3 @@
     transform: translateX(0);
     pointer-events: auto;
 }
-
-.close {
-    color: #4fc3f7;
-}
-
-.prefix {
-    color: #4fc3f7;
-    font-size: 18px;
-    opacity: 0;
-    transform: translateX(-6px);
-    transition: all 0.25s ease;
-    margin-left: 15px;
-}
-
-.prefix.show {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.login_title {
-    font-size: 32px;
-    color: #000000;
-}

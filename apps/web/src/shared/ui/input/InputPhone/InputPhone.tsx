@@ -1,90 +1,82 @@
 'use client'
-import { useState } from 'react'
+import { useState, forwardRef } from 'react'
 import './InputPhone.css'
 import '../inputGlobal.css'
-import CloseIcon from '../../../../features/auth/assets/icons/close'
+import CloseIcon from 'apps/web/src/features/auth/assets/icons/close'
 
-const MAX_LENGTH = 9
+const MAX_LEN = 9
 
-const formatPhone = (value: string): string => {
-  if (!value) return ''
+const digits = (v: string) => v.replace(/\D/g, '').slice(0, MAX_LEN)
 
-  let v = value
-  if (v.length > 2) v = v.slice(0, 2) + ' ' + v.slice(2)
-  if (v.length > 6) v = v.slice(0, 6) + ' ' + v.slice(6)
-  if (v.length > 9) v = v.slice(0, 9) + ' ' + v.slice(9)
-  return v
-}
+const formatPhone = (v: string) =>
+  digits(v).replace(/(\d{2})(\d{3})(\d{2})(\d{0,2})/, (_, a, b, c, d) =>
+    [a, b, c, d].filter(Boolean).join(' ')
+  )
 
-interface InputPhoneProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputPhoneProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    'onChange' | 'onBlur'
+  > {
   label: string
-  name?: string
   value: string
-  handleChange?: (e: { target: { name: string; value: string } }) => void
+  onChange?: (value: string) => void
+  onBlur?: () => void
 }
 
-const InputPhone: React.FC<InputPhoneProps> = ({
-  label,
-  name = 'phone',
-  value = '',
-  handleChange,
-  ...props
-}) => {
-  const [focused, setFocused] = useState<boolean>(false)
-  const isActive = focused || value.length > 0
+const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
+  ({ label, value, onChange, onBlur, ...props }, ref) => {
+    const [focused, setFocused] = useState(false)
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const onlyNumbers = e.target.value.replace(/\D/g, '').slice(0, MAX_LENGTH)
+    const raw = digits(value)
+    const formatted = formatPhone(raw)
 
-    handleChange?.({
-      target: {
-        name,
-        value: onlyNumbers
-      }
-    })
-  }
+    const hasValue = raw.length > 0
+    const showLabel = focused || hasValue
+    const showPrefix = focused || hasValue
 
-  const clear = () => {
-    handleChange?.({
-      target: {
-        name,
-        value: ''
-      }
-    })
-  }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.(digits(e.target.value))
+    }
 
-  return (
-    <div className={`wrapperIP ${isActive ? 'active' : ''}`}>
-      <label className={`label ${isActive ? 'active' : ''}`}>{label}</label>
+    const handleClear = () => onChange?.('')
 
-      <div className='inputContainer'>
-        <span className={`prefix ${isActive ? 'show' : ''}`}>+998</span>
+    return (
+      <div className={`wrapperI ${focused ? 'active' : ''}`}>
+        <label className={`label ${showLabel ? 'active' : ''}`}>{label}</label>
+
+        <span className={`prefix ${showPrefix ? 'show' : ''}`}>+998</span>
 
         <input
           {...props}
+          ref={ref}
           type='tel'
-          className={`inputt ${isActive ? 'active' : ''}`}
-          value={formatPhone(value)}
-          onChange={onChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
           inputMode='numeric'
           autoComplete='off'
+          value={formatted}
+          onChange={handleChange}
+          className={`main_input ${showPrefix ? 'with_prefix' : ''}`}
+          onFocus={() => setFocused(true)}
+          onBlur={() => {
+            setFocused(false)
+            onBlur?.()
+          }}
         />
 
-        {value && (
+        {hasValue && (
           <button
             type='button'
-            className='closeButton show'
+            className={`clear_btn show ${focused ? 'active' : ''}`}
+            onClick={handleClear}
             onMouseDown={e => e.preventDefault()}
-            onClick={clear}
           >
             <CloseIcon />
           </button>
         )}
       </div>
-    </div>
-  )
-}
+    )
+  }
+)
 
+InputPhone.displayName = 'InputPhone'
 export default InputPhone
