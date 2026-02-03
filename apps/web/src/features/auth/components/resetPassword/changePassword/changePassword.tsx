@@ -3,13 +3,13 @@ import Link from 'next/link'
 import './changePassword.css'
 import { FC } from 'react'
 import Button from '../../../../../shared/ui/button/button'
-import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import { PasswordFn } from '../../../../../../../../packages/api/resetPassword/change-password'
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
+import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 
 // Schema
 const changePasswordSchema = z
@@ -83,12 +83,10 @@ const ChangePassword: FC = () => {
               name='firstPassword'
               control={control}
               render={({ field }) => (
-                <MainInput
+                <PasswordInput
                   label='Parol'
-                  type='password'
-                  {...field}
-                  value={field.value || ''}
-                  onChange={value => field.onChange(value)}
+                  value={field.value}
+                  onChange={field.onChange}
                 />
               )}
             />
@@ -102,12 +100,10 @@ const ChangePassword: FC = () => {
               name='secondPassword'
               control={control}
               render={({ field }) => (
-                <MainInput
+                <PasswordInput
                   label='Qayta parol'
-                  type='password'
-                  {...field}
-                  value={field.value || ''}
-                  onChange={value => field.onChange(value)}
+                  value={field.value}
+                  onChange={field.onChange}
                 />
               )}
             />

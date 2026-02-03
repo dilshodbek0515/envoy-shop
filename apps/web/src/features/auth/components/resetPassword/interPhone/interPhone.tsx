@@ -155,7 +155,7 @@ const InterPhone: FC = () => {
           <Link href='/Login' className='route_button_style'>
             Kirish
           </Link>
-
+          <Link href={'/ResetPassword/ChangePassword'}>➡️</Link>
           <Link href='/Register' className='route_button_style'>
             Ro'yxatdan o'tish
           </Link>

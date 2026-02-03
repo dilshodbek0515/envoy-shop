@@ -1,16 +1,16 @@
 'use client'
 import './login.css'
 import { FC } from 'react'
-import Button from '../../../../shared/ui/button/button'
-import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
-import MainInput from '../../../../shared/ui/input/MainInput/input'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
+import Button from '../../../../shared/ui/button/button'
 import { LoginFn } from '../../../../../../../packages/api/login/login'
+import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
+import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 
 // Schema
 const loginSchema = z.object({
@@ -92,9 +92,8 @@ const Login: FC = () => {
               name='password'
               control={control}
               render={({ field }) => (
-                <MainInput
+                <PasswordInput
                   label='Parol'
-                  type='password'
                   {...field}
                   value={field.value || ''}
                   onChange={value => field.onChange(value)}

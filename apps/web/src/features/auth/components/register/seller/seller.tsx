@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
+import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 
 interface SellerProps {
   role: 'seller' | 'buyer'
@@ -20,33 +21,23 @@ interface SellerProps {
 // Yuridik schema
 const legalSchema = z
   .object({
-    firstName: z
-      .string()
-      .min(2, "Ism kamida 2 ta belgidan iborat bo'lishi kerak"),
-    lastName: z
-      .string()
-      .min(2, "Familiya kamida 2 ta belgidan iborat bo'lishi kerak"),
+    firstName: z.string().min(2, "Ism kamida 2 ta belgi bo'lsin"),
+    lastName: z.string().min(2, "Familiya kamida 2 ta belgi bo'lsin"),
     stir: z
       .string()
-      .length(9, "STIR 9 ta raqam bo'lishi kerak")
+      .length(9, "STIR 9 ta raqam bo'lsin")
       .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
     activityType: z.string().min(1, 'Faoliyat turini tanlang'),
-    companyName: z
-      .string()
-      .min(3, "Korxona nomi kamida 3 ta belgidan iborat bo'lishi kerak"),
-    legalAddress: z
-      .string()
-      .min(5, "Yuridik manzil kamida 5 ta belgidan iborat bo'lishi kerak"),
+    companyName: z.string().min(3, "Korxona nomi kamida 3 ta belgi bo'lsin"),
+    legalAddress: z.string().min(5, "Yuridik manzil kamida 5 ta belgi bo'lsin"),
     bankDetails: z
       .string()
-      .min(20, "Bank rekvizitlari kamida 20 ta belgidan iborat bo'lishi kerak"),
+      .min(20, "Bank rekvizitlari kamida 20 ta belgi bo'lsin"),
     phoneNumber: z
       .string()
-      .length(9, "Telefon raqam 9 ta bo'lishi kerak")
+      .length(9, "Telefon raqam 9 ta bo'lsin")
       .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-    password: z
-      .string()
-      .min(8, "Parol kamida 8 ta belgidan iborat bo'lishi kerak"),
+    password: z.string().min(8, "Parol kamida 8 ta belgi bo'lsin"),
     confirmPassword: z.string()
   })
   .refine(data => data.password === data.confirmPassword, {
@@ -57,20 +48,14 @@ const legalSchema = z
 // Jismoniy schema
 const physicalSchema = z
   .object({
-    firstNamePhysical: z
-      .string()
-      .min(2, "Ism kamida 2 ta belgidan iborat bo'lishi kerak"),
-    lastNamePhysical: z
-      .string()
-      .min(2, "Familiya kamida 2 ta belgidan iborat bo'lishi kerak"),
+    firstNamePhysical: z.string().min(2, "Ism kamida 2 ta belgi bo'lsin"),
+    lastNamePhysical: z.string().min(2, "Familiya kamida 2 ta belgi bo'lsin"),
     phoneNumberPhysical: z
       .string()
-      .length(9, "Telefon raqam 9 ta bo'lishi kerak")
+      .length(9, "Telefon raqam 9 ta bo'lsin")
       .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
     emailPhysical: z.string().email("Noto'g'ri email format"),
-    passwordPhysical: z
-      .string()
-      .min(8, "Parol kamida 8 ta belgidan iborat bo'lishi kerak"),
+    passwordPhysical: z.string().min(8, "Parol kamida 8 ta belgi bo'lsin"),
     confirmPasswordPhysical: z.string()
   })
   .refine(data => data.passwordPhysical === data.confirmPasswordPhysical, {
@@ -375,12 +360,10 @@ const Seller: FC<SellerProps> = ({ role }) => {
                   name='password'
                   control={legalControl}
                   render={({ field }) => (
-                    <MainInput
+                    <PasswordInput
                       label='Parol'
-                      type='password'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   )}
                 />
@@ -398,10 +381,9 @@ const Seller: FC<SellerProps> = ({ role }) => {
                   render={({ field }) => (
                     <MainInput
                       label='Qayta parol'
-                      type='password'
                       {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   )}
                 />
