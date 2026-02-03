@@ -16,12 +16,10 @@ import { LoginFn } from '../../../../../../../packages/api/login/login'
 const loginSchema = z.object({
   phone: z
     .string()
-    .min(9, "Telefon raqam 9 ta raqamdan iborat bo'lishi kerak")
-    .max(9, "Telefon raqam 9 ta raqamdan iborat bo'lishi kerak")
+    .min(9, "Telefon raqam 9 ta bo'lishi kerak")
+    .max(9, "Telefon raqam 9 ta bo'lishi kerak")
     .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-  password: z
-    .string()
-    .min(8, "Parol kamida 8 ta belgidan iborat bo'lishi kerak")
+  password: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak")
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
