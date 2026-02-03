@@ -5,24 +5,15 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import Button from '../../../../shared/ui/button/button'
 import { LoginFn } from '../../../../../../../packages/api/login/login'
 import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
 import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
-
-// Schema
-const loginSchema = z.object({
-  phone: z
-    .string()
-    .min(9, "Telefon raqam 9 ta bo'lishi kerak")
-    .max(9, "Telefon raqam 9 ta bo'lishi kerak")
-    .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-  password: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak")
-})
-
-type LoginFormData = z.infer<typeof loginSchema>
+import {
+  loginSchema,
+  LoginFormData
+} from '../../../../../../../packages/schema/schema'
 
 const Login: FC = () => {
   const router = useRouter()

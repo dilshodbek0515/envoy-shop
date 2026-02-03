@@ -7,22 +7,12 @@ import { PasswordFn } from '../../../../../../../../packages/api/resetPassword/c
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
-
-// Schema
-const changePasswordSchema = z
-  .object({
-    firstPassword: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak"),
-    secondPassword: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak")
-  })
-  .refine(data => data.firstPassword === data.secondPassword, {
-    message: 'Parollar mos kelmayapti',
-    path: ['secondPassword']
-  })
-
-type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
+import {
+  changePasswordSchema,
+  ChangePasswordFormData
+} from '../../../../../../../../packages/schema/schema'
 
 const ChangePassword: FC = () => {
   const router = useRouter()
