@@ -3,26 +3,16 @@ import Link from 'next/link'
 import './changePassword.css'
 import { FC } from 'react'
 import Button from '../../../../../shared/ui/button/button'
-import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import { PasswordFn } from '../../../../../../../../packages/api/resetPassword/change-password'
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
-
-// Schema
-const changePasswordSchema = z
-  .object({
-    firstPassword: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak"),
-    secondPassword: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak")
-  })
-  .refine(data => data.firstPassword === data.secondPassword, {
-    message: 'Parollar mos kelmayapti',
-    path: ['secondPassword']
-  })
-
-type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
+import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
+import {
+  changePasswordSchema,
+  ChangePasswordFormData
+} from '../../../../../../../../packages/schema/schema'
 
 const ChangePassword: FC = () => {
   const router = useRouter()
@@ -83,12 +73,10 @@ const ChangePassword: FC = () => {
               name='firstPassword'
               control={control}
               render={({ field }) => (
-                <MainInput
+                <PasswordInput
                   label='Parol'
-                  type='password'
-                  {...field}
-                  value={field.value || ''}
-                  onChange={value => field.onChange(value)}
+                  value={field.value}
+                  onChange={field.onChange}
                 />
               )}
             />
@@ -102,12 +90,10 @@ const ChangePassword: FC = () => {
               name='secondPassword'
               control={control}
               render={({ field }) => (
-                <MainInput
+                <PasswordInput
                   label='Qayta parol'
-                  type='password'
-                  {...field}
-                  value={field.value || ''}
-                  onChange={value => field.onChange(value)}
+                  value={field.value}
+                  onChange={field.onChange}
                 />
               )}
             />
