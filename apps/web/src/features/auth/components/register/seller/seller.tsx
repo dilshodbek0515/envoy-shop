@@ -9,77 +9,18 @@ import { RegisterFn } from '../../../../../../../../packages/api/register/regist
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
-
+import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
+import {
+  legalSchema,
+  physicalSchema,
+  LegalFormData,
+  PhysicalFormData
+} from '../../../../../../../../packages/schema/schema'
 interface SellerProps {
   role: 'seller' | 'buyer'
 }
-
-// Yuridik schema
-const legalSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, "Ism kamida 2 ta belgidan iborat bo'lishi kerak"),
-    lastName: z
-      .string()
-      .min(2, "Familiya kamida 2 ta belgidan iborat bo'lishi kerak"),
-    stir: z
-      .string()
-      .length(9, "STIR 9 ta raqam bo'lishi kerak")
-      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-    activityType: z.string().min(1, 'Faoliyat turini tanlang'),
-    companyName: z
-      .string()
-      .min(3, "Korxona nomi kamida 3 ta belgidan iborat bo'lishi kerak"),
-    legalAddress: z
-      .string()
-      .min(5, "Yuridik manzil kamida 5 ta belgidan iborat bo'lishi kerak"),
-    bankDetails: z
-      .string()
-      .min(20, "Bank rekvizitlari kamida 20 ta belgidan iborat bo'lishi kerak"),
-    phoneNumber: z
-      .string()
-      .length(9, "Telefon raqam 9 ta bo'lishi kerak")
-      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-    password: z
-      .string()
-      .min(8, "Parol kamida 8 ta belgidan iborat bo'lishi kerak"),
-    confirmPassword: z.string()
-  })
-  .refine(data => data.password === data.confirmPassword, {
-    message: 'Parollar mos kelmayapti',
-    path: ['confirmPassword']
-  })
-
-// Jismoniy schema
-const physicalSchema = z
-  .object({
-    firstNamePhysical: z
-      .string()
-      .min(2, "Ism kamida 2 ta belgidan iborat bo'lishi kerak"),
-    lastNamePhysical: z
-      .string()
-      .min(2, "Familiya kamida 2 ta belgidan iborat bo'lishi kerak"),
-    phoneNumberPhysical: z
-      .string()
-      .length(9, "Telefon raqam 9 ta bo'lishi kerak")
-      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-    emailPhysical: z.string().email("Noto'g'ri email format"),
-    passwordPhysical: z
-      .string()
-      .min(8, "Parol kamida 8 ta belgidan iborat bo'lishi kerak"),
-    confirmPasswordPhysical: z.string()
-  })
-  .refine(data => data.passwordPhysical === data.confirmPasswordPhysical, {
-    message: 'Parollar mos kelmayapti',
-    path: ['confirmPasswordPhysical']
-  })
-
-type LegalFormData = z.infer<typeof legalSchema>
-type PhysicalFormData = z.infer<typeof physicalSchema>
 
 const Seller: FC<SellerProps> = ({ role }) => {
   const [sellerRole, setSellerRole] = useState<'legal' | 'physical'>('legal')
@@ -375,12 +316,10 @@ const Seller: FC<SellerProps> = ({ role }) => {
                   name='password'
                   control={legalControl}
                   render={({ field }) => (
-                    <MainInput
+                    <PasswordInput
                       label='Parol'
-                      type='password'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   )}
                 />
@@ -398,10 +337,9 @@ const Seller: FC<SellerProps> = ({ role }) => {
                   render={({ field }) => (
                     <MainInput
                       label='Qayta parol'
-                      type='password'
                       {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   )}
                 />

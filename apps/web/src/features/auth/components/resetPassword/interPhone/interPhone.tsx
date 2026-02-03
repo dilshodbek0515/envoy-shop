@@ -9,31 +9,11 @@ import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
 import { SmsFn } from '../../../../../../../../packages/api/resetPassword/reset-password'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
-
-/* ✅ Step based schema */
-const getSchema = (step: number) =>
-  z.object({
-    phone: z
-      .string()
-      .min(9, "Telefon raqam 9 ta bo'lishi kerak")
-      .max(9, "Telefon raqam 9 ta bo'lishi kerak")
-      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-
-    smsPassword:
-      step === 2
-        ? z
-            .string()
-            .length(4, "SMS kod 4 ta bo'lishi kerak")
-            .regex(/^\d+$/, 'Faqat raqamlar kiriting')
-        : z.string().optional()
-  })
-
-type InterPhoneFormData = {
-  phone: string
-  smsPassword: string | undefined
-}
+import {
+  interPhoneSchema,
+  InterPhoneFormData
+} from '../../../../../../../../packages/schema/schema'
 
 const InterPhone: FC = () => {
   const router = useRouter()
@@ -45,7 +25,7 @@ const InterPhone: FC = () => {
     formState: { errors },
     watch
   } = useForm<InterPhoneFormData>({
-    resolver: zodResolver(getSchema(step)),
+    resolver: zodResolver(interPhoneSchema(step)),
     mode: 'onChange',
     defaultValues: {
       phone: '',
@@ -155,7 +135,7 @@ const InterPhone: FC = () => {
           <Link href='/Login' className='route_button_style'>
             Kirish
           </Link>
-
+          <Link href={'/ResetPassword/ChangePassword'}>➡️</Link>
           <Link href='/Register' className='route_button_style'>
             Ro'yxatdan o'tish
           </Link>
