@@ -1,13 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
+
 import { Stack } from 'expo-router'
+import { Colors } from 'src/shared/token'
 const LoginLayout = () => {
   return (
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: {
-          backgroundColor: '#fff'
-        }
+        contentStyle: {backgroundColor: Colors.pageBackground}
       }}
     />
   )
@@ -15,4 +14,3 @@ const LoginLayout = () => {
 
 export default LoginLayout
 
-const styles = StyleSheet.create({})
