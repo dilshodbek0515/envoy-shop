@@ -22,9 +22,9 @@ const Register = () => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Text style={styles.headerTitle}>Ro'yhatdan otish</Text>
-      </View>
+      </View> */}
 
       <View style={styles.button_container}>
         <Pressable
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    paddingTop: 122,
+    paddingTop: 30,
   },
   header: {
     width: "100%",
