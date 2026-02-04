@@ -4,15 +4,54 @@ import { FC } from 'react'
 import Button from '../../../../../shared/ui/button/button'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import Link from 'next/link'
-import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { useForm, Controller, Resolver, FieldErrors } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
+import { ZodSchema } from 'zod'
 import {
   registerSmsSchema,
   RegisterSmsFormData
-} from '../../../../../../../../packages/schema/schema'
+} from '../../../../../../../schema/schema'
+
+const safeResolver = <T extends object>(schema: ZodSchema): Resolver<T> => {
+  return async (values: any) => {
+    try {
+      const result = schema.safeParse(values)
+
+      if (result.success) {
+        return {
+          values: result.data,
+          errors: {} as FieldErrors<T>
+        }
+      }
+
+      const errors = result.error.flatten().fieldErrors
+
+      // TypeScript uchun to'g'ri typed errors
+      const formattedErrors = Object.fromEntries(
+        Object.entries(errors).map(([key, val]) => [
+          key,
+          {
+            type: 'validation',
+            message: val && Array.isArray(val) ? val[0] : String(val)
+          }
+        ])
+      ) as FieldErrors<T>
+
+      return {
+        values: {},
+        errors: formattedErrors
+      }
+    } catch (error) {
+      console.error('Resolver error:', error)
+      return {
+        values: {},
+        errors: {} as FieldErrors<T>
+      }
+    }
+  }
+}
+
 const RegisterSms: FC = () => {
   const router = useRouter()
 
@@ -22,25 +61,18 @@ const RegisterSms: FC = () => {
     formState: { errors, isValid },
     watch
   } = useForm<RegisterSmsFormData>({
-    resolver: zodResolver(registerSmsSchema),
+    resolver: safeResolver(registerSmsSchema),
     mode: 'onChange',
-    defaultValues: {
-      smsCode: ''
-    }
+    defaultValues: { smsCode: '' }
   })
-  const sms = 1234
 
   const smsMutation = useMutation({
     mutationFn: (data: { smsCode: string }) => {
       console.log('SMS tasdiqlandi:', data.smsCode)
       return Promise.resolve({ success: true })
     },
-    onSuccess: () => {
-      router.push('/')
-    },
-    onError: (error: any) => {
-      console.log('SMS tasdiqlashda xatolik:', error)
-    }
+    onSuccess: () => router.push('/'),
+    onError: (error: any) => console.log('SMS tasdiqlashda xatolik:', error)
   })
 
   const smsCodeValue = watch('smsCode') || ''
@@ -68,6 +100,7 @@ const RegisterSms: FC = () => {
                     {...field}
                     value={field.value || ''}
                     onChange={value => {
+                      // faqat raqam va 4ta belgi
                       const onlyNumbers = value.replace(/\D/g, '').slice(0, 4)
                       field.onChange(onlyNumbers)
                     }}
@@ -95,7 +128,6 @@ const RegisterSms: FC = () => {
           <Link href='/Login' className='route_button_style'>
             <span className='acc'>Akkountingiz bormi? </span> Kirish
           </Link>
-
           <Link href={'/'}>➡️</Link>
         </div>
       </div>
