@@ -5,14 +5,13 @@ import { z } from 'zod'
 export const loginSchema = z.object({
   phone: z
     .string()
-    .min(9, "Telefon raqam 9 ta bo'lishi kerak")
-    .max(9, "Telefon raqam 9 ta bo'lishi kerak")
+    .length(9, "Telefon raqam 9 ta bo'lishi kerak")
     .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-  password: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak")
+
+  password: z.string().length(8, "Parol kamida 8 ta bo'lishi kerak")
 })
 
 export type LoginFormData = z.infer<typeof loginSchema>
-
 // ================ RESET-PASSWORD SCHEMA ---> INTER-PHONE ================
 
 export const interPhoneSchema = (step: number) =>
@@ -31,7 +30,10 @@ export const interPhoneSchema = (step: number) =>
         : z.string().optional()
   })
 
-export type InterPhoneFormData = z.infer<ReturnType<typeof interPhoneSchema>>
+export type InterPhoneFormData = {
+  phone: string
+  smsPassword?: string
+}
 
 // ================ RESET-PASSWORD SCHEMA ---> CHANGE-PASSWORD ================
 
@@ -69,7 +71,7 @@ export const legalSchema = z
       .length(9, "Telefon raqam 9 ta bo'lsin")
       .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
     password: z.string().min(8, "Parol kamida 8 ta belgi bo'lsin"),
-    confirmPassword: z.string()
+    confirmPassword: z.string().min(8, 'Parolni qayta kiriting')
   })
   .refine(data => data.password === data.confirmPassword, {
     message: 'Parollar mos kelmayapti',
@@ -87,7 +89,7 @@ export const physicalSchema = z
       .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
     emailPhysical: z.string().email("Noto'g'ri email format"),
     passwordPhysical: z.string().min(8, "Parol kamida 8 ta belgi bo'lsin"),
-    confirmPasswordPhysical: z.string()
+    confirmPasswordPhysical: z.string().min(8, 'Parolni qayta kiriting')
   })
   .refine(data => data.passwordPhysical === data.confirmPasswordPhysical, {
     message: 'Parollar mos kelmayapti',
