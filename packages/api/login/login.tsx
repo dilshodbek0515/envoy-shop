@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-
-const API = 'https://my.example.uz.webcoder.uz/user/sign-in/'
+const API = 'http://envoyshop.webcoder.uz/users/login/'
 
 export interface LoginArgs {
   phone: string
@@ -8,9 +7,10 @@ export interface LoginArgs {
 }
 
 export interface LoginResponse {
-  success?: boolean
-  message?: string
-  [key: string]: any
+  token: {
+    access: string
+    refresh: string
+  }
 }
 
 export const LoginFn = async ({
@@ -22,6 +22,8 @@ export const LoginFn = async ({
       phone,
       password
     })
+
+    console.log(data.token)
     return data
   } catch (error) {
     console.error('LoginFn xatolik:', error)

@@ -8,7 +8,7 @@ export const loginSchema = z.object({
     .length(9, "Telefon raqam 9 ta bo'lishi kerak")
     .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
 
-  password: z.string().length(8, "Parol kamida 8 ta bo'lishi kerak")
+  password: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak")
 })
 
 export type LoginFormData = z.infer<typeof loginSchema>

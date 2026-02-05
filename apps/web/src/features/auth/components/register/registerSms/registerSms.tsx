@@ -125,10 +125,10 @@ const RegisterSms: FC = () => {
         </form>
 
         <div className='route_bottom'>
-          <Link href='/Login' className='route_button_style'>
+          <Link href='/login' className='route_button_style'>
             <span className='acc'>Akkountingiz bormi? </span> Kirish
           </Link>
-          <Link href={'/'}>➡️</Link>
+          <p />
         </div>
       </div>
     </div>

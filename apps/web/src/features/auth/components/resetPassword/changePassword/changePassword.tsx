@@ -59,7 +59,7 @@ const ChangePassword: FC = () => {
         password: data.password,
         confirmPassword: data.confirmPassword
       }),
-    onSuccess: () => router.push('/Login'),
+    onSuccess: () => router.push('/login'),
     onError: (error: any) => console.log('Ishlamadi', error)
   })
 
@@ -138,11 +138,10 @@ const ChangePassword: FC = () => {
         </form>
 
         <div className='route_bottom'>
-          <Link href='/Login' className='route_button_style'>
+          <Link href='/login' className='route_button_style'>
             Kirish
           </Link>
-          <Link href='/Login'>➡️</Link>
-          <Link href='/Register' className='route_button_style'>
+          <Link href='/register' className='route_button_style'>
             Ro'yxatdan o'tish
           </Link>
         </div>

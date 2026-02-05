@@ -47,8 +47,8 @@ const Login: FC = () => {
     resolver: safeZodResolver,
     mode: 'onChange',
     defaultValues: {
-      phone: '',
-      password: ''
+      phone: '975790515',
+      password: 'Dd05150515!'
     }
   })
 
@@ -59,7 +59,10 @@ const Login: FC = () => {
         phone: `+998${data.phone}`,
         password: data.password
       }),
-    onSuccess: () => router.push('/'),
+    onSuccess: data => {
+      localStorage.setItem('token', data.token.access)
+      router.replace('/')
+    },
     onError: error => console.log('Login error:', error)
   })
 
@@ -124,11 +127,10 @@ const Login: FC = () => {
         </form>
 
         <div className='route_bottom'>
-          <Link href='/ResetPassword/InterPhone' className='route_button_style'>
+          <Link href='/reset-password/inter-phone' className='route_button_style'>
             Parolni unutdingizmi?
           </Link>
-          <Link href={'/'}>➡️</Link>
-          <Link href='/Register' className='route_button_style'>
+          <Link href='/register' className='route_button_style'>
             Ro'yxatdan o'tish
           </Link>
         </div>
