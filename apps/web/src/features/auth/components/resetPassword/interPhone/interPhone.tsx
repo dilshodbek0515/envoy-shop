@@ -18,7 +18,6 @@ const InterPhone: FC = () => {
   const router = useRouter()
   const [step, setStep] = useState<1 | 2>(1)
 
-  // ✅ Safe Zod resolver - step o'zgaruvchisini ichida ishlatish uchun
   const createResolver = (currentStep: 1 | 2): Resolver<InterPhoneFormData> => {
     return async values => {
       const schema = interPhoneSchema(currentStep)
@@ -47,7 +46,7 @@ const InterPhone: FC = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors, isValid },
+    formState: { errors },
     watch,
     trigger
   } = useForm<InterPhoneFormData>({
@@ -63,7 +62,7 @@ const InterPhone: FC = () => {
   const smsMutation = useMutation({
     mutationFn: (data: { phone: string; smsPassword: string }) =>
       SmsFn({ phone: `+998${data.phone}`, smsPassword: data.smsPassword }),
-    onSuccess: () => router.push('/ResetPassword/ChangePassword'),
+    onSuccess: () => router.push('/reset-password/change-password'),
     onError: err => console.log('Xato:', err)
   })
 
@@ -82,11 +81,6 @@ const InterPhone: FC = () => {
 
     if (!data.smsPassword) return
     smsMutation.mutate({ phone: data.phone, smsPassword: data.smsPassword })
-  }
-
-  // ✅ Orqaga qaytish funksiyasi
-  const handleBack = () => {
-    setStep(1)
   }
 
   // ✅ Disabled logic
@@ -171,11 +165,10 @@ const InterPhone: FC = () => {
         </form>
 
         <div className='route_bottom'>
-          <Link href='/Login' className='route_button_style'>
+          <Link href='/login' className='route_button_style'>
             Kirish
           </Link>
-          <Link href='/ResetPassword/ChangePassword'>➡️</Link>
-          <Link href='/Register' className='route_button_style'>
+          <Link href='/register' className='route_button_style'>
             Ro'yxatdan o'tish
           </Link>
         </div>
