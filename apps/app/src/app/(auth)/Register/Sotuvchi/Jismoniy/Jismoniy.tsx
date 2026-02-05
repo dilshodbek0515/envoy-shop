@@ -1,48 +1,55 @@
-import { useState } from "react";
-import { Text, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import AppInput from "src/components/AppInput/input";
-import PasswordInput from "src/components/PasswordInput/PasswordInput";
-import PhoneInput from "src/components/PhoneInput/PhoneInput";
-import { Spacing } from "src/shared/token";
+import { useState } from 'react'
+import { Text, View } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import AppInput from 'src/components/AppInput/input'
+import PasswordInput from 'src/components/PasswordInput/PasswordInput'
+import PhoneInput from 'src/components/PhoneInput/PhoneInput'
+import { Spacing } from 'src/shared/token'
 
 const Jismoniy = () => {
   const [form, setForm] = useState({
-    Ism: "",
-    Familiya: "",
-    Elektron_pochta: "",
-    Parol: "",
-  });
+    Ism: '',
+    Familiya: '',
+    Elektron_pochta: '',
+    Parol: ''
+  })
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={{ paddingHorizontal: Spacing.horizontal, gap: Spacing.horizontal }}>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{
+        paddingHorizontal: Spacing.horizontal,
+        gap: Spacing.horizontal
+      }}
+    >
       <AppInput
-        label="Ism"
+        label='Ism'
         value={form.Ism}
-        onChangeText={(text: string) => setForm({ ...form, Ism: text})}
+        onChangeText={(text: string) => setForm({ ...form, Ism: text })}
       />
 
       <AppInput
-        label="Familiya"
+        label='Familiya'
         value={form.Familiya}
-        onChangeText={(text: string) => setForm({ ...form, Familiya: text})}
+        onChangeText={(text: string) => setForm({ ...form, Familiya: text })}
       />
 
       <PhoneInput />
 
       <AppInput
-        label="Elektron pochta"
+        label='Elektron pochta'
         value={form.Elektron_pochta}
-        onChangeText={(text: string) => setForm({ ...form, Elektron_pochta: text})}
+        onChangeText={(text: string) =>
+          setForm({ ...form, Elektron_pochta: text })
+        }
       />
 
       <PasswordInput
-        label="Parol"
+        label='Parol'
         value={form.Parol}
-        onChangeText={(text: string) => setForm({ ...form, Parol: text})}
+        onChangeText={(text: string) => setForm({ ...form, Parol: text })}
       />
     </KeyboardAwareScrollView>
-  );
-};
+  )
+}
 
-export default Jismoniy;
+export default Jismoniy
