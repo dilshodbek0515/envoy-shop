@@ -35,10 +35,10 @@ const Register: FC = () => {
         {role === 'buyer' && <Buyer />}
 
         <div className='route_bottom'>
-          <Link href='/Login' className='route_button_style'>
+          <Link href='/login' className='route_button_style'>
             <span className='acc'>Akkountingiz bormi? </span> Kirish
           </Link>
-          <Link href={'/Register/RegisterSms'}>➡️</Link>
+          <p />
         </div>
       </div>
     </div>

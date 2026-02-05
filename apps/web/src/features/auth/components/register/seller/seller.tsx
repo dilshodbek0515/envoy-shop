@@ -1,102 +1,18 @@
 'use client'
 import './seller.css'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
 import CustomSelect from '../../../../../shared/ui/select/select'
 import Button from '../../../../../shared/ui/button/button'
-import { RegisterFn } from '../../../../../../../../packages/api/register/register'
-import { useRouter } from 'next/navigation'
-import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { useState } from 'react'
 import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
-import {
-  legalSchema,
-  physicalSchema,
-  LegalFormData,
-  PhysicalFormData
-} from '../../../../../../../../packages/schema/schema'
+
 interface SellerProps {
   role: 'seller' | 'buyer'
 }
 
-const Seller: FC<SellerProps> = ({ role }) => {
+const Seller: FC<SellerProps> = () => {
   const [sellerRole, setSellerRole] = useState<'legal' | 'physical'>('legal')
-  const router = useRouter()
-
-  // Yuridik form
-  const {
-    control: legalControl,
-    handleSubmit: handleLegalSubmit,
-    formState: { errors: legalErrors, isValid: legalIsValid },
-    watch: legalWatch
-  } = useForm<LegalFormData>({
-    resolver: zodResolver(legalSchema),
-    mode: 'onChange',
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      stir: '',
-      activityType: '',
-      companyName: '',
-      legalAddress: '',
-      bankDetails: '',
-      phoneNumber: '',
-      password: '',
-      confirmPassword: ''
-    }
-  })
-
-  // Jismoniy form
-  const {
-    control: physicalControl,
-    handleSubmit: handlePhysicalSubmit,
-    formState: { errors: physicalErrors, isValid: physicalIsValid },
-    watch: physicalWatch
-  } = useForm<PhysicalFormData>({
-    resolver: zodResolver(physicalSchema),
-    mode: 'onChange',
-    defaultValues: {
-      firstNamePhysical: '',
-      lastNamePhysical: '',
-      phoneNumberPhysical: '',
-      emailPhysical: '',
-      passwordPhysical: '',
-      confirmPasswordPhysical: ''
-    }
-  })
-
-  const registerMutation = useMutation({
-    mutationFn: (data: any) => RegisterFn({ registrationData: data }),
-    onSuccess: () => {
-      router.push('/Register/RegisterSms')
-    },
-    onError: (error: any) => {
-      console.log('Ishlamadi', error)
-    }
-  })
-
-  // Watch values
-  const legalFirstName = legalWatch('firstName') || ''
-  const legalPassword = legalWatch('password') || ''
-  const legalConfirmPassword = legalWatch('confirmPassword') || ''
-  const physicalFirstName = physicalWatch('firstNamePhysical') || ''
-  const physicalPassword = physicalWatch('passwordPhysical') || ''
-  const physicalConfirmPassword = physicalWatch('confirmPasswordPhysical') || ''
-
-  const onLegalSubmit = (data: LegalFormData) => {
-    if (legalIsValid) {
-      registerMutation.mutate({ role: 'legal', userType: role, ...data })
-    }
-  }
-
-  const onPhysicalSubmit = (data: PhysicalFormData) => {
-    if (physicalIsValid) {
-      registerMutation.mutate({ role: 'physical', userType: role, ...data })
-    }
-  }
 
   const option = [
     { value: 'yatt', label: 'YaTT' },
@@ -111,6 +27,8 @@ const Seller: FC<SellerProps> = ({ role }) => {
     { value: 'boshqa', label: 'Boshqa' }
   ]
 
+  const handleChange = () => {}
+
   return (
     <div className='seller_container'>
       <div className='roleBox'>
@@ -120,9 +38,7 @@ const Seller: FC<SellerProps> = ({ role }) => {
             name='sellerRole'
             value='legal'
             checked={sellerRole === 'legal'}
-            onChange={e =>
-              setSellerRole(e.target.value as 'legal' | 'physical')
-            }
+            onChange={() => setSellerRole('legal')}
           />
           Yuridik
         </label>
@@ -133,387 +49,104 @@ const Seller: FC<SellerProps> = ({ role }) => {
             name='sellerRole'
             value='physical'
             checked={sellerRole === 'physical'}
-            onChange={e =>
-              setSellerRole(e.target.value as 'legal' | 'physical')
-            }
+            onChange={() => setSellerRole('physical')}
           />
           Jismoniy
         </label>
       </div>
 
+      {/* ================= LEGAL ================= */}
+
       {sellerRole === 'legal' && (
         <div className='seller_form_container'>
-          <form
-            onSubmit={handleLegalSubmit(onLegalSubmit)}
-            className='seller_form'
-          >
+          <form className='seller_form'>
             <div className='seller_wrapper'>
               <div className='input_group'>
-                <Controller
-                  name='firstName'
-                  control={legalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Ism'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {legalErrors.firstName && legalFirstName.length > 0 && (
-                  <div className='error_text'>
-                    {legalErrors.firstName.message}
-                  </div>
-                )}
+                <MainInput label='Ism' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='lastName'
-                  control={legalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Familiya'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {legalErrors.lastName && legalWatch('lastName')?.length > 0 && (
-                  <div className='error_text'>
-                    {legalErrors.lastName.message}
-                  </div>
-                )}
+                <MainInput label='Familiya' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='activityType'
-                  control={legalControl}
-                  render={({ field }) => (
-                    <CustomSelect
-                      label='Faoliyat turi'
-                      value={field.value || ''}
-                      options={option}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
+                <CustomSelect
+                  label='Faoliyat turi'
+                  options={option}
+                  value=''
+                  onChange={handleChange}
                 />
-                {legalErrors.activityType &&
-                  legalWatch('activityType')?.length > 0 && (
-                    <div className='error_text'>
-                      {legalErrors.activityType.message}
-                    </div>
-                  )}
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='companyName'
-                  control={legalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Korxona nomi'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {legalErrors.companyName &&
-                  legalWatch('companyName')?.length > 0 && (
-                    <div className='error_text'>
-                      {legalErrors.companyName.message}
-                    </div>
-                  )}
+                <MainInput label='Korxona nomi' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='stir'
-                  control={legalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Stir (INN)'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {legalErrors.stir && legalWatch('stir')?.length > 0 && (
-                  <div className='error_text'>{legalErrors.stir.message}</div>
-                )}
+                <MainInput label='STIR (INN)' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='bankDetails'
-                  control={legalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Bank rekvizitlari'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {legalErrors.bankDetails &&
-                  legalWatch('bankDetails')?.length > 0 && (
-                    <div className='error_text'>
-                      {legalErrors.bankDetails.message}
-                    </div>
-                  )}
+                <MainInput label='Bank rekvizitlari' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='legalAddress'
-                  control={legalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Yuridik manzil'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {legalErrors.legalAddress &&
-                  legalWatch('legalAddress')?.length > 0 && (
-                    <div className='error_text'>
-                      {legalErrors.legalAddress.message}
-                    </div>
-                  )}
+                <MainInput label='Yuridik manzil' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='phoneNumber'
-                  control={legalControl}
-                  render={({ field }) => (
-                    <InputPhone
-                      label='Telefon raqam'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {legalErrors.phoneNumber &&
-                  legalWatch('phoneNumber')?.length > 0 && (
-                    <div className='error_text'>
-                      {legalErrors.phoneNumber.message}
-                    </div>
-                  )}
+                <InputPhone label='Telefon raqam' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='password'
-                  control={legalControl}
-                  render={({ field }) => (
-                    <PasswordInput
-                      label='Parol'
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                  )}
-                />
-                {legalErrors.password && legalPassword.length > 0 && (
-                  <div className='error_text'>
-                    {legalErrors.password.message}
-                  </div>
-                )}
+                <PasswordInput label='Parol' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='confirmPassword'
-                  control={legalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Qayta parol'
-                      {...field}
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                  )}
-                />
-                {legalErrors.confirmPassword &&
-                  legalConfirmPassword.length > 0 && (
-                    <div className='error_text'>
-                      {legalErrors.confirmPassword.message}
-                    </div>
-                  )}
+                <PasswordInput label='Qayta parol' value='' />
               </div>
             </div>
 
             <div className='form_button_container'>
-              <Button
-                type='submit'
-                label={
-                  registerMutation.isPending
-                    ? 'Kutilmoqda...'
-                    : 'SMS kod yuborish'
-                }
-                disabled={!legalIsValid || registerMutation.isPending}
-              />
+              <Button type='submit' label='SMS kod yuborish' />
             </div>
           </form>
         </div>
       )}
 
+      {/* ================= PHYSICAL ================= */}
+
       {sellerRole === 'physical' && (
         <div className='seller_form_container'>
-          <form
-            onSubmit={handlePhysicalSubmit(onPhysicalSubmit)}
-            className='seller_form'
-          >
+          <form className='seller_form'>
             <div className='seller_wrapper'>
               <div className='input_group'>
-                <Controller
-                  name='firstNamePhysical'
-                  control={physicalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Ism'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {physicalErrors.firstNamePhysical &&
-                  physicalFirstName.length > 0 && (
-                    <div className='error_text'>
-                      {physicalErrors.firstNamePhysical.message}
-                    </div>
-                  )}
+                <MainInput label='Ism' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='lastNamePhysical'
-                  control={physicalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Familiya'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {physicalErrors.lastNamePhysical &&
-                  physicalWatch('lastNamePhysical')?.length > 0 && (
-                    <div className='error_text'>
-                      {physicalErrors.lastNamePhysical.message}
-                    </div>
-                  )}
+                <MainInput label='Familiya' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='phoneNumberPhysical'
-                  control={physicalControl}
-                  render={({ field }) => (
-                    <InputPhone
-                      label='Telefon raqam'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {physicalErrors.phoneNumberPhysical &&
-                  physicalWatch('phoneNumberPhysical')?.length > 0 && (
-                    <div className='error_text'>
-                      {physicalErrors.phoneNumberPhysical.message}
-                    </div>
-                  )}
+                <InputPhone label='Telefon raqam' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='emailPhysical'
-                  control={physicalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Email'
-                      type='email'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {physicalErrors.emailPhysical &&
-                  physicalWatch('emailPhysical')?.length > 0 && (
-                    <div className='error_text'>
-                      {physicalErrors.emailPhysical.message}
-                    </div>
-                  )}
+                <MainInput label='Email' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='passwordPhysical'
-                  control={physicalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Parol'
-                      type='password'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {physicalErrors.passwordPhysical &&
-                  physicalPassword.length > 0 && (
-                    <div className='error_text'>
-                      {physicalErrors.passwordPhysical.message}
-                    </div>
-                  )}
+                <PasswordInput label='Parol' value='' />
               </div>
 
               <div className='input_group'>
-                <Controller
-                  name='confirmPasswordPhysical'
-                  control={physicalControl}
-                  render={({ field }) => (
-                    <MainInput
-                      label='Parolni takrorlash'
-                      type='password'
-                      {...field}
-                      value={field.value || ''}
-                      onChange={value => field.onChange(value)}
-                    />
-                  )}
-                />
-                {physicalErrors.confirmPasswordPhysical &&
-                  physicalConfirmPassword.length > 0 && (
-                    <div className='error_text'>
-                      {physicalErrors.confirmPasswordPhysical.message}
-                    </div>
-                  )}
+                <PasswordInput label='Qayta parol' value='' />
               </div>
             </div>
 
             <div className='form_button_container'>
-              <Button
-                type='submit'
-                label={
-                  registerMutation.isPending
-                    ? 'Kutilmoqda...'
-                    : 'SMS kod yuborish'
-                }
-                disabled={!physicalIsValid || registerMutation.isPending}
-              />
+              <Button type='submit' label='SMS kod yuborish' />
             </div>
           </form>
         </div>

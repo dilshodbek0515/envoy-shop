@@ -3,16 +3,38 @@ import Link from 'next/link'
 import './changePassword.css'
 import { FC } from 'react'
 import Button from '../../../../../shared/ui/button/button'
+import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 import { PasswordFn } from '../../../../../../../../packages/api/resetPassword/change-password'
 import { useRouter } from 'next/navigation'
-import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm, Controller, Resolver } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
-import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 import {
   changePasswordSchema,
   ChangePasswordFormData
-} from '../../../../../../../../packages/schema/schema'
+} from '../../../../../../../schema/schema'
+
+// ✅ Safe Zod resolver (login faylidagi kabi)
+const safeZodResolver: Resolver<ChangePasswordFormData> = async values => {
+  const result = changePasswordSchema.safeParse(values)
+
+  if (result.success) {
+    return {
+      values: result.data,
+      errors: {}
+    }
+  }
+
+  const errors = result.error.flatten().fieldErrors
+  return {
+    values: {},
+    errors: Object.fromEntries(
+      Object.entries(errors).map(([key, val]) => [
+        key,
+        { type: 'validation', message: val?.[0] }
+      ])
+    )
+  }
+}
 
 const ChangePassword: FC = () => {
   const router = useRouter()
@@ -23,7 +45,7 @@ const ChangePassword: FC = () => {
     formState: { errors, isValid },
     watch
   } = useForm<ChangePasswordFormData>({
-    resolver: zodResolver(changePasswordSchema),
+    resolver: safeZodResolver,
     mode: 'onChange',
     defaultValues: {
       firstPassword: '',
@@ -37,12 +59,8 @@ const ChangePassword: FC = () => {
         password: data.password,
         confirmPassword: data.confirmPassword
       }),
-    onSuccess: () => {
-      router.push('/Login')
-    },
-    onError: (error: any) => {
-      console.log('Ishlamadi', error)
-    }
+    onSuccess: () => router.push('/login'),
+    onError: (error: any) => console.log('Ishlamadi', error)
   })
 
   const firstPasswordValue = watch('firstPassword') || ''
@@ -57,10 +75,12 @@ const ChangePassword: FC = () => {
     }
   }
 
+  // ✅ Parollarni solishtirish
+  const passwordsMatch = firstPasswordValue === secondPasswordValue
   const isFormValid =
     firstPasswordValue.length >= 8 &&
     secondPasswordValue.length >= 8 &&
-    firstPasswordValue === secondPasswordValue
+    passwordsMatch
 
   return (
     <div className='container'>
@@ -68,15 +88,17 @@ const ChangePassword: FC = () => {
         <h2 className='login_title'>Parolni o'zgartirish</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+          {/* Birinchi parol */}
           <div className='input_group'>
             <Controller
               name='firstPassword'
               control={control}
               render={({ field }) => (
                 <PasswordInput
-                  label='Parol'
+                  label='Yangi parol'
                   value={field.value}
                   onChange={field.onChange}
+                  onBlur={field.onBlur}
                 />
               )}
             />
@@ -85,15 +107,17 @@ const ChangePassword: FC = () => {
             )}
           </div>
 
+          {/* Ikkinchi parol */}
           <div className='input_group'>
             <Controller
               name='secondPassword'
               control={control}
               render={({ field }) => (
                 <PasswordInput
-                  label='Qayta parol'
+                  label='Yangi parolni takrorlang'
                   value={field.value}
                   onChange={field.onChange}
+                  onBlur={field.onBlur}
                 />
               )}
             />
@@ -114,11 +138,10 @@ const ChangePassword: FC = () => {
         </form>
 
         <div className='route_bottom'>
-          <Link href='/Login' className='route_button_style'>
+          <Link href='/login' className='route_button_style'>
             Kirish
           </Link>
-          <Link href={'/Login'}>➡️</Link>
-          <Link href='/Register' className='route_button_style'>
+          <Link href='/register' className='route_button_style'>
             Ro'yxatdan o'tish
           </Link>
         </div>
