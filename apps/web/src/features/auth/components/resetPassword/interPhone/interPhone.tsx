@@ -7,25 +7,50 @@ import Button from '../../../../../shared/ui/button/button'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
 import { SmsFn } from '../../../../../../../../packages/api/resetPassword/reset-password'
-import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm, Controller, Resolver } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import {
   interPhoneSchema,
   InterPhoneFormData
-} from '../../../../../../../../packages/schema/schema'
+} from '../../../../../../../schema/schema'
 
 const InterPhone: FC = () => {
   const router = useRouter()
   const [step, setStep] = useState<1 | 2>(1)
 
+  const createResolver = (currentStep: 1 | 2): Resolver<InterPhoneFormData> => {
+    return async values => {
+      const schema = interPhoneSchema(currentStep)
+      const result = schema.safeParse(values)
+
+      if (result.success) {
+        return {
+          values: result.data,
+          errors: {}
+        }
+      }
+
+      const errors = result.error.flatten().fieldErrors
+      return {
+        values: {},
+        errors: Object.fromEntries(
+          Object.entries(errors).map(([key, val]) => [
+            key,
+            { type: 'validation', message: val?.[0] }
+          ])
+        )
+      }
+    }
+  }
+
   const {
     handleSubmit,
     control,
     formState: { errors },
-    watch
+    watch,
+    trigger
   } = useForm<InterPhoneFormData>({
-    resolver: zodResolver(interPhoneSchema(step)),
+    resolver: createResolver(step),
     mode: 'onChange',
     defaultValues: {
       phone: '',
@@ -33,41 +58,34 @@ const InterPhone: FC = () => {
     }
   })
 
-  /* ✅ mutation */
+  // ✅ React Query mutation
   const smsMutation = useMutation({
     mutationFn: (data: { phone: string; smsPassword: string }) =>
       SmsFn({ phone: `+998${data.phone}`, smsPassword: data.smsPassword }),
-
-    onSuccess: () => {
-      router.push('/ResetPassword/ChangePassword')
-    },
-
-    onError: err => {
-      console.log('Xato:', err)
-    }
+    onSuccess: () => router.push('/reset-password/change-password'),
+    onError: err => console.log('Xato:', err)
   })
 
   const phoneValue = watch('phone') || ''
   const smsValue = watch('smsPassword') || ''
 
-  /* ✅ submit logic */
-  const onSubmit = (data: InterPhoneFormData) => {
+  // ✅ Form submit
+  const onSubmit = async (data: InterPhoneFormData) => {
     if (step === 1) {
-      setStep(2)
+      const isValid = await trigger()
+      if (isValid) {
+        setStep(2)
+      }
       return
     }
 
     if (!data.smsPassword) return
-
-    smsMutation.mutate({
-      phone: data.phone,
-      smsPassword: data.smsPassword
-    })
+    smsMutation.mutate({ phone: data.phone, smsPassword: data.smsPassword })
   }
 
+  // ✅ Disabled logic
   const isPhoneValid = phoneValue.length === 9
   const isSmsValid = smsValue.length === 4
-
   const disabled =
     step === 1
       ? !isPhoneValid
@@ -79,7 +97,7 @@ const InterPhone: FC = () => {
         <h2 className='login_title'>Parolni tiklash</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-          {/* PHONE */}
+          {/* PHONE INPUT */}
           <div className='input_group'>
             <Controller
               name='phone'
@@ -88,7 +106,13 @@ const InterPhone: FC = () => {
                 <InputPhone
                   label='Telefon raqam'
                   value={field.value || ''}
-                  onChange={field.onChange}
+                  onChange={value => {
+                    const numbers = value.replace(/\D/g, '').slice(0, 9)
+                    field.onChange(numbers)
+                    if (numbers.length === 9) {
+                      trigger('phone')
+                    }
+                  }}
                 />
               )}
             />
@@ -107,7 +131,13 @@ const InterPhone: FC = () => {
                   <MainInput
                     label='SMS kod'
                     value={field.value || ''}
-                    onChange={field.onChange}
+                    onChange={value => {
+                      const numbers = value.replace(/\D/g, '').slice(0, 4)
+                      field.onChange(numbers)
+                      if (numbers.length === 4) {
+                        trigger('smsPassword')
+                      }
+                    }}
                     maxLength={4}
                   />
                 )}
@@ -118,25 +148,27 @@ const InterPhone: FC = () => {
             </div>
           )}
 
-          <Button
-            type='submit'
-            label={
-              step === 1
-                ? 'SMS yuborish'
-                : smsMutation.isPending
-                ? 'Kutilmoqda...'
-                : 'SMS ni tasdiqlash'
-            }
-            disabled={disabled}
-          />
+          {/* BUTTON GROUP */}
+          <div className='button_group'>
+            <Button
+              type='submit'
+              label={
+                step === 1
+                  ? 'SMS yuborish'
+                  : smsMutation.isPending
+                  ? 'Kutilmoqda...'
+                  : 'SMS ni tasdiqlash'
+              }
+              disabled={disabled}
+            />
+          </div>
         </form>
 
         <div className='route_bottom'>
-          <Link href='/Login' className='route_button_style'>
+          <Link href='/login' className='route_button_style'>
             Kirish
           </Link>
-          <Link href={'/ResetPassword/ChangePassword'}>➡️</Link>
-          <Link href='/Register' className='route_button_style'>
+          <Link href='/register' className='route_button_style'>
             Ro'yxatdan o'tish
           </Link>
         </div>
