@@ -15,6 +15,6 @@ export const Colors = {
   green: '#00ff4c',
   yellow: '#ffbd59',
   red: '#ff0000',
-  textPrimary: '#ffff',
+  textPrimary: '#ffff',    
   pageBackground: "#171C26"
 }  
