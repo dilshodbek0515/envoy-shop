@@ -51,62 +51,47 @@ export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
 
 // ================ REGISTER SCHEMA ================
 
-// Yuridik schema
-export const legalSchema = z
+export const registerSchema = z
   .object({
-    firstName: z.string().min(2, "Ism kamida 2 ta belgi bo'lsin"),
-    lastName: z.string().min(2, "Familiya kamida 2 ta belgi bo'lsin"),
-    stir: z
+    phone: z
       .string()
-      .length(9, "STIR 9 ta raqam bo'lsin")
+      .length(9, "Telefon raqam 9 ta bo'lishi kerak")
       .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-    activityType: z.string().min(1, 'Faoliyat turini tanlang'),
-    companyName: z.string().min(3, "Korxona nomi kamida 3 ta belgi bo'lsin"),
-    legalAddress: z.string().min(5, "Yuridik manzil kamida 5 ta belgi bo'lsin"),
-    bankDetails: z
-      .string()
-      .min(20, "Bank rekvizitlari kamida 20 ta belgi bo'lsin"),
-    phoneNumber: z
-      .string()
-      .length(9, "Telefon raqam 9 ta bo'lsin")
-      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-    password: z.string().min(8, "Parol kamida 8 ta belgi bo'lsin"),
-    confirmPassword: z.string().min(8, 'Parolni qayta kiriting')
+
+    email: z.string().email('Email noto‘g‘ri formatda'),
+
+    password: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak"),
+
+    confirm_password: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak")
   })
-  .refine(data => data.password === data.confirmPassword, {
-    message: 'Parollar mos kelmayapti',
-    path: ['confirmPassword']
+  .refine(data => data.password === data.confirm_password, {
+    message: 'Parollar mos emas',
+    path: ['confirm_password']
   })
 
-// Jismoniy schema
-export const physicalSchema = z
-  .object({
-    firstNamePhysical: z.string().min(2, "Ism kamida 2 ta belgi bo'lsin"),
-    lastNamePhysical: z.string().min(2, "Familiya kamida 2 ta belgi bo'lsin"),
-    phoneNumberPhysical: z
-      .string()
-      .length(9, "Telefon raqam 9 ta bo'lsin")
-      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-    emailPhysical: z.string().email("Noto'g'ri email format"),
-    passwordPhysical: z.string().min(8, "Parol kamida 8 ta belgi bo'lsin"),
-    confirmPasswordPhysical: z.string().min(8, 'Parolni qayta kiriting')
-  })
-  .refine(data => data.passwordPhysical === data.confirmPasswordPhysical, {
-    message: 'Parollar mos kelmayapti',
-    path: ['confirmPasswordPhysical']
-  })
+export type RegisterFormData = z.infer<typeof registerSchema>
 
-// TypeScript turlari
-export type LegalFormData = z.infer<typeof legalSchema>
-export type PhysicalFormData = z.infer<typeof physicalSchema>
+// ================ REGISTER-SECOND SCHEMA ================
+
+export const sellerProfileSchema = z.object({
+  first_name: z.string().min(2, 'Ism kamida 2 ta harf'),
+  last_name: z.string().min(2, 'Familiya kamida 2 ta harf'),
+  type: z.string().min(1, 'Shaxs turini tanlang'),
+  company_type: z.string().min(1, 'Faoliyat turini tanlang'),
+  company_name: z.string().min(3, 'Korxona nomi kamida 3 ta harf'),
+  inn: z.string().regex(/^\d{9,14}$/, 'INN faqat raqam'),
+  address: z.string().min(5, 'Manzil kamida 5 ta harf')
+})
+
+export type SellerProfileData = z.infer<typeof sellerProfileSchema>
 
 // ================ REGISTER-SMS SCHEMA ================
 
-export const registerSmsSchema = z.object({
+export const smsSchema = z.object({
   smsCode: z
     .string()
-    .length(4, "SMS kod 4 ta bo'lishi kerak")
-    .regex(/^\d+$/, 'Faqat raqamlar kiriting')
+    .length(4, 'SMS kodi 4 ta raqamdan iborat bo‘lishi kerak')
+    .regex(/^\d{4}$/, 'Faqat raqamlar kiriting')
 })
 
-export type RegisterSmsFormData = z.infer<typeof registerSmsSchema>
+export type SmsFormData = z.infer<typeof smsSchema>
