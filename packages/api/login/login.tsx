@@ -22,7 +22,7 @@ export const LoginFn = async ({
       phone,
       password
     })
-
+    localStorage.setItem('token', data.token.access)
     console.log(data.token)
     return data
   } catch (error) {

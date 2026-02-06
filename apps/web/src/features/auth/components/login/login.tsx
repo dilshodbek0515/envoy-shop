@@ -52,15 +52,13 @@ const Login: FC = () => {
     }
   })
 
-  // ✅ React Query mutation
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormData) =>
       LoginFn({
         phone: `+998${data.phone}`,
         password: data.password
       }),
-    onSuccess: data => {
-      localStorage.setItem('token', data.token.access)
+    onSuccess: () => {
       router.replace('/')
     },
     onError: error => console.log('Login error:', error)
@@ -127,7 +125,10 @@ const Login: FC = () => {
         </form>
 
         <div className='route_bottom'>
-          <Link href='/reset-password/inter-phone' className='route_button_style'>
+          <Link
+            href='/reset-password/inter-phone'
+            className='route_button_style'
+          >
             Parolni unutdingizmi?
           </Link>
           <Link href='/register' className='route_button_style'>
