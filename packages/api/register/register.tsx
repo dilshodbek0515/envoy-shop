@@ -16,7 +16,6 @@ export const RegisterFn = async (data: RegistrationData) => {
   formData.append('ip_address', data.ip_address)
   formData.append('device_id', data.device_id)
   formData.append('purpose', data.purpose)
-  console.log(data)
 
   const res = await axios.post(API, formData, {
     headers: {
