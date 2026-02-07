@@ -43,7 +43,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       <div className={clsx(styles.inputBox, error && styles.inputBoxError)}>
         <input
           readOnly
-          value={selected?.label || ''}
+          value={selected?.value || ''}
           placeholder=' '
           className={styles.input}
           onClick={() => setOpen(prev => !prev)}
@@ -59,14 +59,14 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           <div className={styles.dropdown}>
             {options.map(opt => (
               <div
-                key={opt.value}
+                key={opt.label}
                 className={styles.option}
                 onClick={() => {
                   onChange(opt.value)
                   setOpen(false)
                 }}
               >
-                {opt.label}
+                {opt.value}
               </div>
             ))}
           </div>
