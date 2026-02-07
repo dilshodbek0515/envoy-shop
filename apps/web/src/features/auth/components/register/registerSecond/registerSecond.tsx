@@ -77,7 +77,7 @@ const Register: FC = () => {
   return (
     <div className='container'>
       <div className='register_box'>
-        <h2 className='login_title'>Sotuvchi ma’lumotlari</h2>
+        <h2 className='login_title'>Ro'yxatdan o'tish</h2>
 
         <form className='default_form' onSubmit={handleSubmit(onSubmit)}>
           {/* FIRST NAME */}

@@ -1,6 +1,6 @@
 'use client'
 import './registerSms.css'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import Button from '../../../../../shared/ui/button/button'
 import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import Link from 'next/link'
@@ -13,48 +13,18 @@ interface SmsFormData {
 const RegisterSms: FC = () => {
   const router = useRouter()
   const [isChange, setIsChange] = useState(false)
-  const [correctCode, setCorrectCode] = useState<string | null>('')
-
-  useEffect(() => {
-    const code = localStorage.getItem('register_sms_code')
-    setCorrectCode(code)
-  }, [])
-
-  // const safeSmsResolver: Resolver<SmsFormData> = async values => {
-  //   const result = smsSchema.safeParse(values)
-  //   if (result.success) return { values: result.data, errors: {} }
-
-  //   const errors = result.error.flatten().fieldErrors
-  //   return {
-  //     values: {},
-  //     errors: Object.fromEntries(
-  //       Object.entries(errors).map(([key, val]) => [
-  //         key,
-  //         { type: 'validation', message: val?.[0] }
-  //       ])
-  //     )
-  //   }
-  // }
 
   const {
     handleSubmit,
     control,
-    watch,
-    reset,
-    formState: { errors, isValid }
+    formState: { errors }
   } = useForm<SmsFormData>({
     mode: 'onChange',
     defaultValues: { code: '' }
   })
-  const codeValue = watch('code')
 
   const onSubmit = (data: SmsFormData) => {
-    const role = localStorage.getItem('role')
-    if (data.code !== correctCode) {
-      reset()
-      return
-    }
-    router.replace(role === 'seller' ? '/register/register-second' : '/')
+    router.replace('/register/register-second')
   }
 
   return (
@@ -80,9 +50,6 @@ const RegisterSms: FC = () => {
                   />
                 )}
               />
-              {errors.code && codeValue.length > 0 && (
-                <div className='error_text'>{errors.code.message}</div>
-              )}
             </div>
           </div>
 
@@ -90,7 +57,7 @@ const RegisterSms: FC = () => {
             <Button
               type='submit'
               label='SMS ni tasdiqlash'
-              disabled={!isChange || codeValue.length !== 4}
+              disabled={!isChange}
             />
           </div>
         </form>
