@@ -1,40 +1,34 @@
 'use client'
 import './register.css'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import Link from 'next/link'
-import Button from 'apps/web/src/shared/ui/button/button'
-import InputPhone from 'apps/web/src/shared/ui/input/InputPhone/InputPhone'
-import MainInput from 'apps/web/src/shared/ui/input/MainInput/input'
-import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
-import { useForm, Controller, Resolver } from 'react-hook-form'
-import { RegisterFormData, registerSchema } from 'apps/schema/schema'
-import { RegisterFn } from '../../../../../../../packages/api/register/register'
-import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-
-type Role = 'seller' | 'buyer'
+import { useMutation } from '@tanstack/react-query'
+import { useForm, Controller, Resolver } from 'react-hook-form'
+import Button from 'apps/web/src/shared/ui/button/button'
+import { registerSchema, RegisterFormData } from 'apps/schema/schema'
+import InputPhone from 'apps/web/src/shared/ui/input/InputPhone/InputPhone'
+import { RegisterFn } from '../../../../../../../packages/api/register/register'
+import { getClientIp, getDeviceId } from '../../../../utils/device'
 
 const Register: FC = () => {
-  const [role, setRole] = useState<Role>('seller')
-  const [isChange, setIsChange] = useState(false)
   const router = useRouter()
-  const safeRegisterResolver: Resolver<RegisterFormData> = async values => {
+
+  const safeResolver: Resolver<RegisterFormData> = async values => {
     const result = registerSchema.safeParse(values)
 
     if (result.success) {
-      return {
-        values: result.data,
-        errors: {}
-      }
+      return { values: result.data, errors: {} }
     }
 
     const errors = result.error.flatten().fieldErrors
+
     return {
       values: {},
       errors: Object.fromEntries(
-        Object.entries(errors).map(([key, val]) => [
-          key,
-          { type: 'validation', message: val?.[0] }
+        Object.entries(errors).map(([k, v]) => [
+          k,
+          { type: 'validation', message: v?.[0] }
         ])
       )
     }
@@ -45,64 +39,35 @@ const Register: FC = () => {
     control,
     formState: { errors, isValid }
   } = useForm<RegisterFormData>({
-    resolver: safeRegisterResolver,
+    resolver: safeResolver,
     mode: 'onChange',
-    defaultValues: {
-      phone: '',
-      email: '',
-      password: '',
-      confirm_password: ''
-    }
+    defaultValues: { phone: '' }
   })
 
   const registerMutation = useMutation({
-    mutationFn: (data: RegisterFormData) => {
-      const fullData = {
-        ...data,
-        role: role === 'seller' ? 'seller' : 'buyer',
-        phone: `+998${data.phone}`
-      }
-      return RegisterFn({ fullData })
-    },
+    mutationFn: RegisterFn,
     onSuccess: () => {
       router.replace('/register/register-sms')
-      localStorage.setItem('role', role)
     },
-    onError: error => console.log('Register error:', error)
+    onError: err => console.log('OTP send error:', err)
   })
 
-  const onSubmit = async (data: RegisterFormData) => {
-    registerMutation.mutate(data)
+  const onSubmit = async (form: RegisterFormData) => {
+    const ip = await getClientIp()
+    const deviceId = getDeviceId()
+
+    registerMutation.mutate({
+      phone: '+998' + form.phone,
+      ip_address: ip,
+      device_id: deviceId,
+      purpose: 'register'
+    })
   }
 
   return (
     <div className='container'>
       <div className='register_box'>
-        <h2 style={{ padding: 10 }} className='login_title'>
-          Ro'yxatdan o'tish
-        </h2>
-
-        <div className='roleBox'>
-          <div
-            className={`seller_style ${role === 'seller' ? 'select_role' : ''}`}
-            onClick={() => {
-              setRole('seller')
-              setIsChange(true)
-            }}
-          >
-            Sotuvchi
-          </div>
-
-          <div
-            className={`buyer_style ${role === 'buyer' ? 'select_role' : ''}`}
-            onClick={() => {
-              setRole('buyer')
-              setIsChange(true)
-            }}
-          >
-            Xaridor
-          </div>
-        </div>
+        <h2 className='login_title'>Ro'yxatdan o'tish</h2>
 
         {/* FORM */}
         <form className='default_form' onSubmit={handleSubmit(onSubmit)}>
@@ -111,84 +76,16 @@ const Register: FC = () => {
             <Controller
               name='phone'
               control={control}
-              render={({ field: { onChange, value } }) => (
+              render={({ field }) => (
                 <InputPhone
                   label='Telefon raqam'
-                  value={value}
-                  onChange={v => {
-                    onChange(v)
-                    setIsChange(true)
-                  }}
+                  value={field.value}
+                  onChange={field.onChange}
                 />
               )}
             />
             {errors.phone && (
               <div className='error_text'>{errors.phone.message}</div>
-            )}
-          </div>
-
-          {/* EMAIL */}
-          <div className='input_group'>
-            <Controller
-              name='email'
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <MainInput
-                  label='Elektron pochta'
-                  value={value}
-                  onChange={v => {
-                    onChange(v)
-                    setIsChange(true)
-                  }}
-                />
-              )}
-            />
-            {errors.email && (
-              <div className='error_text'>{errors.email.message}</div>
-            )}
-          </div>
-
-          {/* PASSWORD */}
-          <div className='input_group'>
-            <Controller
-              name='password'
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <PasswordInput
-                  label='Parol'
-                  value={value}
-                  onChange={v => {
-                    onChange(v)
-                    setIsChange(true)
-                  }}
-                />
-              )}
-            />
-            {errors.password && (
-              <div className='error_text'>{errors.password.message}</div>
-            )}
-          </div>
-
-          {/* CONFIRM */}
-          <div className='input_group'>
-            <Controller
-              name='confirm_password'
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <PasswordInput
-                  label='Qayta parol'
-                  value={value}
-                  onChange={v => {
-                    onChange(v)
-                    setIsChange(true)
-                  }}
-                />
-              )}
-            />
-            {errors.confirm_password && (
-              <div className='error_text'>
-                {errors.confirm_password.message}
-              </div>
             )}
           </div>
 
@@ -199,7 +96,6 @@ const Register: FC = () => {
           />
         </form>
 
-        {/* ROUTES */}
         <div className='route_bottom'>
           <Link href='/login' className='route_button_style'>
             <span className='acc'>Akkountingiz bormi? </span> Kirish

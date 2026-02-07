@@ -51,24 +51,9 @@ export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
 
 // ================ REGISTER SCHEMA ================
 
-export const registerSchema = z
-  .object({
-    phone: z
-      .string()
-      .length(9, "Telefon raqam 9 ta bo'lishi kerak")
-      .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
-
-    email: z.string().email('Email noto‘g‘ri formatda'),
-
-    password: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak"),
-
-    confirm_password: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak")
-  })
-  .refine(data => data.password === data.confirm_password, {
-    message: 'Parollar mos emas',
-    path: ['confirm_password']
-  })
-
+export const registerSchema = z.object({
+  phone: z.string().regex(/^\d{9}$/, "Telefon raqam 9 ta bo'lsin")
+})
 export type RegisterFormData = z.infer<typeof registerSchema>
 
 // ================ REGISTER-SECOND SCHEMA ================

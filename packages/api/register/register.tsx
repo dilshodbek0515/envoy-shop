@@ -1,45 +1,28 @@
-import axios, { AxiosResponse } from 'axios'
-const API = 'http://envoyshop.webcoder.uz/users/register/'
+import axios from 'axios'
 
-interface RegistrationData {
-  role: 'seller' | 'buyer' | string
+const API = 'http://envoyshop.webcoder.uz/api/auth/verify-phone/send-otp/'
+
+export interface RegistrationData {
   phone: string
-  email: string
-  password: string
-  confirm_password: string
+  ip_address: string
+  device_id: string
+  purpose: string
 }
 
-interface RegisterFnArgs {
-  fullData: RegistrationData
-}
+export const RegisterFn = async (data: RegistrationData) => {
+  const formData = new FormData()
 
-export const RegisterFn = async ({ fullData }: RegisterFnArgs) => {
-  try {
-    const formData = new FormData()
-    formData.append('role', fullData.role)
-    formData.append('email', fullData.email)
-    formData.append('phone', fullData.phone)
-    formData.append('password', fullData.password)
-    formData.append('confirm_password', fullData.confirm_password)
+  formData.append('phone', data.phone)
+  formData.append('ip_address', data.ip_address)
+  formData.append('device_id', data.device_id)
+  formData.append('purpose', data.purpose)
+  console.log(data)
 
-    const { data }: AxiosResponse = await axios.post(API, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-
-    // Tokenlarni localStorage ga saqlash
-    if (data.access && data.refresh) {
-      localStorage.setItem('token', data.access)
-      localStorage.setItem('register_sms_code', data.code)
+  const res = await axios.post(API, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
     }
+  })
 
-    console.log(fullData)
-    console.log(data)
-
-    return data
-  } catch (error: any) {
-    console.error('RegisterFnda xatolik:', error)
-    throw error.response?.data || error
-  }
+  return res.data
 }
