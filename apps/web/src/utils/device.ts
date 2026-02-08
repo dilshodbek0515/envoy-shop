@@ -1,14 +1,25 @@
-export const getDeviceId = () => {
-  if (typeof window === 'undefined') return 'unknown-device'
+export const getDeviceName = () => {
+  if (typeof navigator === 'undefined') return 'unknown'
 
-  let id = localStorage.getItem('device_id')
+  const ua = navigator.userAgent
 
-  if (!id) {
-    id = crypto.randomUUID()
-    localStorage.setItem('device_id', id)
+  // Android modelini olish
+  const androidMatch = ua.match(/Android.*;\s([^)]+)\)/)
+  if (androidMatch) {
+    return androidMatch[1] // Tecno KI7 kabi
   }
 
-  return id
+  // iPhone / iPad
+  if (/iPhone/.test(ua)) return 'iPhone'
+  if (/iPad/.test(ua)) return 'iPad'
+
+  // Windows PC
+  if (/Windows/.test(ua)) return 'Windows PC'
+
+  // Mac
+  if (/Macintosh/.test(ua)) return 'Mac'
+
+  return 'Unknown device'
 }
 
 export const getClientIp = async () => {

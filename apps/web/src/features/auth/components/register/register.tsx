@@ -9,10 +9,11 @@ import Button from 'apps/web/src/shared/ui/button/button'
 import { registerSchema, RegisterFormData } from 'apps/schema/schema'
 import InputPhone from 'apps/web/src/shared/ui/input/InputPhone/InputPhone'
 import { RegisterFn } from '../../../../../../../packages/api/register/register'
-import { getClientIp, getDeviceId } from '../../../../utils/device'
+import { getClientIp, getDeviceName } from '../../../../utils/device'
 
 const Register: FC = () => {
   const router = useRouter()
+  const device_name = getDeviceName()
 
   const safeResolver: Resolver<RegisterFormData> = async values => {
     const result = registerSchema.safeParse(values)
@@ -37,6 +38,7 @@ const Register: FC = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isValid }
   } = useForm<RegisterFormData>({
     resolver: safeResolver,
@@ -46,21 +48,27 @@ const Register: FC = () => {
 
   const registerMutation = useMutation({
     mutationFn: RegisterFn,
-    onSuccess: () => {
-      router.replace('/register/register-sms')
+    onSuccess: (res, data) => {
+      localStorage.setItem('register_phone', data.phone)
+      localStorage.getItem('sms_message')
+
+      if (res.message === 'Verification code sent') {
+        router.replace('/register/register-sms')
+      } else reset()
     },
-    onError: err => console.log('OTP send error:', err)
+    onError: err => {
+      console.log('OTP send error:', err), reset()
+    }
   })
 
   const onSubmit = async (form: RegisterFormData) => {
     const ip = await getClientIp()
-    const deviceId = getDeviceId()
-
+    const fullPhone = '+998' + form.phone
     registerMutation.mutate({
-      phone: '+998' + form.phone,
+      phone: fullPhone,
       ip_address: ip,
-      device_id: deviceId,
-      purpose: 'register'
+      device_id: device_name,
+      purpose: 'verify_phone'
     })
   }
 
