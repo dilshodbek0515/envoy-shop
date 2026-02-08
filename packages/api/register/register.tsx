@@ -23,5 +23,6 @@ export const RegisterFn = async (data: RegistrationData) => {
     }
   })
 
+  console.log('Register', res.data)
   return res.data
 }
