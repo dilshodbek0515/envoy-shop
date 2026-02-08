@@ -1,27 +1,23 @@
 import axios, { AxiosResponse } from 'axios'
 
-const API = 'https://my.example.uz.webcoder.uz/user/sign-in/'
+const API = 'http://envoyshop.webcoder.uz/api/auth/check-phone/'
 
 export interface SmsArgs {
   phone: string
-  smsPassword: string
 }
 
 export interface SmsResponse {
-  success?: boolean
-  message?: string
-  [key: string]: any
+  message: boolean
 }
 
-export const SmsFn = async ({
-  phone,
-  smsPassword
-}: SmsArgs): Promise<SmsResponse> => {
+export const SmsFn = async ({ phone }: SmsArgs): Promise<SmsResponse> => {
   try {
     const { data }: AxiosResponse<SmsResponse> = await axios.post(API, {
       phone,
-      smsPassword
+      purpose: 'reset_password'
     })
+
+    console.log(data)
     return data
   } catch (error) {
     console.error('SmsFn xatolik:', error)
