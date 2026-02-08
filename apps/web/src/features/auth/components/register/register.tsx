@@ -38,6 +38,7 @@ const Register: FC = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isValid }
   } = useForm<RegisterFormData>({
     resolver: safeResolver,
@@ -47,11 +48,17 @@ const Register: FC = () => {
 
   const registerMutation = useMutation({
     mutationFn: RegisterFn,
-    onSuccess: (_, data) => {
+    onSuccess: (res, data) => {
       localStorage.setItem('register_phone', data.phone)
-      router.replace('/register/register-sms')
+      localStorage.getItem('sms_message')
+
+      if (res.message === 'Verification code sent') {
+        router.replace('/register/register-sms')
+      } else reset()
     },
-    onError: err => console.log('OTP send error:', err)
+    onError: err => {
+      console.log('OTP send error:', err), reset()
+    }
   })
 
   const onSubmit = async (form: RegisterFormData) => {

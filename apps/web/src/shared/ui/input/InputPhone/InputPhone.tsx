@@ -44,7 +44,6 @@ const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
     return (
       <div className={`wrapperI ${focused ? 'active' : ''}`}>
         <label className={`label ${showLabel ? 'active' : ''}`}>{label}</label>
-
         <span className={`prefix ${showPrefix ? 'show' : ''}`}>+998</span>
 
         <input

@@ -22,7 +22,7 @@ const RegisterSms: FC = () => {
   const smsMutation = useMutation({
     mutationFn: RegisterSmsFn,
     onSuccess: () => {
-      router.replace('/register/register-second')
+      router.replace('/register/register-default')
     }
   })
 
