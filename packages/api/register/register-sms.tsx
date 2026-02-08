@@ -18,5 +18,6 @@ export const RegisterSmsFn = async (data: RegisterSmsPayload) => {
     headers: { 'Content-Type': 'multipart/form-data' }
   })
 
+  localStorage.setItem('access_token', res.data.token.access)
   return res.data
 }
