@@ -6,8 +6,9 @@ const Page = () => {
   const router = useRouter()
 
   useEffect(() => {
-    const access = localStorage.getItem('token')
-    if (!access) {
+    const access_token = localStorage.getItem('token')
+
+    if (!access_token) {
       router.replace('/login')
     }
   }, [router])

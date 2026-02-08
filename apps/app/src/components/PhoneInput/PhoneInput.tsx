@@ -96,14 +96,14 @@ const PhoneInput = ({}: any) => {
             ]}
           >
             <Text style={styles.prefix}>+{callingCode}</Text>
-            
+
             <View
               style={{
                 borderWidth: 1,
-                height: 18,
+                height: 16,
                 borderColor: focused ? "#00beff" : "#999",
                 borderRadius: 8,
-                marginRight: 6
+                marginRight: 6,
               }}
             />
 
