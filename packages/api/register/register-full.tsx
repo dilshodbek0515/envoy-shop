@@ -1,6 +1,9 @@
 import axios from 'axios'
+import { PREFIX } from '../api'
 
-const API = 'http://envoyshop.webcoder.uz/api/auth/seller-profile-create/'
+const RegisterFullApi = {
+  api: `${PREFIX}/api/auth/seller-profile-create/`
+}
 
 export interface SellerProfilePayload {
   first_name: string
@@ -16,7 +19,7 @@ export const SellerInformationFn = async (data: SellerProfilePayload) => {
   const token = localStorage.getItem('access_token')
   if (!token) throw new Error('Token yo‘q')
 
-  const res = await axios.post(API, data, {
+  const res = await axios.post(RegisterFullApi.api, data, {
     headers: {
       Authorization: `Bearer ${token}`
     }
