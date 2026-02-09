@@ -46,27 +46,25 @@ export default function Auth() {
     });
     Keyboard.dismiss();
   };
-
   const renderPage = ({ item }: any) => {
     const isLogin = item.id === 1;
+    const isRegister = item.id === 2; // Register page
+
     return (
       <View style={styles.page}>
         {item.component}
 
-        <View style={styles.touchBox} pointerEvents="box-none">
-          <TouchableOpacity
-            style={styles.touch}
-            onPress={() =>
-              isLogin
-                ? router.replace("./Yuridik/yuridik")
-                : router.replace("/Register/sms/sms")
-            }
-          >
-            <Text style={styles.touchText}>
-              {isLogin ? "Dasturga kirish" : "Davom etish"}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {/* Faqat login page uchun button */}
+        {!isRegister && (
+          <View style={styles.touchBox} pointerEvents="box-none">
+            <TouchableOpacity
+              style={styles.touch}
+              onPress={() => router.replace("./Yuridik/yuridik")}
+            >
+              <Text style={styles.touchText}>Dasturga kirish</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   };
