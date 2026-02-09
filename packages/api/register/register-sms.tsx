@@ -1,7 +1,9 @@
 import axios from 'axios'
+import { PREFIX } from '../api'
 
-const RegisterSmsApi =
-  'http://envoyshop.webcoder.uz/api/auth/verify-phone/confirm/'
+const RegisterSmsApi = {
+  api: `${PREFIX}/api/auth/verify-phone/confirm/`
+}
 
 export interface RegisterSmsPayload {
   phone: string
@@ -14,7 +16,7 @@ export const RegisterSmsFn = async (data: RegisterSmsPayload) => {
   formData.append('phone', data.phone)
   formData.append('code', data.code)
 
-  const res = await axios.post(RegisterSmsApi, formData, {
+  const res = await axios.post(RegisterSmsApi.api, formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   })
 

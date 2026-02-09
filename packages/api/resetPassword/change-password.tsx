@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from 'axios'
+import { PREFIX } from '../api'
 
-const API = 'http://envoyshop.webcoder.uz/api/auth/password-reset/'
+const ChangePasswordApi = {
+  api: `${PREFIX}/api/auth/password-reset/`
+}
 
 export interface PasswordArgs {
   password: string
@@ -17,7 +20,7 @@ export const PasswordFn = async (
 ): Promise<PasswordResponse> => {
   const token = localStorage.getItem('access_token')
   const res: AxiosResponse<PasswordResponse> = await axios.put(
-    API,
+    ChangePasswordApi.api,
     { password: data.password },
     { headers: { Authorization: `Bearer ${token}` } }
   )
