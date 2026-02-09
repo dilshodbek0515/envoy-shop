@@ -13,24 +13,21 @@ import {
   ChangePasswordFormData
 } from '../../../../../../../schema/schema'
 
-// ✅ Safe Zod resolver (login faylidagi kabi)
-const safeZodResolver: Resolver<ChangePasswordFormData> = async values => {
-  const result = changePasswordSchema.safeParse(values)
+const safeResolver: Resolver<ChangePasswordFormData> = async values => {
+  const r = changePasswordSchema.safeParse(values)
 
-  if (result.success) {
-    return {
-      values: result.data,
-      errors: {}
-    }
+  if (r.success) {
+    return { values: r.data, errors: {} }
   }
 
-  const errors = result.error.flatten().fieldErrors
+  const errors = r.error.flatten().fieldErrors
+
   return {
-    values: {},
+    values,
     errors: Object.fromEntries(
-      Object.entries(errors).map(([key, val]) => [
-        key,
-        { type: 'validation', message: val?.[0] }
+      Object.entries(errors).map(([k, v]) => [
+        k,
+        { type: 'validation', message: v?.[0] }
       ])
     )
   }
@@ -40,12 +37,12 @@ const ChangePassword: FC = () => {
   const router = useRouter()
 
   const {
-    handleSubmit,
+    watch,
     control,
-    formState: { errors, isValid },
-    watch
+    handleSubmit,
+    formState: { errors, isValid }
   } = useForm<ChangePasswordFormData>({
-    resolver: safeZodResolver,
+    resolver: safeResolver,
     mode: 'onChange',
     defaultValues: {
       firstPassword: '',
@@ -54,33 +51,27 @@ const ChangePassword: FC = () => {
   })
 
   const passwordMutation = useMutation({
-    mutationFn: (data: { password: string; confirmPassword: string }) =>
-      PasswordFn({
-        password: data.password,
-        confirmPassword: data.confirmPassword
-      }),
-    onSuccess: () => router.push('/login'),
-    onError: (error: any) => console.log('Ishlamadi', error)
+    mutationFn: PasswordFn,
+    onSuccess: () => {
+      localStorage.removeItem('reset_phone')
+      router.replace('/login')
+    },
+    onError: err => {
+      console.log('Password change error:', err)
+    }
   })
 
-  const firstPasswordValue = watch('firstPassword') || ''
-  const secondPasswordValue = watch('secondPassword') || ''
+  const p1 = watch('firstPassword') || ''
+  const p2 = watch('secondPassword') || ''
+
+  const passwordsMatch = p1 === p2
+  const ready = p1.length >= 8 && p2.length >= 8 && passwordsMatch && isValid
 
   const onSubmit = (data: ChangePasswordFormData) => {
-    if (isValid && data.firstPassword && data.secondPassword) {
-      passwordMutation.mutate({
-        password: data.firstPassword,
-        confirmPassword: data.secondPassword
-      })
-    }
+    passwordMutation.mutate({
+      password: data.firstPassword
+    })
   }
-
-  // ✅ Parollarni solishtirish
-  const passwordsMatch = firstPasswordValue === secondPasswordValue
-  const isFormValid =
-    firstPasswordValue.length >= 8 &&
-    secondPasswordValue.length >= 8 &&
-    passwordsMatch
 
   return (
     <div className='container'>
@@ -88,40 +79,30 @@ const ChangePassword: FC = () => {
         <h2 className='login_title'>Parolni o'zgartirish</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-          {/* Birinchi parol */}
+          {/* PASSWORD */}
           <div className='input_group'>
             <Controller
               name='firstPassword'
               control={control}
               render={({ field }) => (
-                <PasswordInput
-                  label='Yangi parol'
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                />
+                <PasswordInput label='Yangi parol' {...field} />
               )}
             />
-            {errors.firstPassword && firstPasswordValue.length > 0 && (
+            {errors.firstPassword && (
               <div className='error_text'>{errors.firstPassword.message}</div>
             )}
           </div>
 
-          {/* Ikkinchi parol */}
+          {/* CONFIRM PASSWORD*/}
           <div className='input_group'>
             <Controller
               name='secondPassword'
               control={control}
               render={({ field }) => (
-                <PasswordInput
-                  label='Yangi parolni takrorlang'
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                />
+                <PasswordInput label='Parolni takrorlang' {...field} />
               )}
             />
-            {errors.secondPassword && secondPasswordValue.length > 0 && (
+            {errors.secondPassword && (
               <div className='error_text'>{errors.secondPassword.message}</div>
             )}
           </div>
@@ -130,10 +111,10 @@ const ChangePassword: FC = () => {
             type='submit'
             label={
               passwordMutation.isPending
-                ? 'Kutilmoqda...'
-                : 'Parolni tasdiqlash'
+                ? 'Saqlanmoqda...'
+                : 'Parolni yangilash'
             }
-            disabled={!isFormValid || passwordMutation.isPending}
+            disabled={!ready || passwordMutation.isPending}
           />
         </form>
 

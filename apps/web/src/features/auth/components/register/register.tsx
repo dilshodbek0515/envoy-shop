@@ -50,8 +50,6 @@ const Register: FC = () => {
     mutationFn: RegisterFn,
     onSuccess: (res, data) => {
       localStorage.setItem('register_phone', data.phone)
-      localStorage.getItem('sms_message')
-
       if (res.message === 'Verification code sent') {
         router.replace('/register/register-sms')
       } else reset()
