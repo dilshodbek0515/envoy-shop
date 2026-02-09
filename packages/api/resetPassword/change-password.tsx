@@ -1,10 +1,9 @@
 import axios, { AxiosResponse } from 'axios'
 
-const API = 'https://my.example.uz.webcoder.uz/user/sign-in/'
+const API = 'http://envoyshop.webcoder.uz/api/auth/password-reset/'
 
 export interface PasswordArgs {
   password: string
-  confirmPassword: string
 }
 
 export interface PasswordResponse {
@@ -13,18 +12,15 @@ export interface PasswordResponse {
   [key: string]: any
 }
 
-export const PasswordFn = async ({
-  password,
-  confirmPassword
-}: PasswordArgs): Promise<PasswordResponse> => {
-  try {
-    const { data }: AxiosResponse<PasswordResponse> = await axios.post(API, {
-      password,
-      confirmPassword
-    })
-    return data
-  } catch (error) {
-    console.error('PasswordFn xatolik:', error)
-    throw error
-  }
+export const PasswordFn = async (
+  data: PasswordArgs
+): Promise<PasswordResponse> => {
+  const token = localStorage.getItem('access_token')
+  const res: AxiosResponse<PasswordResponse> = await axios.put(
+    API,
+    { password: data.password },
+    { headers: { Authorization: `Bearer ${token}` } }
+  )
+
+  return res.data
 }
