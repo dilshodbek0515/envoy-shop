@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-const API = 'http://envoyshop.webcoder.uz/users/login/'
+const API = 'http://envoyshop.webcoder.uz/api/auth/login/'
 
 export interface LoginArgs {
   phone: string

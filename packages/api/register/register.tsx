@@ -11,7 +11,6 @@ export interface RegistrationData {
 
 export const RegisterFn = async (data: RegistrationData) => {
   const formData = new FormData()
-
   formData.append('phone', data.phone)
   formData.append('ip_address', data.ip_address)
   formData.append('device_id', data.device_id)
@@ -23,6 +22,5 @@ export const RegisterFn = async (data: RegistrationData) => {
     }
   })
 
-  console.log('Register', res.data)
   return res.data
 }

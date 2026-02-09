@@ -14,7 +14,6 @@ import { loginSchema, LoginFormData } from '../../../../../../schema/schema'
 const Login: FC = () => {
   const router = useRouter()
 
-  // ✅ Safe Zod resolver
   const safeZodResolver: Resolver<LoginFormData> = async values => {
     const result = loginSchema.safeParse(values)
 
@@ -37,7 +36,6 @@ const Login: FC = () => {
     }
   }
 
-  // ✅ React Hook Form
   const {
     handleSubmit,
     control,
@@ -47,8 +45,8 @@ const Login: FC = () => {
     resolver: safeZodResolver,
     mode: 'onChange',
     defaultValues: {
-      phone: '975790515',
-      password: 'Dd05150515!'
+      phone: '',
+      password: ''
     }
   })
 
