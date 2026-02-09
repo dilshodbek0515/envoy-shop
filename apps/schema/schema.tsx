@@ -13,18 +13,18 @@ export type LoginFormData = z.infer<typeof loginSchema>
 
 // ================ RESET-PASSWORD SCHEMA ---> INTER-PHONE ================
 export const interPhoneSchema = z.object({
-  phone: z.string().length(9, 'Telefon 9 ta raqam bo‘lishi kerak')
+  phone: z.string().min(9, 'Telefon 9 ta raqam bo‘lishi kerak')
 })
-export type InterPhoneFormData = { phone: string }
+export type InterPhoneFormData = z.infer<typeof interPhoneSchema>
 
 // ================ RESET-PASSWORD SCHEMA ---> CHANGE-PASSWORD ================
 export const changePasswordSchema = z
   .object({
-    firstPassword: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak"),
-    secondPassword: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak")
+    firstPassword: z.string().min(8, 'Kamida 8 ta belgi'),
+    secondPassword: z.string()
   })
-  .refine(data => data.firstPassword === data.secondPassword, {
-    message: 'Parollar mos kelmayapti',
+  .refine(d => d.firstPassword === d.secondPassword, {
+    message: 'Parollar mos emas',
     path: ['secondPassword']
   })
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>

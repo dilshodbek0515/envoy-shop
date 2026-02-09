@@ -5,19 +5,22 @@ import { FC } from 'react'
 import { useRouter } from 'next/navigation'
 import Button from '../../../../../shared/ui/button/button'
 import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
-import { SmsFn } from '../../../../../../../../packages/api/resetPassword/reset-password'
 import { useForm, Controller, Resolver } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import {
-  interPhoneSchema,
-  InterPhoneFormData
+  InterPhoneFormData,
+  RegisterFormData,
+  registerSchema
 } from '../../../../../../../schema/schema'
+import { RegisterFn } from 'packages/api/register/register'
+import { getClientIp, getDeviceName } from 'apps/web/src/utils/device'
 
 const InterPhone: FC = () => {
   const router = useRouter()
+  const device_name = getDeviceName()
 
-  const resolver: Resolver<InterPhoneFormData> = async values => {
-    const result = interPhoneSchema.safeParse(values)
+  const safeResolver: Resolver<RegisterFormData> = async values => {
+    const result = registerSchema.safeParse(values)
 
     if (result.success) {
       return { values: result.data, errors: {} }
@@ -26,7 +29,7 @@ const InterPhone: FC = () => {
     const errors = result.error.flatten().fieldErrors
 
     return {
-      values,
+      values: {},
       errors: Object.fromEntries(
         Object.entries(errors).map(([k, v]) => [
           k,
@@ -36,39 +39,41 @@ const InterPhone: FC = () => {
     }
   }
 
-  const { handleSubmit, control, watch, reset, formState } =
-    useForm<InterPhoneFormData>({
-      resolver,
-      mode: 'onChange',
-      defaultValues: {
-        phone: ''
-      }
-    })
-
-  const phoneValue = watch('phone') || ''
-
-  const smsMutation = useMutation({
-    mutationFn: (phone: string) => SmsFn({ phone: `+998${phone}` }),
-
-    onSuccess: res => {
-      console.log('onSuccess res:', res)
-
-      if (res.message === true) {
-        router.push('/reset-password/change-password')
-      } else {
-        reset()
-      }
-    },
-
-    onError: err => console.log('SMS xato:', err)
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors, isValid }
+  } = useForm<RegisterFormData>({
+    resolver: safeResolver,
+    mode: 'onChange',
+    defaultValues: { phone: '' }
   })
 
-  const onSubmit = (data: InterPhoneFormData) => {
-    smsMutation.mutate(data.phone)
-  }
+  const smsMutation = useMutation({
+    mutationFn: RegisterFn,
+    onSuccess: (res, variables) => {
+      localStorage.setItem('reset_phone', variables.phone)
+      if (res.message === 'Reset code sent') {
+        router.replace('/reset-password/reset-sms')
+      } else reset()
+    },
+    onError: err => {
+      console.log('Reset SMS error:', err), reset()
+    }
+  })
 
-  const disabled =
-    phoneValue.length !== 9 || smsMutation.isPending || !formState.isValid
+  const onSubmit = async (form: InterPhoneFormData) => {
+    const ip = await getClientIp()
+    const fullPhone = '+998' + form.phone
+    console.log(fullPhone)
+    smsMutation.mutate({
+      phone: fullPhone,
+      ip_address: ip,
+      device_id: device_name,
+      purpose: 'reset_password'
+    })
+  }
 
   return (
     <div className='container'>
@@ -83,7 +88,7 @@ const InterPhone: FC = () => {
               render={({ field }) => (
                 <InputPhone
                   label='Telefon raqam'
-                  value={field.value || ''}
+                  value={field.value}
                   onChange={value => {
                     const numbers = value.replace(/\D/g, '').slice(0, 9)
                     field.onChange(numbers)
@@ -91,15 +96,15 @@ const InterPhone: FC = () => {
                 />
               )}
             />
-            {formState.errors.phone && (
-              <div className='error_text'>{formState.errors.phone.message}</div>
+            {errors.phone && (
+              <div className='error_text'>{errors.phone.message}</div>
             )}
           </div>
 
           <Button
             type='submit'
             label={smsMutation.isPending ? 'Kutilmoqda...' : 'SMS yuborish'}
-            disabled={disabled}
+            disabled={!isValid || smsMutation.isPending}
           />
         </form>
 
