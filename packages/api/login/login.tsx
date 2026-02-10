@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from 'axios'
-const API = 'http://envoyshop.webcoder.uz/users/login/'
+import { PREFIX } from '../api'
+
+const Login_Api = {
+  api: `${PREFIX}/api/auth/login/`
+}
 
 export interface LoginArgs {
   phone: string
@@ -18,15 +22,13 @@ export const LoginFn = async ({
   password
 }: LoginArgs): Promise<LoginResponse> => {
   try {
-    const { data }: AxiosResponse<LoginResponse> = await axios.post(API, {
-      phone,
-      password
-    })
+    const { data }: AxiosResponse<LoginResponse> = await axios.post(
+      Login_Api.api,
+      { phone, password }
+    )
     localStorage.setItem('token', data.token.access)
-    console.log(data.token)
     return data
   } catch (error) {
-    console.error('LoginFn xatolik:', error)
     throw error
   }
 }

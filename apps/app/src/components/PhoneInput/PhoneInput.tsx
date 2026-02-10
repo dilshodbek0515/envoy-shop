@@ -1,43 +1,39 @@
-import CloseIcon from "assets/icon/close";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   Animated,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ViewStyle,
   TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
+import CloseIcon from "assets/icon/close";
 import { Spacing } from "src/shared/token";
+import { formatPhone } from "src/utils/phone";
 
-const formatPhone = (value: any) => {
-  const v = value.replace(/\D/g, "").slice(0, 9);
-  return [v.slice(0, 2), v.slice(2, 5), v.slice(5, 7), v.slice(7, 9)]
-    .filter(Boolean)
-    .join(" ");
-};
+interface PhoneInputProps {
+  value: string;
+  onChangeText: (text: string) => void;
+}
 
-const PhoneInput = ({}: any) => {
-  const [raw, setRaw] = useState("");
+const PhoneInput = ({ value, onChangeText }: PhoneInputProps) => {
   const [focused, setFocused] = useState(false);
   const [error, setError] = useState("");
-  const [countryCode, setCountryCode] = useState("UZ");
-  const [callingCode, setCallingCode] = useState("998");
+  const [callingCode] = useState("998");
 
   const animated = useRef(new Animated.Value(0)).current;
 
   const clearInput = () => {
-    setRaw("");
+    onChangeText("");
     setError("");
   };
 
   const onFocus = () => {
     setFocused(true);
     Animated.timing(animated, {
-      toValue: 1, // SRAZU tepaga
+      toValue: 1,
       duration: 150,
       useNativeDriver: false,
     }).start();
@@ -45,14 +41,13 @@ const PhoneInput = ({}: any) => {
 
   const onBlur = () => {
     setFocused(false);
-
-    if (raw.length !== 9) {
+    const digitsOnly = value.replace(/\D/g, "");
+    if (digitsOnly.length !== 9) {
       setError("Telefon raqam 9 ta raqamdan iborat bo‘lishi shart");
     } else {
       setError("");
     }
-
-    if (!raw) {
+    if (!value) {
       Animated.timing(animated, {
         toValue: 0,
         duration: 150,
@@ -61,17 +56,14 @@ const PhoneInput = ({}: any) => {
     }
   };
 
-  const onChange = (text: string) => {
-    const cleaned = text.replace(/\D/g, "").slice(0, 9);
-    setRaw(cleaned);
-    if (cleaned.length === 9) setError("");
+  const handleChange = (text: string) => {
+    const digitsOnly = text.replace(/\D/g, "").slice(0, 9);
+    onChangeText(digitsOnly);
+    if (digitsOnly.length === 9) setError("");
   };
 
   const labelStyle = {
-    top: animated.interpolate({
-      inputRange: [0, 1],
-      outputRange: [35, 8],
-    }),
+    top: animated.interpolate({ inputRange: [0, 1], outputRange: [35, 8] }),
     fontSize: animated.interpolate({
       inputRange: [0, 1],
       outputRange: [16, 12],
@@ -82,53 +74,40 @@ const PhoneInput = ({}: any) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View>
-        <View>
-          <Animated.Text style={[styles.label, labelStyle]}>
-            Telefon raqam
-          </Animated.Text>
+        <Animated.Text style={[styles.label, labelStyle]}>
+          Telefon raqam
+        </Animated.Text>
 
-          <View
-            style={[
-              styles.inputBox,
-              {
-                borderColor: error ? "red" : focused ? "#00beff" : "#999",
-              },
-            ]}
-          >
-            <Text style={styles.prefix}>+{callingCode}</Text>
+        <View
+          style={[
+            styles.inputBox,
+            { borderColor: error ? "red" : focused ? "#00beff" : "#999" },
+          ]}
+        >
+          <Text style={styles.prefix}>+{callingCode}</Text>
 
-            <View
-              style={{
-                borderWidth: 1,
-                height: 16,
-                borderColor: focused ? "#00beff" : "#999",
-                borderRadius: 8,
-                marginRight: 6,
-              }}
-            />
+          <TextInput
+            style={styles.input}
+            keyboardType="number-pad"
+            value={formatPhone(value)}
+            onChangeText={handleChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            keyboardAppearance="dark"
+          />
 
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              value={formatPhone(raw)}
-              onChangeText={onChange}
-              onFocus={onFocus}
-              onBlur={onBlur}
-            />
-
-            {raw.length > 0 && (
-              <TouchableOpacity onPress={clearInput} style={styles.clearBtn}>
-                <CloseIcon
-                  color={focused ? "#00beff" : "#999"}
-                  width={24}
-                  height={24}
-                />
-              </TouchableOpacity>
-            )}
-          </View>
-
-          {error ? <Text style={styles.error}>{error}</Text> : null}
+          {value.length > 0 && (
+            <TouchableOpacity onPress={clearInput} style={styles.clearBtn}>
+              <CloseIcon
+                color={focused ? "#00beff" : "#999"}
+                width={24}
+                height={24}
+              />
+            </TouchableOpacity>
+          )}
         </View>
+
+        {error ? <Text style={styles.error}>{error}</Text> : null}
       </View>
     </TouchableWithoutFeedback>
   );
