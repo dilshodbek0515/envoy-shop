@@ -22,10 +22,11 @@ interface InputPhoneProps
   value: string
   onChange?: (value: string) => void
   onBlur?: () => void
+  error?: boolean
 }
 
 const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
-  ({ label, value, onChange, onBlur, ...props }, ref) => {
+  ({ label, value, onChange, onBlur, error, ...props }, ref) => {
     const [focused, setFocused] = useState(false)
 
     const raw = digits(value)
@@ -42,9 +43,15 @@ const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
     const handleClear = () => onChange?.('')
 
     return (
-      <div className={`wrapperI ${focused ? 'active' : ''}`}>
+      <div
+        className={`wrapperI ${focused ? 'active' : ''} 
+        ${error ? 'error' : ''}`}
+      >
         <label className={`label ${showLabel ? 'active' : ''}`}>{label}</label>
-        <span className={`prefix ${showPrefix ? 'show' : ''}`}>+998</span>
+        <span className={`prefix ${showPrefix ? 'show' : ''}`}>
+          <span className='code'>+998</span>
+          <span className='divider' />
+        </span>
 
         <input
           {...props}
@@ -62,16 +69,16 @@ const InputPhone = forwardRef<HTMLInputElement, InputPhoneProps>(
           }}
         />
 
-        {hasValue && (
-          <button
-            type='button'
-            className={`clear_btn show ${focused ? 'active' : ''}`}
-            onClick={handleClear}
-            onMouseDown={e => e.preventDefault()}
-          >
-            <CloseIcon />
-          </button>
-        )}
+        <button
+          type='button'
+          className={`clear_btn ${hasValue ? 'show' : ''} ${
+            focused ? 'active' : ''
+          }`}
+          onClick={handleClear}
+          onMouseDown={e => e.preventDefault()}
+        >
+          <CloseIcon />
+        </button>
       </div>
     )
   }

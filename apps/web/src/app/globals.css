@@ -1,13 +1,28 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #00beff;
+  --dodgerblue: dodgerblue;
+  --button-disabled: #9bbcf3;
+  --dodgerblue-hover: rgb(6, 113, 219);
+  --white: white;
+  --border-color: rgba(255, 255, 255, 0.35);
+  --main-border: #d1d1d1;
+  --border-red: #dc2626;
+  --input-bg: #ededed;
+  --input-text: #b4b2b2;
+  --shadow-drop: 0 10px 25px rgba(0, 0, 0, 0.08);
+  --shadow-box: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+  --select-hover: #f1f5f9;
+  --black: black;
+  --transparent: transparent;
+
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    --primary: #00beff;
   }
 }
 

@@ -1,12 +1,14 @@
 .container {
-  width: 1440px;
-  height: 100vh;
-  background-color: #ededed;
+  width: 100%;
+  max-width: 1440px;
+  min-height: 100vh;
+  background-color: var(--input-bg);
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 
 .login_box {
   width: 450px;
@@ -16,9 +18,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
-    rgba(17, 17, 26, 0.1) 0px 8px 24px,
-    rgba(17, 17, 26, 0.1) 0px 16px 56px;
+  gap: 20px;
+  box-shadow: var(--shadow-box);
   padding: 30px;
 }
 
@@ -27,59 +28,49 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 }
 
 .sms_input_container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.sms_input_wrapper {
-  width: 100%;
-}
-
-.sms_button_container {
   width: 100%;
 }
 
 .input_group {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
 }
+
+
+.sms_button_container {
+  width: 100%;
+  margin-top: 6px;
+}
+
 
 .error_text {
   min-height: 18px;
   font-size: 12px;
-  color: #ff4d4f !important;
+  color: var(--border-red);
   margin-top: 4px;
   transition: 0.2s;
 }
+
 
 .route_bottom {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 20px;
 }
 
 .route_button_style {
-  border: transparent;
-  color: dodgerblue;
+  border: none;
+  background: var(--transparent);
+  color: var(--dodgerblue);
   text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .acc {
-  color: #666;
-}
-
-.login_title {
-  margin: 0 0 20px 0;
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
+  color: var(--black);
 }

@@ -1,41 +1,67 @@
 import { z } from 'zod'
 
 // ================ LOGIN SCHEMA ================
+
 export const loginSchema = z.object({
   phone: z
     .string()
-    .length(9, "Telefon raqam 9 ta bo'lishi kerak")
+    .length(9, "Telefon raqamni to'liq kiriting")
     .regex(/^\d+$/, 'Faqat raqamlar kiriting'),
 
-  password: z.string().min(8, "Parol kamida 8 ta bo'lishi kerak")
+  password: z.string().min(8, "Parolni to'liq kiriting")
 })
 export type LoginFormData = z.infer<typeof loginSchema>
 
-// ================ RESET-PASSWORD SCHEMA ---> INTER-PHONE ================
-export const interPhoneSchema = z.object({
-  phone: z.string().min(9, 'Telefon 9 ta raqam bo‘lishi kerak')
-})
-export type InterPhoneFormData = z.infer<typeof interPhoneSchema>
+// /
+// /
+// /
+// /
+// /
+// /
 
 // ================ RESET-PASSWORD SCHEMA ---> CHANGE-PASSWORD ================
+
 export const changePasswordSchema = z
   .object({
-    firstPassword: z.string().min(8, 'Kamida 8 ta belgi'),
+    firstPassword: z
+      .string()
+      .regex(/[A-Z]/, { message: 'Kamida 1 ta katta harf' })
+      .regex(/[a-z]/, { message: 'Kamida 1 ta kichik harf' })
+      .regex(/\d/, { message: 'Kamida 1 ta raqam' })
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+        message: 'Kamida 1 ta maxsus belgi'
+      })
+      .min(8, { message: "Kamida 8 ta belgi bo'lsin" }),
     secondPassword: z.string()
   })
-  .refine(d => d.firstPassword === d.secondPassword, {
+  .refine(data => data.firstPassword === data.secondPassword, {
     message: 'Parollar mos emas',
     path: ['secondPassword']
   })
+
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
+// /
+// /
+// /
+// /
+// /
+// /
 
 // ================ REGISTER SCHEMA ================
+
 export const registerSchema = z.object({
-  phone: z.string().regex(/^\d{9}$/, "Telefon raqam 9 ta bo'lsin")
+  phone: z.string().regex(/^\d{9}$/, "Telefon raqamni to'liq kiriting")
 })
 export type RegisterFormData = z.infer<typeof registerSchema>
+// /
+// /
+// /
+// /
+// /
+// /
 
 // ================ REGISTER-SMS SCHEMA ================
+
 export const smsSchema = z.object({
   smsCode: z
     .string()
@@ -44,6 +70,13 @@ export const smsSchema = z.object({
 })
 export type SmsFormData = z.infer<typeof smsSchema>
 
+// /
+// /
+// /
+// /
+// /
+// /
+
 // ================ REGISTER-DEFAULT SCHEMA ================
 
 export const registerDefaultSchema = z
@@ -51,7 +84,7 @@ export const registerDefaultSchema = z
     role: z.enum(['buyer', 'seller']),
     email: z.string().email('Email noto‘g‘ri').optional().or(z.literal('')),
     password: z.string().min(8, 'Parol kamida 8 ta bo‘lsin'),
-    confirm_password: z.string().min(8)
+    confirm_password: z.string()
   })
   .refine(d => d.password === d.confirm_password, {
     message: 'Parollar mos emas',
@@ -59,6 +92,12 @@ export const registerDefaultSchema = z
   })
 
 export type RegisterDefaultFormData = z.infer<typeof registerDefaultSchema>
+// /
+// /
+// /
+// /
+// /
+// /
 
 // ================ REGISTER-FULL SCHEMA ================
 
