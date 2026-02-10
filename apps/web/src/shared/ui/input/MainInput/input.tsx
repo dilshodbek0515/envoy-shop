@@ -4,16 +4,21 @@ import './input.css'
 import '../inputGlobal.css'
 import CloseIcon from 'apps/web/src/features/auth/assets/icons/close'
 
-interface MainInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onBlur'> {
+interface MainInputProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    'onChange' | 'onBlur'
+  > {
   label: string
   value: string
   onChange?: (value: string) => void
   onBlur?: () => void
   type?: string
+  error?: boolean
 }
 
 const MainInput = forwardRef<HTMLInputElement, MainInputProps>(
-  ({ label, value, onChange, onBlur, type = 'text', ...props }, ref) => {
+  ({ label, value, onChange, onBlur, type = 'text', error, ...props }, ref) => {
     const [focused, setFocused] = useState(false)
     const hasValue = value.length > 0
     const shouldShowLabel = focused || hasValue
@@ -42,7 +47,11 @@ const MainInput = forwardRef<HTMLInputElement, MainInputProps>(
     }
 
     return (
-      <div className={`wrapperI ${focused ? 'active' : ''}`}>
+      <div
+        className={`wrapperI ${focused ? 'active' : ''} 
+      ${error ? 'error' : ''}`}
+      
+      >
         <label className={`label ${shouldShowLabel ? 'active' : ''}`}>
           {label}
         </label>

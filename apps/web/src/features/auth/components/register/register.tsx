@@ -49,25 +49,35 @@ const Register: FC = () => {
   const registerMutation = useMutation({
     mutationFn: RegisterFn,
     onSuccess: (res, data) => {
-      localStorage.setItem('register_phone', data.phone)
       if (res.message === 'Verification code sent') {
+        localStorage.setItem('register_phone', data.phone)
+        localStorage.setItem('expires_in', String(res.expires_in))
+        localStorage.setItem('expires_saved_at', String(Date.now()))
+        localStorage.setItem('register_payload', JSON.stringify(data))
+
         router.replace('/register/register-sms')
-      } else reset()
+      } else {
+        reset()
+      }
     },
+
     onError: err => {
-      console.log('OTP send error:', err), reset()
+      console.log('OTP send error:', err)
+      reset()
     }
   })
 
   const onSubmit = async (form: RegisterFormData) => {
     const ip = await getClientIp()
     const fullPhone = '+998' + form.phone
-    registerMutation.mutate({
+
+    const payload = {
       phone: fullPhone,
       ip_address: ip,
       device_id: device_name,
       purpose: 'verify_phone'
-    })
+    }
+    registerMutation.mutate(payload)
   }
 
   return (
@@ -75,18 +85,17 @@ const Register: FC = () => {
       <div className='register_box'>
         <h2 className='login_title'>Ro'yxatdan o'tish</h2>
 
-        {/* FORM */}
         <form className='default_form' onSubmit={handleSubmit(onSubmit)}>
-          {/* PHONE */}
           <div className='input_group'>
             <Controller
               name='phone'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <InputPhone
                   label='Telefon raqam'
                   value={field.value}
                   onChange={field.onChange}
+                  error={fieldState.invalid}
                 />
               )}
             />
@@ -96,9 +105,10 @@ const Register: FC = () => {
           </div>
 
           <Button
-            label={registerMutation.isPending ? 'Kutilmoqda...' : 'Davom etish'}
+            label='Davom etish'
             type='submit'
-            disabled={!isValid || registerMutation.isPending}
+            disabled={!isValid}
+            loading={registerMutation.isPending}
           />
         </form>
 

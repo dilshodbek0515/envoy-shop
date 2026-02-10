@@ -10,20 +10,20 @@
     width: 100%;
     height: 55px;
     border-radius: 15px;
-    background-color: transparent;
-    border: 2px solid #d1d1d1;
+    background-color: var(--transparent);
+    border: 2px solid var(--main-border);
     padding: 5px 50px 5px 20px;
     font-size: 16px;
     outline: none;
-    color: black;
+    color: var(--black);
 }
 
 .wrapperI.active .main_input {
-    border-color: #38bdf8;
+    border-color: var(--primary);
 }
 
 .wrapperI .www {
-    background-color: black;
+    background-color: var(--black);
 }
 
 .clear_btn {
@@ -32,7 +32,7 @@
     top: 50%;
     transform: translate(16px, -50%);
     opacity: 0;
-    background: transparent;
+    background: var(--transparent);
     border: none;
     cursor: pointer;
     pointer-events: none;
@@ -49,11 +49,11 @@
 }
 
 .clear_btn.active svg path {
-    fill: #38bdf8;
+    fill: var(--primary);
 }
 
 .clear_btn:not(.active) svg path {
-    fill: #d1d1d1;
+    fill: var(--main-border);
 }
 
 .clear_btn:hover svg path {
@@ -63,4 +63,8 @@
 .clear_btn svg {
     width: 20px;
     height: 20px;
+}
+
+.wrapperI.error .main_input {
+    border-color: var(--border-red);
 }

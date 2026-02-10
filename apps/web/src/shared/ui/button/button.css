@@ -1,26 +1,44 @@
 .web_button {
     width: 100%;
     height: 55px;
-    background-color: dodgerblue;
+    background-color: var(--dodgerblue);
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 16px;
     font-size: 18px;
-    color: white;
+    color: var(--white);
     cursor: pointer;
     border: transparent;
 }
 
 .web_button:hover {
-    background-color: rgb(6, 113, 219);
-
+    background-color: var(--dodgerblue-hover);
 }
 
-
 .web_button.disabled {
-    background-color: #9bbcf3;
+    background-color: var(--button-disabled);
     cursor: not-allowed;
     opacity: 0.7;
+}
+
+.btn_loader {
+    display: inline-flex;
+    align-items: center;
+}
+
+.spinner {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border-color);
+    border-top: 2px solid var(--white);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }

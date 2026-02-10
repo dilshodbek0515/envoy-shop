@@ -1,0 +1,22 @@
+.sms_code_row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.sms_digit_input {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    border: 2px solid var(--main-border);
+    text-align: center;
+    font-size: 24px;
+    outline: none;
+    transition: 0.2s;
+    background: var(--input-bg);
+}
+
+.sms_digit_input:focus {
+    border-color: var(--primary);
+    transform: scale(1.05);
+}

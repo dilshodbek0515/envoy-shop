@@ -14,13 +14,14 @@ interface PasswordInputProps
   value: string
   onChange?: (value: string) => void
   onBlur?: () => void
+  error?: boolean
 }
 
 const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ label, value, onChange, onBlur, ...props }, ref) => {
+  ({ label, value, onChange, onBlur, error, ...props }, ref) => {
     const [focused, setFocused] = useState(false)
     const [show, setShow] = useState(false)
-
+    const inputRef = React.useRef<HTMLInputElement | null>(null)
     const hasValue = value.length > 0
     const showLabel = focused || hasValue
     const showTools = hasValue
@@ -29,15 +30,33 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
       onChange?.(e.target.value)
 
     const clear = () => onChange?.('')
-    const toggle = () => setShow(v => !v)
+    const toggle = () => {
+      const el = inputRef.current
+      if (!el) return
+
+      const pos = el.selectionStart || 0
+
+      setShow(v => !v)
+
+      requestAnimationFrame(() => {
+        el.setSelectionRange(pos, pos)
+      })
+    }
 
     return (
-      <div className={`wrapperP ${focused ? 'active' : ''}`}>
+      <div
+        className={`wrapperP ${focused ? 'active' : ''} 
+        ${error ? 'error' : ''}`}
+      >
         <label className={`labelP ${showLabel ? 'active' : ''}`}>{label}</label>
 
         <input
           {...props}
-          ref={ref}
+          ref={el => {
+            inputRef.current = el
+            if (typeof ref === 'function') ref(el)
+            else if (ref) ref.current = el
+          }}
           type={show ? 'text' : 'password'}
           value={value}
           onChange={handleChange}
