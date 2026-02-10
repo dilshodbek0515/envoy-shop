@@ -8,38 +8,45 @@ import { PasswordFn } from '../../../../../../../../packages/api/resetPassword/c
 import { useRouter } from 'next/navigation'
 import { useForm, Controller, Resolver } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   changePasswordSchema,
   ChangePasswordFormData
 } from '../../../../../../../schema/schema'
 
-const safeResolver: Resolver<ChangePasswordFormData> = async values => {
-  const r = changePasswordSchema.safeParse(values)
-
-  if (r.success) {
-    return { values: r.data, errors: {} }
-  }
-
-  const errors = r.error.flatten().fieldErrors
-
-  return {
-    values,
-    errors: Object.fromEntries(
-      Object.entries(errors).map(([k, v]) => [
-        k,
-        { type: 'validation', message: v?.[0] }
-      ])
-    )
-  }
-}
-
 const ChangePassword: FC = () => {
   const router = useRouter()
 
+  const safeResolver: Resolver<ChangePasswordFormData> = async values => {
+    const result = changePasswordSchema.safeParse(values)
+
+    if (result.success) {
+      return {
+        values: result.data,
+        errors: {}
+      }
+    }
+
+    const fieldErrors = result.error.flatten().fieldErrors
+
+    return {
+      values: {},
+      errors: Object.fromEntries(
+        Object.entries(fieldErrors).map(([key, val]) => [
+          key,
+          {
+            type: 'validation',
+            message: val?.[0]
+          }
+        ])
+      )
+    }
+  }
+
   const {
-    watch,
     control,
     handleSubmit,
+    watch,
     formState: { errors, isValid }
   } = useForm<ChangePasswordFormData>({
     resolver: safeResolver,
@@ -64,8 +71,7 @@ const ChangePassword: FC = () => {
   const p1 = watch('firstPassword') || ''
   const p2 = watch('secondPassword') || ''
 
-  const passwordsMatch = p1 === p2
-  const ready = p1.length >= 8 && p2.length >= 8 && passwordsMatch && isValid
+  const ready = p1.length >= 8 && p2.length >= 8 && isValid
 
   const onSubmit = (data: ChangePasswordFormData) => {
     passwordMutation.mutate({
@@ -84,8 +90,13 @@ const ChangePassword: FC = () => {
             <Controller
               name='firstPassword'
               control={control}
-              render={({ field }) => (
-                <PasswordInput label='Yangi parol' {...field} />
+              render={({ field, fieldState }) => (
+                <PasswordInput
+                  label='Yangi parol'
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={fieldState.invalid}
+                />
               )}
             />
             {errors.firstPassword && (
@@ -98,8 +109,13 @@ const ChangePassword: FC = () => {
             <Controller
               name='secondPassword'
               control={control}
-              render={({ field }) => (
-                <PasswordInput label='Parolni takrorlang' {...field} />
+              render={({ field, fieldState }) => (
+                <PasswordInput
+                  label='Parolni takrorlang'
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={fieldState.invalid}
+                />
               )}
             />
             {errors.secondPassword && (
@@ -109,12 +125,9 @@ const ChangePassword: FC = () => {
 
           <Button
             type='submit'
-            label={
-              passwordMutation.isPending
-                ? 'Saqlanmoqda...'
-                : 'Parolni yangilash'
-            }
-            disabled={!ready || passwordMutation.isPending}
+            label='Parolni yangilash'
+            disabled={!ready}
+            loading={passwordMutation.isPending}
           />
         </form>
 

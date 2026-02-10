@@ -27,6 +27,5 @@ export const RegisterDefaultFn = async (data: RegisterDefaultPayload) => {
   })
 
   console.log(res.data)
-
   return res.data
 }

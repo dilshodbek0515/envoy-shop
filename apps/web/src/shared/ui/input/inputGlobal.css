@@ -3,11 +3,11 @@
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: #b4b2b2;
+    color: var(--input-text);
     font-size: 16px;
     pointer-events: none;
     transition: 0.25s ease;
-    background: #ededed;
+    background: var(--input-bg);
     padding: 0 8px;
 }
 
@@ -15,16 +15,16 @@
     top: 0px;
     left: 15px;
     font-size: 13px;
-    color: #38bdf8;
+    color: var(--primary);
 }
 
 .bottom_btn {
     width: 90%;
     height: 70px;
-    background-color: transparent;
-    color: #00BEFF;
+    background-color: var(--transparent);
+    color: var(--primary);
     font-size: 20px;
-    border: 1px solid #00BEFF;
+    border: 1px solid var(--primary);
     border-radius: 20px;
 }
 
