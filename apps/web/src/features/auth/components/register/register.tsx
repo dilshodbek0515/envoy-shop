@@ -10,7 +10,7 @@ import Button from 'apps/web/src/shared/ui/button/button'
 import {
   registerSchema,
   RegisterFormData
-} from '../../../../../../../packages/schema/schema'
+} from '../../../../../../../packages/schema/register-schema'
 import InputPhone from 'apps/web/src/shared/ui/input/InputPhone/InputPhone'
 import { RegisterFn } from '../../../../../../../packages/api/register/register'
 import { getClientIp, getDeviceId } from '../../../../utils/device'
@@ -65,7 +65,6 @@ const Register: FC = () => {
         reset()
       }
     },
-
     onError: err => {
       console.log('OTP send error:', err)
       reset()
@@ -91,7 +90,7 @@ const Register: FC = () => {
       <div className={styles.login_box}>
         <h2 className={styles.login_title}>Ro'yxatdan o'tish</h2>
 
-        <form className='default_form' onSubmit={handleSubmit(onSubmit)}>
+        <form className={styles.default_form} onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.input_group}>
             <Controller
               name='phone'
