@@ -1,129 +1,202 @@
 import {
-  StyleSheet,
+  View,
   Text,
   TouchableOpacity,
-  View,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
 } from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import AppInput from "src/components/AppInput/input";
-import PageHeader from "src/components/header/PageHeader";
 import CompanySelect from "src/components/CompaniySelect/CompanySelect";
 import ButtonApp from "src/shared/ui/Button/button";
+import PageHeader from "src/components/header/PageHeader";
 import { Colors, Spacing } from "src/shared/token";
-import { useState } from "react";
 
-type Role = "seller" | "buyer" | null;
+// 1️⃣ Zod schema - barcha inputlarni required qilamiz
+const sellerFullSchema = z.object({
+  firstName: z.string().min(1, "Ism kiritilishi shart"),
+  lastName: z.string().min(1, "Familiya kiritilishi shart"),
+  companyName: z.string().min(1, "Korxona nomi kiritilishi shart"),
+  inn: z.string().min(1, "INN kiritilishi shart"),
+  legalAddress: z.string().min(1, "Manzil kiritilishi shart"),
+  companitType: z.string().min(1, "Faoliyat turi kiritilishi shart"),
+  type: z.enum(["seller", "buyer"]),
+});
 
-interface FormData {
-  firstName: string;
-  lastName: string;
-  companyName: string;
-  inn: string;
-  legalAddress: string;
-  companitType: string;
-}
+type FormData = z.infer<typeof sellerFullSchema>;
 
 const RegisterFull = () => {
-  const [role, setRole] = useState<Role>(null);
-  const [formData, setFormData] = useState<FormData>({
-    firstName: "",
-    lastName: "",
-    companyName: "",
-    inn: "",
-    legalAddress: "",
-    companitType: "",
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm<FormData>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      companyName: "",
+      inn: "",
+      legalAddress: "",
+      companitType: "",
+      type: "buyer",
+    },
+    mode: "onChange",
+    resolver: zodResolver(sellerFullSchema), // 🔥 validation bilan isValid ishlaydi
   });
 
-  const handleChange = (key: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
+  const typeValue = watch("type");
 
-  const isSeller = role === "seller";
-  const isBuyer = role === "buyer";
+  const onSubmit = (data: FormData) => {
+    console.log("Form Data:", data); // 🔥 barcha inputlar shu yerda chiqadi
+    console.log("Errors:", errors);
+  };
 
   return (
     <KeyboardAvoidingView
-      style={styles.flex}
+      style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View style={styles.flex}>
-        <PageHeader title="Ro'yhatdan o'tish" />
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.inputContainer}>
-            <View style={styles.roleContainer}>
-              <TouchableOpacity
-                style={[styles.roleButton, isSeller && styles.activeButton]}
-                onPress={() => setRole("seller")}
+      <PageHeader title="Ro'yhatdan o'tish" />
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 120 }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={{ paddingHorizontal: Spacing.horizontal }}>
+          {/* Role Switch */}
+          <View style={styles.roleContainer}>
+            <TouchableOpacity
+              style={[
+                styles.roleButton,
+                typeValue === "seller" && styles.activeButton,
+              ]}
+              onPress={() => setValue("type", "seller")}
+            >
+              <Text
+                style={[
+                  styles.roleTitle,
+                  typeValue === "seller" && styles.activeButtonTitle,
+                ]}
               >
-                <Text
-                  style={[
-                    styles.roleTitle,
-                    isSeller && styles.activeButtonTitle,
-                  ]}
-                >
-                  Yuridik
-                </Text>
-              </TouchableOpacity>
+                Yuridik
+              </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={[styles.roleButton, isBuyer && styles.activeButton]}
-                onPress={() => setRole("buyer")}
+            <TouchableOpacity
+              style={[
+                styles.roleButton,
+                typeValue === "buyer" && styles.activeButton,
+              ]}
+              onPress={() => setValue("type", "buyer")}
+            >
+              <Text
+                style={[
+                  styles.roleTitle,
+                  typeValue === "buyer" && styles.activeButtonTitle,
+                ]}
               >
-                <Text
-                  style={[
-                    styles.roleTitle,
-                    isBuyer && styles.activeButtonTitle,
-                  ]}
-                >
-                  Jismoniy
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <CompanySelect
-              value={formData.companitType}
-              onChangeText={(text: string) =>
-                handleChange("companitType", text)
-              }
-            />
-            <AppInput
-              label="Ism"
-              value={formData.firstName}
-              onChangeText={(text: string) => handleChange("firstName", text)}
-            />
-            <AppInput
-              label="Familiya"
-              value={formData.lastName}
-              onChangeText={(text: string) => handleChange("lastName", text)}
-            />
-            <AppInput
-              label="Korxona nomi"
-              value={formData.companyName}
-              onChangeText={(text: string) => handleChange("companyName", text)}
-            />
-            <AppInput
-              label="Stir (INN)"
-              value={formData.inn}
-              onChangeText={(text: string) => handleChange("inn", text)}
-            />
-            <AppInput
-              label="Yuridik manzil"
-              value={formData.legalAddress}
-              onChangeText={(text: string) =>
-                handleChange("legalAddress", text)
-              }
-            />
+                Jismoniy
+              </Text>
+            </TouchableOpacity>
           </View>
-        </ScrollView>
-        <ButtonApp label="Davom etish" onPress={() => console.log(formData)} />
-      </View>
+
+          {/* Company Select */}
+          <Controller
+            control={control}
+            name="companitType"
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
+              <CompanySelect
+                value={value}
+                onSelect={onChange}
+                error={!!error}
+              />
+            )}
+          />
+
+          {/* First Name */}
+          <Controller
+            control={control}
+            name="firstName"
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
+              <AppInput
+                label="Ism"
+                value={value}
+                onChangeText={onChange}
+                error={!!error}
+              />
+            )}
+          />
+
+          {/* Last Name */}
+          <Controller
+            control={control}
+            name="lastName"
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
+              <AppInput
+                label="Familiya"
+                value={value}
+                onChangeText={onChange}
+                error={!!error}
+              />
+            )}
+          />
+
+          {/* Company Name */}
+          <Controller
+            control={control}
+            name="companyName"
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
+              <AppInput
+                label="Korxona nomi"
+                value={value}
+                onChangeText={onChange}
+                error={!!error}
+              />
+            )}
+          />
+
+          {/* INN */}
+          <Controller
+            control={control}
+            name="inn"
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
+              <AppInput
+                label="Stir (INN)"
+                value={value}
+                onChangeText={onChange}
+                error={!!error}
+              />
+            )}
+          />
+
+          {/* Legal Address */}
+          <Controller
+            control={control}
+            name="legalAddress"
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
+              <AppInput
+                label="Yuridik manzil"
+                value={value}
+                onChangeText={onChange}
+                error={!!error}
+              />
+            )}
+          />
+        </View>
+      </ScrollView>
+
+      {/* Submit Button */}
+      <ButtonApp
+        label="Davom etish"
+        onPress={handleSubmit(onSubmit)}
+        disabled={!isValid} // 🔥 button faqat barcha input to'ldirilganda enabled
+      />
     </KeyboardAvoidingView>
   );
 };
@@ -131,15 +204,6 @@ const RegisterFull = () => {
 export default RegisterFull;
 
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
-  scrollContainer: {
-    paddingBottom: 120,
-  },
-  inputContainer: {
-    paddingHorizontal: Spacing.horizontal,
-  },
   roleContainer: {
     flexDirection: "row",
     marginTop: Spacing.horizontal,
@@ -150,7 +214,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.horizontal,
   },
   roleButton: {
-    width: "48%",
+    flex: 1,
     height: 45,
     justifyContent: "center",
     alignItems: "center",
