@@ -11,7 +11,7 @@ import { useMutation } from '@tanstack/react-query'
 import {
   changePasswordSchema,
   ChangePasswordFormData
-} from '../../../../../../../../packages/schema/schema'
+} from '../../../../../../../../packages/schema/reset-password-schema'
 import styles from '../../../styles/auth.module.css'
 
 const ChangePassword: FC = () => {

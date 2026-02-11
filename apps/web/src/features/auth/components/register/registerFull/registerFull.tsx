@@ -8,7 +8,7 @@ import Button from 'apps/web/src/shared/ui/button/button'
 import {
   SellerFullFormData,
   sellerFullSchema
-} from '../../../../../../../../packages/schema/schema'
+} from '../../../../../../../../packages/schema/schema-full-schema'
 import { SellerInformationFn } from '../../../../../../../../packages/api/register/register-full'
 import { useMutation } from '@tanstack/react-query'
 import MainInput from 'apps/web/src/shared/ui/input/MainInput/input'

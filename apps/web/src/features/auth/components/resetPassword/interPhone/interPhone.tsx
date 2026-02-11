@@ -11,7 +11,7 @@ import { useMutation } from '@tanstack/react-query'
 import {
   RegisterFormData,
   registerSchema
-} from '../../../../../../../../packages/schema/schema'
+} from '../../../../../../../../packages/schema/register-schema'
 import { RegisterFn } from 'packages/api/register/register'
 import { getClientIp, getDeviceId } from 'apps/web/src/utils/device'
 import styles from '../../../styles/auth.module.css'
