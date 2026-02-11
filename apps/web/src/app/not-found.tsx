@@ -1,7 +1,25 @@
-import React from 'react'
-
 const NotFound = () => {
-  return <div style={{ fontSize: 50, color: 'red' }}>404</div>
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        height: '100vh'
+      }}
+    >
+      <p
+        style={{
+          fontSize: '100px',
+          color: 'red'
+        }}
+      >
+        404
+      </p>
+      <span>Not found</span>
+    </div>
+  )
 }
 
 export default NotFound
