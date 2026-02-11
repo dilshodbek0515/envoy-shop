@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 import "./register.css";
 import { FC } from "react";
@@ -14,6 +15,29 @@ import { getClientIp, getDeviceName } from "../../../../utils/device";
 const Register: FC = () => {
   const router = useRouter();
   const device_name = getDeviceName();
+=======
+'use client'
+import './register.css'
+import '../../styles/auth.module.css'
+import { FC } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useMutation } from '@tanstack/react-query'
+import { useForm, Controller, Resolver } from 'react-hook-form'
+import Button from 'apps/web/src/shared/ui/button/button'
+import {
+  registerSchema,
+  RegisterFormData
+} from '../../../../../../../packages/schema/schema'
+import InputPhone from 'apps/web/src/shared/ui/input/InputPhone/InputPhone'
+import { RegisterFn } from '../../../../../../../packages/api/register/register'
+import { getClientIp, getDeviceId } from '../../../../utils/device'
+import styles from '../../styles/auth.module.css'
+
+const Register: FC = () => {
+  const router = useRouter()
+  const device_name = getDeviceId()
+>>>>>>> 1a4c5a3 (update schema)
 
   const safeResolver: Resolver<RegisterFormData> = async (values) => {
     const result = registerSchema.safeParse(values);
@@ -78,15 +102,22 @@ const Register: FC = () => {
       purpose: 'verify_phone'
     }
     registerMutation.mutate(payload)
+    console.log(payload)
   }
 
   return (
+<<<<<<< HEAD
     <div className="container">
       <div className="register_box">
         <h2 className="login_title">Ro'yxatdan o'tish</h2>
+=======
+    <div className={styles.container}>
+      <div className={styles.login_box}>
+        <h2 className={styles.login_title}>Ro'yxatdan o'tish</h2>
+>>>>>>> 1a4c5a3 (update schema)
 
         <form className='default_form' onSubmit={handleSubmit(onSubmit)}>
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name="phone"
               control={control}
@@ -100,7 +131,11 @@ const Register: FC = () => {
               )}
             />
             {errors.phone && (
+<<<<<<< HEAD
               <div className="error_text">{errors.phone.message}</div>
+=======
+              <div className={styles.error_text}>{errors.phone.message}</div>
+>>>>>>> 1a4c5a3 (update schema)
             )}
           </div>
 
@@ -112,9 +147,15 @@ const Register: FC = () => {
           />
         </form>
 
+<<<<<<< HEAD
         <div className="route_bottom">
           <Link href="/login" className="route_button_style">
             <span className="acc">Akkountingiz bormi? </span> Kirish
+=======
+        <div className={styles.route_bottom}>
+          <Link href='/login' className={styles.route_button_style}>
+            <span>Akkountingiz bormi? </span> Kirish
+>>>>>>> 1a4c5a3 (update schema)
           </Link>
         </div>
       </div>

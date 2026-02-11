@@ -5,12 +5,15 @@ import Link from 'next/link'
 import { Controller, Resolver, useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import Button from 'apps/web/src/shared/ui/button/button'
-import { SellerFullFormData, sellerFullSchema } from 'apps/schema/schema'
+import {
+  SellerFullFormData,
+  sellerFullSchema
+} from '../../../../../../../../packages/schema/schema'
 import { SellerInformationFn } from '../../../../../../../../packages/api/register/register-full'
 import { useMutation } from '@tanstack/react-query'
 import MainInput from 'apps/web/src/shared/ui/input/MainInput/input'
 import CustomSelect from 'apps/web/src/shared/ui/select/select'
-
+import styles from '../../../styles/auth.module.css'
 const companyTypeOptions = [
   'YaTT',
   "Fermer Xo'jaligi",
@@ -88,9 +91,9 @@ const Login: FC = () => {
   }
 
   return (
-    <div className='container'>
-      <div className='r_full_box'>
-        <h2 className='login_title'>Ro'yxatdan o'tish</h2>
+    <div className={styles.container}>
+      <div className={styles.login_box}>
+        <h2 className={styles.login_title}>Ro'yxatdan o'tish</h2>
         <div className='type_switch'>
           <button
             type='button'
@@ -122,7 +125,7 @@ const Login: FC = () => {
           />
 
           {/* FIRST NAME */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='first_name'
               control={control}
@@ -136,12 +139,12 @@ const Login: FC = () => {
               )}
             />
             {errors.first_name && (
-              <p className='error_text'>{errors.first_name.message}</p>
+              <p className={styles.error_text}>{errors.first_name.message}</p>
             )}
           </div>
 
           {/* LAST NAME */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='last_name'
               control={control}
@@ -155,11 +158,11 @@ const Login: FC = () => {
               )}
             />
             {errors.last_name && (
-              <p className='error_text'>{errors.last_name.message}</p>
+              <p className={styles.error_text}>{errors.last_name.message}</p>
             )}
           </div>
           {/* COMPANY TYPE */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='company_type'
               control={control}
@@ -176,7 +179,7 @@ const Login: FC = () => {
           </div>
 
           {/* COMPANY NAME */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='company_name'
               control={control}
@@ -190,12 +193,12 @@ const Login: FC = () => {
               )}
             />
             {errors.company_name && (
-              <p className='error_text'>{errors.company_name.message}</p>
+              <p className={styles.error_text}>{errors.company_name.message}</p>
             )}
           </div>
 
           {/* INN */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='inn'
               control={control}
@@ -208,11 +211,13 @@ const Login: FC = () => {
                 />
               )}
             />
-            {errors.inn && <p className='error_text'>{errors.inn.message}</p>}
+            {errors.inn && (
+              <p className={styles.error_text}>{errors.inn.message}</p>
+            )}
           </div>
 
           {/* ADDRESS */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='address'
               control={control}
@@ -226,7 +231,7 @@ const Login: FC = () => {
               )}
             />
             {errors.address && (
-              <p className='error_text'>{errors.address.message}</p>
+              <p className={styles.error_text}>{errors.address.message}</p>
             )}
           </div>
 
@@ -238,8 +243,8 @@ const Login: FC = () => {
           />
         </form>
 
-        <div className='route_bottom'>
-          <Link href='/login' className='route_button_style'>
+        <div className={styles.route_bottom}>
+          <Link href='/login' className={styles.route_button_style}>
             Alkkountingiz bormi? Kirish
           </Link>
           <p />

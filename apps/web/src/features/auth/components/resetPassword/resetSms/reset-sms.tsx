@@ -8,6 +8,7 @@ import Button from 'apps/web/src/shared/ui/button/button'
 import SmsCodeInput from 'apps/web/src/shared/ui/input/SmsCodeInput/SmsCodeInput'
 import { RegisterSmsFn } from 'packages/api/register/register-sms'
 import Link from 'next/link'
+import styles from '../../../styles/auth.module.css'
 
 interface SmsFormData {
   code: string
@@ -83,12 +84,12 @@ const ResetSms: FC = () => {
     : code.length !== 4 || verifyMutation.isPending
 
   return (
-    <div className='container'>
-      <div className='login_box'>
-        <h2 className='login_title'>SMS tasdiqlash</h2>
+    <div className={styles.container}>
+      <div className={styles.login_box}>
+        <h2 className={styles.login_title}>SMS tasdiqlash</h2>
 
         {!isExpired && (
-          <p className='sms_timer'>
+          <p>
             Kod amal qilish vaqti:
             <b>
               {mm}:{ss}
@@ -96,8 +97,11 @@ const ResetSms: FC = () => {
           </p>
         )}
 
-        <form onSubmit={handleSubmit(handleMainButton)} className='sms_form'>
-          <div className='input_group'>
+        <form
+          onSubmit={handleSubmit(handleMainButton)}
+          className={styles.sms_form}
+        >
+          <div className={styles.input_group}>
             <Controller
               name='code'
               control={control}
@@ -112,7 +116,7 @@ const ResetSms: FC = () => {
             />
           </div>
 
-          <div className='sms_button_container'>
+          <div className={styles.sms_button_container}>
             <Button
               type='submit'
               label={mainLabel}
@@ -122,9 +126,9 @@ const ResetSms: FC = () => {
           </div>
         </form>
 
-        <div className='route_bottom'>
-          <Link href='/login' className='route_button_style'>
-            <span className='acc'>Akkountingiz bormi? </span> Kirish
+        <div className={styles.route_bottom}>
+          <Link href='/login' className={styles.route_button_style}>
+            <span>Akkountingiz bormi? Kirish</span>
           </Link>
         </div>
       </div>
