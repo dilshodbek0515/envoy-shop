@@ -101,11 +101,12 @@ const RegisterDefault: FC = () => {
             <Controller
               name='email'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <MainInput
                   label='Email (ixtiyoriy)'
                   value={field.value ?? ''}
                   onChange={field.onChange}
+                  error={fieldState.invalid}
                 />
               )}
             />
@@ -116,7 +117,14 @@ const RegisterDefault: FC = () => {
             <Controller
               name='password'
               control={control}
-              render={({ field }) => <PasswordInput label='Parol' {...field} />}
+              render={({ field, fieldState }) => (
+                <PasswordInput
+                  label='Parol'
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={fieldState.invalid}
+                />
+              )}
             />
             {formState.errors.password && (
               <div className='error_text'>
@@ -130,8 +138,13 @@ const RegisterDefault: FC = () => {
             <Controller
               name='confirm_password'
               control={control}
-              render={({ field }) => (
-                <PasswordInput label='Parolni tasdiqlash' {...field} />
+              render={({ field, fieldState }) => (
+                <PasswordInput
+                  label='Parolni tasdiqlash'
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={fieldState.invalid}
+                />
               )}
             />
             {formState.errors.confirm_password && (
@@ -143,8 +156,9 @@ const RegisterDefault: FC = () => {
 
           <Button
             type='submit'
-            label={registerMutation.isPending ? 'Kutilmoqda...' : 'Davom etish'}
-            disabled={!formState.isValid || registerMutation.isPending}
+            label='Davom etish'
+            disabled={!formState.isValid}
+            loading={registerMutation.isPending}
           />
         </form>
 
