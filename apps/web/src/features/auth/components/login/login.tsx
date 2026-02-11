@@ -3,28 +3,46 @@ import './login.css'
 import { FC } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import Button from '../../../../shared/ui/button/button'
+import { useForm, Controller, Resolver } from 'react-hook-form'
 import { LoginFn } from '../../../../../../../packages/api/login/login'
 import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
+import { loginSchema, LoginFormData } from '../../../../../../schema/schema'
 import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
-import {
-  loginSchema,
-  LoginFormData
-} from '../../../../../../../packages/schema/schema'
 
 const Login: FC = () => {
   const router = useRouter()
 
+  const safeZodResolver: Resolver<LoginFormData> = async values => {
+    const result = loginSchema.safeParse(values)
+
+    if (result.success) {
+      return {
+        values: result.data,
+        errors: {}
+      }
+    }
+
+    const errors = result.error.flatten().fieldErrors
+    return {
+      values: {},
+      errors: Object.fromEntries(
+        Object.entries(errors).map(([key, val]) => [
+          key,
+          { type: 'validation', message: val?.[0] }
+        ])
+      )
+    }
+  }
+
   const {
     handleSubmit,
     control,
-    formState: { errors, isValid },
-    watch
+    watch,
+    formState: { errors }
   } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+    resolver: safeZodResolver,
     mode: 'onChange',
     defaultValues: {
       phone: '',
@@ -33,23 +51,22 @@ const Login: FC = () => {
   })
 
   const loginMutation = useMutation({
-    mutationFn: (data: { phone: string; password: string }) =>
-      LoginFn({ phone: `+998${data.phone}`, password: data.password }),
+    mutationFn: (data: LoginFormData) =>
+      LoginFn({
+        phone: `+998${data.phone}`,
+        password: data.password
+      }),
     onSuccess: () => {
-      router.push('/')
+      router.replace('/')
     },
-    onError: (error: any) => {
-      console.log('Ishlamadi', error)
-    }
+    onError: error => console.log('Login error:', error)
   })
 
   const phoneValue = watch('phone') || ''
   const passwordValue = watch('password') || ''
 
   const onSubmit = (data: LoginFormData) => {
-    if (isValid && data.phone && data.password) {
-      loginMutation.mutate({ phone: data.phone, password: data.password })
-    }
+    loginMutation.mutate(data)
   }
 
   const isFormValid = phoneValue.length === 9 && passwordValue.length >= 8
@@ -60,55 +77,62 @@ const Login: FC = () => {
         <h2 className='login_title'>Kirish</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+          {/* Phone input */}
           <div className='input_group'>
             <Controller
               name='phone'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <InputPhone
                   label='Telefon raqam'
-                  {...field}
                   value={field.value || ''}
-                  onChange={value => field.onChange(value)}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  error={fieldState.invalid}
                 />
               )}
             />
-            {errors.phone && phoneValue.length > 0 && (
+            {errors.phone && (
               <div className='error_text'>{errors.phone.message}</div>
             )}
           </div>
 
+          {/* Password input */}
           <div className='input_group'>
             <Controller
               name='password'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <PasswordInput
                   label='Parol'
-                  {...field}
-                  value={field.value || ''}
-                  onChange={value => field.onChange(value)}
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  error={fieldState.invalid}
                 />
               )}
             />
-            {errors.password && passwordValue.length > 0 && (
+            {errors.password && (
               <div className='error_text'>{errors.password.message}</div>
             )}
           </div>
 
           <Button
-            label={loginMutation.isPending ? 'Kutilmoqda...' : 'Kirish'}
             type='submit'
-            disabled={!isFormValid || loginMutation.isPending}
+            disabled={!isFormValid}
+            loading={loginMutation.isPending}
+            label='Kirish'
           />
         </form>
 
         <div className='route_bottom'>
-          <Link href='/ResetPassword/InterPhone' className='route_button_style'>
+          <Link
+            href='/reset-password/inter-phone'
+            className='route_button_style'
+          >
             Parolni unutdingizmi?
           </Link>
-          <Link href={'/'}>➡️</Link>
-          <Link href='/Register' className='route_button_style'>
+          <Link href='/register' className='route_button_style'>
             Ro'yxatdan o'tish
           </Link>
         </div>

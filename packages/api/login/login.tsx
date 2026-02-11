@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from 'axios'
+import { PREFIX } from '../api'
 
-const API = 'https://my.example.uz.webcoder.uz/user/sign-in/'
+const Login_Api = {
+  api: `${PREFIX}/api/auth/login/`
+}
 
 export interface LoginArgs {
   phone: string
@@ -8,9 +11,10 @@ export interface LoginArgs {
 }
 
 export interface LoginResponse {
-  success?: boolean
-  message?: string
-  [key: string]: any
+  token: {
+    access: string
+    refresh: string
+  }
 }
 
 export const LoginFn = async ({
@@ -18,13 +22,13 @@ export const LoginFn = async ({
   password
 }: LoginArgs): Promise<LoginResponse> => {
   try {
-    const { data }: AxiosResponse<LoginResponse> = await axios.post(API, {
-      phone,
-      password
-    })
+    const { data }: AxiosResponse<LoginResponse> = await axios.post(
+      Login_Api.api,
+      { phone, password }
+    )
+    localStorage.setItem('token', data.token.access)
     return data
   } catch (error) {
-    console.error('LoginFn xatolik:', error)
     throw error
   }
 }

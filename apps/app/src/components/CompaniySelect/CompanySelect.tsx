@@ -31,7 +31,7 @@ const PRIMARY = "#00beff";
 const GRAY = "#999999";
 const INPUT_HEIGHT = 56;
 
-const CompanySelect = ({ label = "Faoliya turi", value, onSelect }: any) => {
+const CompanySelect = ({ label = "Faoliyat turi", value, onSelect }: any) => {
   const [visible, setVisible] = useState(false);
   const [focused, setFocused] = useState(false);
   const animated = useRef(new Animated.Value(value ? 1 : 0)).current;

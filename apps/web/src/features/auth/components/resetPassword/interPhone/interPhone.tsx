@@ -1,77 +1,78 @@
 'use client'
 import './interPhone.css'
 import Link from 'next/link'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { useRouter } from 'next/navigation'
 import Button from '../../../../../shared/ui/button/button'
-import MainInput from '../../../../../shared/ui/input/MainInput/input'
 import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
-import { SmsFn } from '../../../../../../../../packages/api/resetPassword/reset-password'
-import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm, Controller, Resolver } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import {
-  interPhoneSchema,
-  InterPhoneFormData
-} from '../../../../../../../../packages/schema/schema'
+  RegisterFormData,
+  registerSchema
+} from '../../../../../../../schema/schema'
+import { RegisterFn } from 'packages/api/register/register'
+import { getClientIp, getDeviceName } from 'apps/web/src/utils/device'
 
 const InterPhone: FC = () => {
   const router = useRouter()
-  const [step, setStep] = useState<1 | 2>(1)
+  const device_name = getDeviceName()
+
+  const safeResolver: Resolver<RegisterFormData> = async values => {
+    const result = registerSchema.safeParse(values)
+
+    if (result.success) {
+      return { values: result.data, errors: {} }
+    }
+
+    const errors = result.error.flatten().fieldErrors
+
+    return {
+      values: {},
+      errors: Object.fromEntries(
+        Object.entries(errors).map(([k, v]) => [
+          k,
+          { type: 'validation', message: v?.[0] }
+        ])
+      )
+    }
+  }
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
-    watch
-  } = useForm<InterPhoneFormData>({
-    resolver: zodResolver(interPhoneSchema(step)),
+    reset,
+    formState: { errors, isValid }
+  } = useForm<RegisterFormData>({
+    resolver: safeResolver,
     mode: 'onChange',
-    defaultValues: {
-      phone: '',
-      smsPassword: ''
-    }
+    defaultValues: { phone: '' }
   })
 
-  /* ✅ mutation */
   const smsMutation = useMutation({
-    mutationFn: (data: { phone: string; smsPassword: string }) =>
-      SmsFn({ phone: `+998${data.phone}`, smsPassword: data.smsPassword }),
-
-    onSuccess: () => {
-      router.push('/ResetPassword/ChangePassword')
+    mutationFn: RegisterFn,
+    onSuccess: (res, variables) => {
+      localStorage.setItem('reset_phone', variables.phone)
+      if (res.message === 'Reset code sent') {
+        router.replace('/reset-password/reset-sms')
+      } else reset()
     },
-
     onError: err => {
-      console.log('Xato:', err)
+      console.log('Reset SMS error:', err), reset()
     }
   })
 
-  const phoneValue = watch('phone') || ''
-  const smsValue = watch('smsPassword') || ''
-
-  /* ✅ submit logic */
-  const onSubmit = (data: InterPhoneFormData) => {
-    if (step === 1) {
-      setStep(2)
-      return
-    }
-
-    if (!data.smsPassword) return
-
+  const onSubmit = async (form: RegisterFormData) => {
+    const ip = await getClientIp()
+    const fullPhone = '+998' + form.phone
+    console.log(fullPhone)
     smsMutation.mutate({
-      phone: data.phone,
-      smsPassword: data.smsPassword
+      phone: fullPhone,
+      ip_address: ip,
+      device_id: device_name,
+      purpose: 'reset_password'
     })
   }
-
-  const isPhoneValid = phoneValue.length === 9
-  const isSmsValid = smsValue.length === 4
-
-  const disabled =
-    step === 1
-      ? !isPhoneValid
-      : !isPhoneValid || !isSmsValid || smsMutation.isPending
 
   return (
     <div className='container'>
@@ -79,16 +80,19 @@ const InterPhone: FC = () => {
         <h2 className='login_title'>Parolni tiklash</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-          {/* PHONE */}
           <div className='input_group'>
             <Controller
               name='phone'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <InputPhone
                   label='Telefon raqam'
-                  value={field.value || ''}
-                  onChange={field.onChange}
+                  value={field.value}
+                  onChange={value => {
+                    const numbers = value.replace(/\D/g, '').slice(0, 9)
+                    field.onChange(numbers)
+                  }}
+                  error={fieldState.invalid}
                 />
               )}
             />
@@ -97,46 +101,19 @@ const InterPhone: FC = () => {
             )}
           </div>
 
-          {/* SMS STEP */}
-          {step === 2 && (
-            <div className='input_group'>
-              <Controller
-                name='smsPassword'
-                control={control}
-                render={({ field }) => (
-                  <MainInput
-                    label='SMS kod'
-                    value={field.value || ''}
-                    onChange={field.onChange}
-                    maxLength={4}
-                  />
-                )}
-              />
-              {errors.smsPassword && (
-                <div className='error_text'>{errors.smsPassword.message}</div>
-              )}
-            </div>
-          )}
-
           <Button
             type='submit'
-            label={
-              step === 1
-                ? 'SMS yuborish'
-                : smsMutation.isPending
-                ? 'Kutilmoqda...'
-                : 'SMS ni tasdiqlash'
-            }
-            disabled={disabled}
+            label='SMS yuborish'
+            disabled={!isValid}
+            loading={smsMutation.isPending}
           />
         </form>
 
         <div className='route_bottom'>
-          <Link href='/Login' className='route_button_style'>
+          <Link href='/login' className='route_button_style'>
             Kirish
           </Link>
-          <Link href={'/ResetPassword/ChangePassword'}>➡️</Link>
-          <Link href='/Register' className='route_button_style'>
+          <Link href='/register' className='route_button_style'>
             Ro'yxatdan o'tish
           </Link>
         </div>

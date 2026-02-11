@@ -1,4 +1,4 @@
- import { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   FlatList,
   Keyboard,
@@ -14,8 +14,6 @@ import Register from "../(auth)/Register";
 import Login from "../(auth)/Login";
 import { router } from "expo-router";
 
-
-
 const pages = [
   {
     id: 1,
@@ -30,7 +28,6 @@ const pages = [
 export default function Auth() {
   const [activePage, setActivePage] = useState(0);
   const pageRef = useRef<FlatList>(null);
-  
 
   const viewablePage = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
@@ -49,13 +46,16 @@ export default function Auth() {
     });
     Keyboard.dismiss();
   };
-
   const renderPage = ({ item }: any) => {
+    const isLogin = item.id === 1;
+    const isRegister = item.id === 2; // Register page
+
     return (
       <View style={styles.page}>
         {item.component}
 
-        {item.id === 1 && (
+        {/* Faqat login page uchun button */}
+        {!isRegister && (
           <View style={styles.touchBox} pointerEvents="box-none">
             <TouchableOpacity
               style={styles.touch}
@@ -96,10 +96,7 @@ const AuthTab = ({ goToPage, activePage }: any) => {
     <View style={[styles.tabContainer, { height }]}>
       <Pressable style={styles.tabBox} onPress={() => goToPage(0)}>
         <Text
-          style={[
-            styles.tabTitle,
-            activePage === 0 && styles.activeTabTitle,
-          ]}
+          style={[styles.tabTitle, activePage === 0 && styles.activeTabTitle]}
         >
           Dasturga kirish
         </Text>
@@ -108,10 +105,7 @@ const AuthTab = ({ goToPage, activePage }: any) => {
 
       <Pressable style={styles.tabBox} onPress={() => goToPage(1)}>
         <Text
-          style={[
-            styles.tabTitle,
-            activePage === 1 && styles.activeTabTitle,
-          ]}
+          style={[styles.tabTitle, activePage === 1 && styles.activeTabTitle]}
         >
           Register
         </Text>

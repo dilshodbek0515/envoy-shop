@@ -1,0 +1,79 @@
+.container {
+    width: 100%;
+    max-width: 1440px;
+    min-height: 100vh;
+    background-color: var(--input-bg);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login_box {
+    width: 450px;
+    height: auto;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow-box);
+    padding: 30px;
+}
+
+.sms_form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.sms_input_container {
+    width: 100%;
+}
+
+.input_group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+
+.sms_button_container {
+    width: 100%;
+    margin-top: 6px;
+}
+
+
+.error_text {
+    min-height: 18px;
+    font-size: 12px;
+    color: var(--border-red);
+    margin-top: 4px;
+    transition: 0.2s;
+}
+
+
+.route_bottom {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+.route_button_style {
+    border: none;
+    background: transparent;
+    color: var(--dodgerblue);
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.acc {
+    color: var(--black);
+}

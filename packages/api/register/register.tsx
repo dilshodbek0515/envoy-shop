@@ -1,37 +1,32 @@
-import axios, { AxiosResponse } from 'axios'
-const API = 'https://my.example.uz.webcoder.uz/user/sign-in/'
+import axios from "axios";
+import { PREFIX } from "../api";
 
-interface RegistrationData {
-  role: 'legal' | 'physical'
-  userType: 'seller' | 'buyer'
-  firstName?: string
-  lastName?: string
-  stir?: string
-  activityType?: string
-  companyName?: string
-  legalAddress?: string
-  bankDetails?: string
-  phoneNumber?: string
-  password?: string
-  confirmPassword?: string
-  firstNamePhysical?: string
-  lastNamePhysical?: string
-  phoneNumberPhysical?: string
-  passwordPhysical?: string
-  emailPhysical?: string
-  confirmPasswordPhysical?: string
+const Register_Api = {
+  api: `${PREFIX}/api/auth/verify-phone/send-otp/`,
+};
+
+export interface RegistrationData {
+  phone: string;
+  ip_address: string;
+  device_id: string;
+  purpose: string;
 }
 
-interface RegisterFnArgs {
-  registrationData: RegistrationData
-}
+export const RegisterFn = async (data: RegistrationData) => {
+  const formData = new FormData();
+  formData.append("phone", data.phone);
+  formData.append("ip_address", data.ip_address);
+  formData.append("device_id", data.device_id);
+  formData.append("purpose", data.purpose);
 
-export const RegisterFn = async ({ registrationData }: RegisterFnArgs) => {
-  try {
-    const { data }: AxiosResponse = await axios.post(API, registrationData)
-    return data
-  } catch (error) {
-    console.error('RegisterFn xatolik:', error)
-    throw error
-  }
+  const res = await axios.post(Register_Api.api, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  console.log(res.data)
+  return res.data
 }
+  return res.data;
+};

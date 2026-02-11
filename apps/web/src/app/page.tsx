@@ -1,4 +1,18 @@
+'use client'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+
 const Page = () => {
+  const router = useRouter()
+
+  useEffect(() => {
+    const access_token = localStorage.getItem('token')
+
+    if (!access_token) {
+      router.replace('/login')
+    }
+  }, [router])
+
   return (
     <div
       style={{

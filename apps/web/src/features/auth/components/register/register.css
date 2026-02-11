@@ -1,7 +1,7 @@
 .container {
     width: 1440px;
     height: 100vh;
-    background-color: #ededed;
+    background-color: var(--input-bg);
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -9,41 +9,24 @@
 }
 
 .register_box {
-    width: 550px;
+    width: 450px;
     height: auto;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    gap: 20px;
+    box-shadow: var(--shadow-box);
     padding: 30px;
 }
 
-.roleBox {
+
+.default_form {
     width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-around;
-    gap: 20px;
-
-}
-
-.roleItem {
-    display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 10px;
-    font-size: 18px;
-    cursor: pointer;
-    margin-bottom: 8px;
-}
-
-.roleItem input {
-    accent-color: #1e88ff;
-    cursor: pointer;
-    width: 18px;
-    height: 18px;
 }
 
 .route_bottom {
@@ -54,31 +37,22 @@
 }
 
 .route_button_style {
-    border: transparent;
-    color: dodgerblue;
+    border: var(--transparent);
+    color: var(--dodgerblue);
     text-align: center;
 }
 
 .acc {
-    color: black;
+    color: var(--black);
 }
 
-.legal_style,
-.physical_style,
-.seller_style,
-.buyer_style {
-    width: 100%;
-    height: 55px;
-    border-radius: 20px;
-    background-color: #ededed;
-    border: 1px solid #b4b2b2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+.input_group {
+    margin-bottom: 10px;
 }
 
-.select_role {
-    background-color: dodgerblue;
-    color: white;
+.error_text {
+    font-size: 12px;
+    color: var(--border-red);
+    transition: 0.2s;
+    margin-top: 5px;
 }
