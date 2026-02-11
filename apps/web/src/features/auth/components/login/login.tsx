@@ -12,7 +12,7 @@ import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
 import {
   loginSchema,
   LoginFormData
-} from '../../../../../../../packages/schema/schema'
+} from '../../../../../../../packages/schema/login-schema'
 import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 
 const Login: FC = () => {

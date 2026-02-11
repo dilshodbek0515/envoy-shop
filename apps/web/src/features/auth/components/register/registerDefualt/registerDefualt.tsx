@@ -11,7 +11,7 @@ import { RegisterDefaultFn } from '../../../../../../../../packages/api/register
 import {
   RegisterDefaultFormData,
   registerDefaultSchema
-} from '../../../../../../../../packages/schema/schema'
+} from '../../../../../../../../packages/schema/register-default-schema'
 import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 import styles from '../../../styles/auth.module.css'
 const RegisterDefault: FC = () => {
