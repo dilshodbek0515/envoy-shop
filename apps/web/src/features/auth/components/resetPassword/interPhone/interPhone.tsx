@@ -1,5 +1,6 @@
 'use client'
 import './interPhone.css'
+import '../../../styles/auth.module.css'
 import Link from 'next/link'
 import { FC } from 'react'
 import { useRouter } from 'next/navigation'
@@ -10,13 +11,13 @@ import { useMutation } from '@tanstack/react-query'
 import {
   RegisterFormData,
   registerSchema
-} from '../../../../../../../schema/schema'
+} from '../../../../../../../../packages/schema/schema'
 import { RegisterFn } from 'packages/api/register/register'
-import { getClientIp, getDeviceName } from 'apps/web/src/utils/device'
-
+import { getClientIp, getDeviceId } from 'apps/web/src/utils/device'
+import styles from '../../../styles/auth.module.css'
 const InterPhone: FC = () => {
   const router = useRouter()
-  const device_name = getDeviceName()
+  const device_name = getDeviceId()
 
   const safeResolver: Resolver<RegisterFormData> = async values => {
     const result = registerSchema.safeParse(values)
@@ -53,6 +54,8 @@ const InterPhone: FC = () => {
     mutationFn: RegisterFn,
     onSuccess: (res, variables) => {
       localStorage.setItem('reset_phone', variables.phone)
+      console.log(res, variables)
+
       if (res.message === 'Reset code sent') {
         router.replace('/reset-password/reset-sms')
       } else reset()
@@ -65,7 +68,6 @@ const InterPhone: FC = () => {
   const onSubmit = async (form: RegisterFormData) => {
     const ip = await getClientIp()
     const fullPhone = '+998' + form.phone
-    console.log(fullPhone)
     smsMutation.mutate({
       phone: fullPhone,
       ip_address: ip,
@@ -75,12 +77,12 @@ const InterPhone: FC = () => {
   }
 
   return (
-    <div className='container'>
-      <div className='login_box'>
-        <h2 className='login_title'>Parolni tiklash</h2>
+    <div className={styles.container}>
+      <div className={styles.login_box}>
+        <h2 className={styles.login_title}>Parolni tiklash</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='phone'
               control={control}
@@ -97,7 +99,7 @@ const InterPhone: FC = () => {
               )}
             />
             {errors.phone && (
-              <div className='error_text'>{errors.phone.message}</div>
+              <div className={styles.error_text}>{errors.phone.message}</div>
             )}
           </div>
 
@@ -109,11 +111,11 @@ const InterPhone: FC = () => {
           />
         </form>
 
-        <div className='route_bottom'>
-          <Link href='/login' className='route_button_style'>
+        <div className={styles.route_bottom}>
+          <Link href='/login' className={styles.route_button_style}>
             Kirish
           </Link>
-          <Link href='/register' className='route_button_style'>
+          <Link href='/register' className={styles.route_button_style}>
             Ro'yxatdan o'tish
           </Link>
         </div>

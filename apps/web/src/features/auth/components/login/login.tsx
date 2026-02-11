@@ -1,5 +1,6 @@
 'use client'
 import './login.css'
+import styles from '../../styles/auth.module.css'
 import { FC } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -8,7 +9,10 @@ import Button from '../../../../shared/ui/button/button'
 import { useForm, Controller, Resolver } from 'react-hook-form'
 import { LoginFn } from '../../../../../../../packages/api/login/login'
 import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
-import { loginSchema, LoginFormData } from '../../../../../../schema/schema'
+import {
+  loginSchema,
+  LoginFormData
+} from '../../../../../../../packages/schema/schema'
 import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 
 const Login: FC = () => {
@@ -72,13 +76,13 @@ const Login: FC = () => {
   const isFormValid = phoneValue.length === 9 && passwordValue.length >= 8
 
   return (
-    <div className='container'>
-      <div className='login_box'>
-        <h2 className='login_title'>Kirish</h2>
+    <div className={styles.container}>
+      <div className={styles.login_box}>
+        <h2 className={styles.login_title}>Kirish</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           {/* Phone input */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='phone'
               control={control}
@@ -93,12 +97,12 @@ const Login: FC = () => {
               )}
             />
             {errors.phone && (
-              <div className='error_text'>{errors.phone.message}</div>
+              <div className={styles.error_text}>{errors.phone.message}</div>
             )}
           </div>
 
           {/* Password input */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='password'
               control={control}
@@ -113,7 +117,7 @@ const Login: FC = () => {
               )}
             />
             {errors.password && (
-              <div className='error_text'>{errors.password.message}</div>
+              <div className={styles.error_text}>{errors.password.message}</div>
             )}
           </div>
 
@@ -125,14 +129,14 @@ const Login: FC = () => {
           />
         </form>
 
-        <div className='route_bottom'>
+        <div className={styles.route_bottom}>
           <Link
             href='/reset-password/inter-phone'
-            className='route_button_style'
+            className={styles.route_button_style}
           >
             Parolni unutdingizmi?
           </Link>
-          <Link href='/register' className='route_button_style'>
+          <Link href='/register' className={styles.route_button_style}>
             Ro'yxatdan o'tish
           </Link>
         </div>
