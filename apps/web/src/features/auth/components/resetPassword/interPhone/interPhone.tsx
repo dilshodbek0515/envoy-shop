@@ -8,7 +8,6 @@ import InputPhone from '../../../../../shared/ui/input/InputPhone/InputPhone'
 import { useForm, Controller, Resolver } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import {
-  InterPhoneFormData,
   RegisterFormData,
   registerSchema
 } from '../../../../../../../schema/schema'
@@ -63,7 +62,7 @@ const InterPhone: FC = () => {
     }
   })
 
-  const onSubmit = async (form: InterPhoneFormData) => {
+  const onSubmit = async (form: RegisterFormData) => {
     const ip = await getClientIp()
     const fullPhone = '+998' + form.phone
     console.log(fullPhone)
@@ -85,7 +84,7 @@ const InterPhone: FC = () => {
             <Controller
               name='phone'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <InputPhone
                   label='Telefon raqam'
                   value={field.value}
@@ -93,6 +92,7 @@ const InterPhone: FC = () => {
                     const numbers = value.replace(/\D/g, '').slice(0, 9)
                     field.onChange(numbers)
                   }}
+                  error={fieldState.invalid}
                 />
               )}
             />
@@ -103,8 +103,9 @@ const InterPhone: FC = () => {
 
           <Button
             type='submit'
-            label={smsMutation.isPending ? 'Kutilmoqda...' : 'SMS yuborish'}
-            disabled={!isValid || smsMutation.isPending}
+            label='SMS yuborish'
+            disabled={!isValid}
+            loading={smsMutation.isPending}
           />
         </form>
 

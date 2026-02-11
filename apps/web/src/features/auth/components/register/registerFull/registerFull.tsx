@@ -126,15 +126,18 @@ const Login: FC = () => {
             <Controller
               name='first_name'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <MainInput
                   label='Ism'
                   value={field.value}
                   onChange={field.onChange}
+                  error={fieldState.invalid}
                 />
               )}
             />
-            {errors.first_name && <p>{errors.first_name.message}</p>}
+            {errors.first_name && (
+              <p className='error_text'>{errors.first_name.message}</p>
+            )}
           </div>
 
           {/* LAST NAME */}
@@ -142,15 +145,18 @@ const Login: FC = () => {
             <Controller
               name='last_name'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <MainInput
                   label='Familiya'
                   value={field.value ?? ''}
                   onChange={field.onChange}
+                  error={fieldState.invalid}
                 />
               )}
             />
-            {errors.last_name && <p>{errors.last_name.message}</p>}
+            {errors.last_name && (
+              <p className='error_text'>{errors.last_name.message}</p>
+            )}
           </div>
           {/* COMPANY TYPE */}
           <div className='input_group'>
@@ -174,15 +180,18 @@ const Login: FC = () => {
             <Controller
               name='company_name'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <MainInput
                   label='Korxona nomi'
                   value={field.value ?? ''}
                   onChange={field.onChange}
+                  error={fieldState.invalid}
                 />
               )}
             />
-            {errors.company_name && <p>{errors.company_name.message}</p>}
+            {errors.company_name && (
+              <p className='error_text'>{errors.company_name.message}</p>
+            )}
           </div>
 
           {/* INN */}
@@ -190,15 +199,16 @@ const Login: FC = () => {
             <Controller
               name='inn'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <MainInput
                   label='INN'
                   value={field.value ?? ''}
                   onChange={field.onChange}
+                  error={fieldState.invalid}
                 />
               )}
             />
-            {errors.inn && <p>{errors.inn.message}</p>}
+            {errors.inn && <p className='error_text'>{errors.inn.message}</p>}
           </div>
 
           {/* ADDRESS */}
@@ -206,21 +216,25 @@ const Login: FC = () => {
             <Controller
               name='address'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <MainInput
                   label='Manzil'
                   value={field.value ?? ''}
                   onChange={field.onChange}
+                  error={fieldState.invalid}
                 />
               )}
             />
-            {errors.address && <p>{errors.address.message}</p>}
+            {errors.address && (
+              <p className='error_text'>{errors.address.message}</p>
+            )}
           </div>
 
           <Button
             type='submit'
-            label={mutation.isPending ? 'Kutilmoqda...' : "Ro'yxatdan o'tish"}
-            disabled={!isValid || mutation.isPending}
+            label="Ro'yxatdan o'tish"
+            disabled={!isValid}
+            loading={mutation.isPending}
           />
         </form>
 
