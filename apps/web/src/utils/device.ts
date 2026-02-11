@@ -1,33 +1,48 @@
-export const getDeviceName = () => {
-  if (typeof navigator === 'undefined') return 'unknown'
+export const getDeviceId = () => {
+  if (typeof window === 'undefined') return 'server'
 
-  const ua = navigator.userAgent
+  const KEY = 'device_id'
+  let id = localStorage.getItem(KEY)
 
-  // Android modelini olish
-  const androidMatch = ua.match(/Android.*;\s([^)]+)\)/)
-  if (androidMatch) {
-    return androidMatch[1] // Tecno KI7 kabi
+  if (!id) {
+    // ✅ safe UUID generator
+    if (window.crypto && 'randomUUID' in window.crypto) {
+      id = window.crypto.randomUUID()
+    } else {
+      // ✅ fallback
+      id =
+        'dev_' + Math.random().toString(36).slice(2) + Date.now().toString(36)
+    }
+
+    localStorage.setItem(KEY, id)
   }
 
-  // iPhone / iPad
-  if (/iPhone/.test(ua)) return 'iPhone'
-  if (/iPad/.test(ua)) return 'iPad'
-
-  // Windows PC
-  if (/Windows/.test(ua)) return 'Windows PC'
-
-  // Mac
-  if (/Macintosh/.test(ua)) return 'Mac'
-
-  return 'Unknown device'
+  return id
 }
 
-export const getClientIp = async () => {
+export const getClientIp = async (): Promise<string> => {
+  if (typeof window === 'undefined') return 'server'
+
   try {
-    const res = await fetch('https://api.ipify.org?format=json')
+    const controller = new AbortController()
+
+    const timeout = setTimeout(() => {
+      controller.abort()
+    }, 4000)
+
+    const res = await fetch('https://api.ipify.org?format=json', {
+      signal: controller.signal
+    })
+
+    clearTimeout(timeout)
+
+    if (!res.ok) throw new Error('IP fetch failed')
+
     const data = await res.json()
-    return data.ip
-  } catch {
+
+    return data.ip || '0.0.0.0'
+  } catch (err) {
+    console.log('IP fetch error:', err)
     return '0.0.0.0'
   }
 }
