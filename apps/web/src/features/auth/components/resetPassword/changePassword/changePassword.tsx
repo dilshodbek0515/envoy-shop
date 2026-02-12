@@ -12,7 +12,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
   changePasswordSchema,
   ChangePasswordFormData
+<<<<<<< HEAD
 } from '../../../../../../../schema/schema'
+=======
+} from '../../../../../../../../packages/schema/reset-password-schema'
+import styles from '../../../styles/auth.module.css'
+>>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
 
 const ChangePassword: FC = () => {
   const router = useRouter()
@@ -80,13 +85,13 @@ const ChangePassword: FC = () => {
   }
 
   return (
-    <div className='container'>
-      <div className='login_box'>
-        <h2 className='login_title'>Parolni o'zgartirish</h2>
+    <div className={styles.container}>
+      <div className={styles.login_box}>
+        <h2 className={styles.login_title}>Parolni o'zgartirish</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           {/* PASSWORD */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='firstPassword'
               control={control}
@@ -100,12 +105,14 @@ const ChangePassword: FC = () => {
               )}
             />
             {errors.firstPassword && (
-              <div className='error_text'>{errors.firstPassword.message}</div>
+              <div className={styles.error_text}>
+                {errors.firstPassword.message}
+              </div>
             )}
           </div>
 
           {/* CONFIRM PASSWORD*/}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='secondPassword'
               control={control}
@@ -119,7 +126,9 @@ const ChangePassword: FC = () => {
               )}
             />
             {errors.secondPassword && (
-              <div className='error_text'>{errors.secondPassword.message}</div>
+              <div className={styles.error_text}>
+                {errors.secondPassword.message}
+              </div>
             )}
           </div>
 
@@ -131,11 +140,11 @@ const ChangePassword: FC = () => {
           />
         </form>
 
-        <div className='route_bottom'>
-          <Link href='/login' className='route_button_style'>
+        <div className={styles.route_bottom}>
+          <Link href='/login' className={styles.route_button_style}>
             Kirish
           </Link>
-          <Link href='/register' className='route_button_style'>
+          <Link href='/register' className={styles.route_button_style}>
             Ro'yxatdan o'tish
           </Link>
         </div>
