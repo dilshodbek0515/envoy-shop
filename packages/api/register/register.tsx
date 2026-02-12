@@ -28,5 +28,4 @@ export const RegisterFn = async (data: RegistrationData) => {
   console.log(res.data)
   return res.data
 }
-  return res.data;
-};
+  
