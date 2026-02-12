@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .container {
     width: 1440px;
     height: 100vh;
@@ -21,6 +22,8 @@
     padding: 30px;
 }
 
+=======
+>>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
 .role_switch {
     width: 100%;
     display: flex;
@@ -49,6 +52,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+<<<<<<< HEAD
 }
 
 .route_bottom {
@@ -73,4 +77,6 @@
     color: var(--border-red);
     transition: 0.2s;
     margin-top: 5px;
+=======
+>>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
 }

@@ -11,8 +11,9 @@ import { RegisterDefaultFn } from '../../../../../../../../packages/api/register
 import {
   RegisterDefaultFormData,
   registerDefaultSchema
-} from 'apps/schema/schema'
+} from '../../../../../../../../packages/schema/register-default-schema'
 import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
+import styles from '../../../styles/auth.module.css'
 const RegisterDefault: FC = () => {
   const router = useRouter()
 
@@ -67,9 +68,9 @@ const RegisterDefault: FC = () => {
   }
 
   return (
-    <div className='container'>
-      <div className='register_box'>
-        <h2 className='login_title'>Ro'yxatdan o'tish</h2>
+    <div className={styles.container}>
+      <div className={styles.login_box}>
+        <h2 className={styles.login_title}>Ro'yxatdan o'tish</h2>
 
         <div className='role_switch'>
           <button
@@ -97,7 +98,7 @@ const RegisterDefault: FC = () => {
           />
 
           {/* EMAIL */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='email'
               control={control}
@@ -113,7 +114,7 @@ const RegisterDefault: FC = () => {
           </div>
 
           {/* PASSWORD*/}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='password'
               control={control}
@@ -127,14 +128,14 @@ const RegisterDefault: FC = () => {
               )}
             />
             {formState.errors.password && (
-              <div className='error_text'>
+              <div className={styles.error_text}>
                 {formState.errors.password.message}
               </div>
             )}
           </div>
 
           {/* CONFIRM PASSWORD */}
-          <div className='input_group'>
+          <div className={styles.input_group}>
             <Controller
               name='confirm_password'
               control={control}
@@ -148,7 +149,7 @@ const RegisterDefault: FC = () => {
               )}
             />
             {formState.errors.confirm_password && (
-              <div className='error_text'>
+              <div className={styles.error_text}>
                 {formState.errors.confirm_password.message}
               </div>
             )}
@@ -162,8 +163,8 @@ const RegisterDefault: FC = () => {
           />
         </form>
 
-        <div className='route_bottom'>
-          <Link href='/login' className='route_button_style'>
+        <div className={styles.route_bottom}>
+          <Link href='/login' className={styles.route_button_style}>
             Akkountingiz bormi? Kirish
           </Link>
         </div>
