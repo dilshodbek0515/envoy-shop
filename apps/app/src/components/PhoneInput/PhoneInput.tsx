@@ -15,7 +15,7 @@ const LABEL_BG = "#171c26";
 const PhoneInput = ({
   label = "Telefon raqam",
   ...props
-}: MaskedTextInputProps & { label?: string }) => {
+}: MaskedTextInputProps & { label?: string, error?: string }) => {
   const [active, setActive] = useState(false);
   const length = (props.value ?? "").length;
 
