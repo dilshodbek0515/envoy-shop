@@ -1,18 +1,17 @@
 import { useRef, useState } from "react";
 import {
+  Animated,
   FlatList,
   Keyboard,
   Pressable,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors, Screens } from "src/shared/token";
 import Register from "../(auth)/Register";
 import Login from "../(auth)/Login";
-import { router } from "expo-router";
+import ButtonApp from "src/shared/ui/Button/button";
 
 const pages = [
   {
@@ -28,7 +27,8 @@ const pages = [
 export default function Auth() {
   const [activePage, setActivePage] = useState(0);
   const pageRef = useRef<FlatList>(null);
-
+  const scrollX = useRef(new Animated.Value(0)).current;
+  
   const viewablePage = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
       setActivePage(viewableItems[0].index);
@@ -48,32 +48,28 @@ export default function Auth() {
   };
   const renderPage = ({ item }: any) => {
     const isLogin = item.id === 1;
-    const isRegister = item.id === 2; // Register page
+    const isRegister = item.id === 2; 
 
     return (
       <View style={styles.page}>
+        <View style={{flex: 1}}>
         {item.component}
+        </View>
 
-        {/* Faqat login page uchun button */}
-        {!isRegister && (
-          <View style={styles.touchBox} pointerEvents="box-none">
-            <TouchableOpacity
-              style={styles.touch}
-              onPress={() => router.replace("./Yuridik/yuridik")}
-            >
-              <Text style={styles.touchText}>Dasturga kirish</Text>
-            </TouchableOpacity>
+        {/* {!isRegister && (
+          <View style={{padding: 20}}>
+            <ButtonApp label="Dasturga kirish"/> 
           </View>
-        )}
+        )} */}
       </View>
     );
   };
 
   return (
     <View style={styles.container}>
-      <AuthTab goToPage={goToPage} activePage={activePage} />
+      <AuthTab goToPage={goToPage} activePage={activePage}  scrollX={scrollX} />
 
-      <FlatList
+      <Animated.FlatList
         ref={pageRef}
         data={pages}
         renderItem={renderPage}
@@ -83,34 +79,70 @@ export default function Auth() {
         onViewableItemsChanged={viewablePage}
         viewabilityConfig={viewableConfig}
         showsHorizontalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: {x: scrollX}}}],
+          { useNativeDriver: false}
+        )}
       />
     </View>
   );
 }
 
-const AuthTab = ({ goToPage, activePage }: any) => {
+const AuthTab = ({ goToPage, activePage, scrollX }: any) => {
   const insetTop = useSafeAreaInsets().top;
   const height = 70 + insetTop;
-
+  
+  const tabWidth = Screens.width / 2;
+  
+  const inputRange = [0, Screens.width];
+  
+  const translateX = scrollX.interpolate({
+    inputRange,
+    outputRange: [0, tabWidth]
+  });
+  
+  const loginColor = scrollX.interpolate({
+    inputRange,
+    outputRange: [Colors.primary, Colors.textPrimary]
+  });
+  
+  const registerColor = scrollX.interpolate({
+    inputRange,
+    outputRange: [Colors.textPrimary, Colors.primary]
+  })
+  
+  
   return (
     <View style={[styles.tabContainer, { height }]}>
       <Pressable style={styles.tabBox} onPress={() => goToPage(0)}>
-        <Text
-          style={[styles.tabTitle, activePage === 0 && styles.activeTabTitle]}
+        <Animated.Text
+          style={[styles.tabTitle, 
+          {color: loginColor}
+          ]}
         >
           Dasturga kirish
-        </Text>
-        {activePage === 0 && <View style={styles.indicator} />}
+        </Animated.Text>
       </Pressable>
 
       <Pressable style={styles.tabBox} onPress={() => goToPage(1)}>
-        <Text
-          style={[styles.tabTitle, activePage === 1 && styles.activeTabTitle]}
+        <Animated.Text
+          style={[styles.tabTitle, 
+          {color: registerColor}
+          ]}
         >
           Register
-        </Text>
-        {activePage === 1 && <View style={styles.indicator} />}
+        </Animated.Text>
       </Pressable>
+
+      <Animated.View
+        style={[
+          styles.indicator,
+          {
+            width: tabWidth,
+            transform: [{ translateX }],
+          },
+        ]}
+      />
     </View>
   );
 };
@@ -144,10 +176,6 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
   },
 
-  activeTabTitle: {
-    color: Colors.primary,
-  },
-
   indicator: {
     width: 180,
     height: 3,
@@ -158,27 +186,4 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
 
-  touchBox: {
-    position: "absolute",
-    bottom: 42,
-    left: 0,
-    right: 0,
-    alignItems: "center",
-    pointerEvents: "box-none",
-  },
-
-  touch: {
-    width: 380,
-    height: 58,
-    borderColor: Colors.primary,
-    borderWidth: 1,
-    borderRadius: 18,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  touchText: {
-    fontSize: 18,
-    color: Colors.textPrimary,
-  },
 });
