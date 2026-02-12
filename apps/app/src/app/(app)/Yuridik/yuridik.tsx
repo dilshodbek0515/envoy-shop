@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import PageHeader from 'src/components/header/PageHeader'
 import { Colors } from 'src/shared/token'
 
-const Yuridik = () => {
+export const Yuridik = () => {
   return (
     <View style={{flex:1}}>
         <PageHeader title='Yuridik'/>
