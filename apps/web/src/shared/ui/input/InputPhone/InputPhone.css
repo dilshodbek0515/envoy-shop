@@ -11,35 +11,34 @@
   height: 55px;
   border-radius: 15px;
   background-color: transparent;
-  border: 2px solid #d1d1d1;
+  border: 2px solid var(--main-border);
   padding: 5px 50px 5px 20px;
   font-size: 16px;
   outline: none;
-  color: black;
+  color: var(--black);
 }
 
 .wrapperI.active .main_input {
-  border-color: #38bdf8;
+  border-color: var(--primary);
 }
 
 .wrapperI .www {
-  background-color: black;
+  background-color: var(--black);
 }
 
 .clear_btn {
   position: absolute;
   right: 20px;
   top: 50%;
-  transform: translate(16px, -50%);
+  transform: translate(30px, -50%);
   opacity: 0;
-  background: transparent;
+  background: var(--transparent);
   border: none;
   cursor: pointer;
   pointer-events: none;
   transition:
-    transform 0.25s ease,
-    opacity 0.2s ease;
-
+    transform 0.35s ease,
+    opacity 0.25s ease;
 }
 
 .clear_btn.show {
@@ -49,11 +48,11 @@
 }
 
 .clear_btn.active svg path {
-  fill: #38bdf8;
+  fill: var(--primary);
 }
 
 .clear_btn:not(.active) svg path {
-  fill: #d1d1d1;
+  fill: var(--main-border);
 }
 
 .clear_btn:hover svg path {
@@ -65,22 +64,37 @@
   height: 20px;
 }
 
-
 .prefix {
   position: absolute;
   left: 20px;
   top: 50%;
   transform: translateY(-50%) scale(0.9);
   font-size: 16px;
-  color: #000;
+  color: var(--black);
   opacity: 0;
   transition: 0.2s ease;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: var(--black);
+  border-radius: 2px;
+  transform: scaleY(0.7);
+  transition: 0.2s ease;
 }
 
 .prefix.show {
   opacity: 1;
   transform: translateY(-50%) scale(1);
+}
+
+.prefix.show .divider {
+  transform: scaleY(1);
 }
 
 .main_input.with_prefix {
@@ -90,6 +104,12 @@
 .line {
   width: 2px;
   height: 35px;
-  border: 1px solid red;
+  border: 1px solid var(--border-red);
   border-radius: 20px;
+}
+
+
+/* error style */
+.wrapperI.error .main_input {
+  border-color: var(--border-red);
 }

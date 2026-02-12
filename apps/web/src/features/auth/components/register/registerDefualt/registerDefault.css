@@ -1,7 +1,7 @@
 .container {
     width: 1440px;
     height: 100vh;
-    background-color: #ededed;
+    background-color: var(--input-bg);
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -9,7 +9,7 @@
 }
 
 .register_box {
-    width: 550px;
+    width: 450px;
     height: auto;
     border-radius: 20px;
     display: flex;
@@ -17,7 +17,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    box-shadow: var(--shadow-box);
     padding: 30px;
 }
 
@@ -32,16 +32,16 @@
     flex: 1;
     padding: 16px 12px;
     border-radius: 10px;
-    border: 1px solid #ddd;
-    background: #f5f5f5;
+    border: 1px solid var(--main-border);
+    background: var(--input-bg);
     cursor: pointer;
     font-weight: 600;
 }
 
 .role_btn.active {
-    background: dodgerblue;
-    color: white;
-    border-color: dodgerblue;
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
 }
 
 .default_form {
@@ -59,8 +59,8 @@
 }
 
 .route_button_style {
-    border: transparent;
-    color: dodgerblue;
+    border: var(--transparent);
+    color: var(--primary);
     text-align: center;
 }
 
@@ -70,7 +70,7 @@
 
 .error_text {
     font-size: 12px;
-    color: #ff4d4f;
+    color: var(--border-red);
     transition: 0.2s;
     margin-top: 5px;
 }

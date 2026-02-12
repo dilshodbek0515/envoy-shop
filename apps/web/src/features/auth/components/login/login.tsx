@@ -4,12 +4,12 @@ import { FC } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useMutation } from '@tanstack/react-query'
-import { useForm, Controller, Resolver } from 'react-hook-form'
 import Button from '../../../../shared/ui/button/button'
+import { useForm, Controller, Resolver } from 'react-hook-form'
 import { LoginFn } from '../../../../../../../packages/api/login/login'
 import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
-import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 import { loginSchema, LoginFormData } from '../../../../../../schema/schema'
+import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 
 const Login: FC = () => {
   const router = useRouter()
@@ -82,12 +82,13 @@ const Login: FC = () => {
             <Controller
               name='phone'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <InputPhone
                   label='Telefon raqam'
                   value={field.value || ''}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
+                  error={fieldState.invalid}
                 />
               )}
             />
@@ -101,12 +102,13 @@ const Login: FC = () => {
             <Controller
               name='password'
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <PasswordInput
                   label='Parol'
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
+                  error={fieldState.invalid}
                 />
               )}
             />
@@ -116,9 +118,10 @@ const Login: FC = () => {
           </div>
 
           <Button
-            label={loginMutation.isPending ? 'Kutilmoqda...' : 'Kirish'}
             type='submit'
-            disabled={!isFormValid || loginMutation.isPending}
+            disabled={!isFormValid}
+            loading={loginMutation.isPending}
+            label='Kirish'
           />
         </form>
 
