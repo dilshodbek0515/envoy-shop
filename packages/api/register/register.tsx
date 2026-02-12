@@ -25,6 +25,12 @@ export const RegisterFn = async (data: RegistrationData) => {
     },
   });
 
+<<<<<<< HEAD
+  console.log(res.data)
+  return res.data
+}
+=======
   console.log(res.data);
+>>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
   return res.data;
 };
