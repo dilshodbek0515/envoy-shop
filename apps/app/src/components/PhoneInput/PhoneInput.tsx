@@ -26,7 +26,7 @@ const PhoneInput = ({ label = "Telefon Raqam", ...props }: MaskedTextInputProps 
     const translateY = withTiming(active || length > 0 ? "-240%" : "-50%", {
       duration: 180,
     });
-    const translateX = withTiming(active || length > 0 ? -5 : 0, {
+    const translateX = withTiming(active || length > 0 ? 1 : 0, {
       duration: 180,
     });
     const fontSize = withTiming(active || length > 0 ? 12 : 16, {
@@ -145,13 +145,11 @@ const styles = StyleSheet.create({
       borderColor: "#808080",
       flexDirection: "row",
       gap: Spacing.horizontal,
-      marginTop: Spacing.horizontal
-      // overflow: "hidden",
+      marginTop: Spacing.horizontal,
     },
     input: {
       flex: 1,
       color: "#fff",
-      // backgroundColor: "red",
     },
     prefixBox: {
       paddingLeft: Spacing.horizontal,
@@ -159,11 +157,10 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       gap: Spacing.horizontal,
       position: "absolute",
-      // transform: [{ translateY: "-50%" }],
       bottom: 0,
       left: 0,
-      // backgroundColor: "red",
       height: 55,
+      // backgroundColor: "red",
     },
     prefix: {
       justifyContent: "center",
