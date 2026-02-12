@@ -9,10 +9,14 @@ import Button from '../../../../shared/ui/button/button'
 import { useForm, Controller, Resolver } from 'react-hook-form'
 import { LoginFn } from '../../../../../../../packages/api/login/login'
 import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
+<<<<<<< HEAD
+import { loginSchema, LoginFormData } from '../../../../../../schema/schema'
+=======
 import {
   loginSchema,
   LoginFormData
 } from '../../../../../../../packages/schema/login-schema'
+>>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
 import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 
 const Login: FC = () => {

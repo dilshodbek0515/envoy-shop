@@ -8,11 +8,16 @@ import { PasswordFn } from '../../../../../../../../packages/api/resetPassword/c
 import { useRouter } from 'next/navigation'
 import { useForm, Controller, Resolver } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   changePasswordSchema,
   ChangePasswordFormData
+<<<<<<< HEAD
+} from '../../../../../../../schema/schema'
+=======
 } from '../../../../../../../../packages/schema/reset-password-schema'
 import styles from '../../../styles/auth.module.css'
+>>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
 
 const ChangePassword: FC = () => {
   const router = useRouter()

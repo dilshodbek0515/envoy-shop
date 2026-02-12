@@ -15,7 +15,7 @@ const LABEL_BG = "#171c26";
 const PhoneInput = ({
   label = "Telefon raqam",
   ...props
-}: MaskedTextInputProps & { label?: string }) => {
+}: MaskedTextInputProps & { label?: string, error?: string }) => {
   const [active, setActive] = useState(false);
   const length = (props.value ?? "").length;
 
@@ -137,54 +137,60 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1.5,
     paddingLeft: Screens.width * 0.21,
+    borderColor: "#808080",
     flexDirection: "row",
+    gap: Spacing.horizontal,
     marginTop: Spacing.horizontal,
   },
-
   input: {
     flex: 1,
     color: "#fff",
   },
-
   prefixBox: {
-    position: "absolute",
-    left: Spacing.horizontal,
-    bottom: 0,
-    height: 55,
+    paddingLeft: Spacing.horizontal,
+    justifyContent: "center",
     flexDirection: "row",
-    alignItems: "center",
     gap: Spacing.horizontal,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    height: 55,
+    // backgroundColor: "red",
   },
-
-  prefixText: {
-    color: "#fff",
+  prefix: {
+    justifyContent: "center",
+    alignItems: "center",
   },
-
-  separator: {
-    width: 1,
-    height: "60%",
-  },
-
   label: {
     position: "absolute",
     top: "50%",
     left: Spacing.horizontal,
-    backgroundColor: LABEL_BG,
+    backgroundColor: "#171c26",
+    fontSize: 16,
     borderRadius: 100,
-    transform: [{ translateY: -12 }],
+    transform: [{ translateY: "-50%" }],
   },
-
   inputRightBox: {
     position: "absolute",
-    right: 0,
     top: 0,
+    right: 0,
+    height: 53,
     width: 55,
-    height: 55,
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: "row",
     overflow: "hidden",
   },
-
+  eyeButton: {
+    width: 55,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  prefixText: {
+    color: "#fff",
+  },
+  separator: {
+    width: 1,
+    height: "60%",
+  },
   clearButton: {
     width: 55,
     height: 55,
