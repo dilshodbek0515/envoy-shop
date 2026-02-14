@@ -14,6 +14,7 @@ import {
 } from '../../../../../../../../packages/schema/register-default-schema'
 import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 import styles from '../../../styles/auth.module.css'
+
 const RegisterDefault: FC = () => {
   const router = useRouter()
 
@@ -48,6 +49,7 @@ const RegisterDefault: FC = () => {
     })
 
   const roleValue = watch('role')
+
   const registerMutation = useMutation({
     mutationFn: RegisterDefaultFn,
     onSuccess: (_res, data) => {

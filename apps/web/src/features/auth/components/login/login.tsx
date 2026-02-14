@@ -1,23 +1,19 @@
 'use client'
 import './login.css'
-import styles from '../../styles/auth.module.css'
 import { FC } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import styles from '../../styles/auth.module.css'
 import { useMutation } from '@tanstack/react-query'
 import Button from '../../../../shared/ui/button/button'
 import { useForm, Controller, Resolver } from 'react-hook-form'
 import { LoginFn } from '../../../../../../../packages/api/login/login'
 import InputPhone from '../../../../shared/ui/input/InputPhone/InputPhone'
-<<<<<<< HEAD
-import { loginSchema, LoginFormData } from '../../../../../../schema/schema'
-=======
+import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 import {
   loginSchema,
   LoginFormData
 } from '../../../../../../../packages/schema/login-schema'
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
-import PasswordInput from 'apps/web/src/shared/ui/input/PasswordInput/PasswordInput'
 
 const Login: FC = () => {
   const router = useRouter()
@@ -52,10 +48,7 @@ const Login: FC = () => {
   } = useForm<LoginFormData>({
     resolver: safeZodResolver,
     mode: 'onChange',
-    defaultValues: {
-      phone: '',
-      password: ''
-    }
+    defaultValues: { phone: '', password: '' }
   })
 
   const loginMutation = useMutation({
@@ -82,7 +75,9 @@ const Login: FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.login_box}>
-        <h2 className={styles.login_title}>Kirish</h2>
+        <h2 className={styles.login_title} onClick={() => router.push('/test')}>
+          Kirish
+        </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           {/* Phone input */}

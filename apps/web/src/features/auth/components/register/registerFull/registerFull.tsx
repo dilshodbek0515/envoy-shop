@@ -14,6 +14,7 @@ import { useMutation } from '@tanstack/react-query'
 import MainInput from 'apps/web/src/shared/ui/input/MainInput/input'
 import CustomSelect from 'apps/web/src/shared/ui/select/select'
 import styles from '../../../styles/auth.module.css'
+
 const companyTypeOptions = [
   'YaTT',
   "Fermer Xo'jaligi",
@@ -26,6 +27,7 @@ const companyTypeOptions = [
   'Oilaviy korxona',
   'Boshqa'
 ].map(v => ({ value: v, label: v }))
+
 const Login: FC = () => {
   const router = useRouter()
 
@@ -139,11 +141,7 @@ const Login: FC = () => {
               )}
             />
             {errors.first_name && (
-<<<<<<< HEAD
-              <p className='error_text'>{errors.first_name.message}</p>
-=======
               <p className={styles.error_text}>{errors.first_name.message}</p>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
             )}
           </div>
 
@@ -162,11 +160,7 @@ const Login: FC = () => {
               )}
             />
             {errors.last_name && (
-<<<<<<< HEAD
-              <p className='error_text'>{errors.last_name.message}</p>
-=======
               <p className={styles.error_text}>{errors.last_name.message}</p>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
             )}
           </div>
           {/* COMPANY TYPE */}
@@ -201,11 +195,7 @@ const Login: FC = () => {
               )}
             />
             {errors.company_name && (
-<<<<<<< HEAD
-              <p className='error_text'>{errors.company_name.message}</p>
-=======
               <p className={styles.error_text}>{errors.company_name.message}</p>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
             )}
           </div>
 
@@ -223,13 +213,9 @@ const Login: FC = () => {
                 />
               )}
             />
-<<<<<<< HEAD
-            {errors.inn && <p className='error_text'>{errors.inn.message}</p>}
-=======
             {errors.inn && (
               <p className={styles.error_text}>{errors.inn.message}</p>
             )}
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
           </div>
 
           {/* ADDRESS */}
@@ -247,11 +233,7 @@ const Login: FC = () => {
               )}
             />
             {errors.address && (
-<<<<<<< HEAD
-              <p className='error_text'>{errors.address.message}</p>
-=======
               <p className={styles.error_text}>{errors.address.message}</p>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
             )}
           </div>
 

@@ -1,0 +1,14 @@
+.home_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.add_form {
+    width: 800px;
+    height: 'auto';
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
