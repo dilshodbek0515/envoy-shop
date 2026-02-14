@@ -10,6 +10,7 @@ import { Colors, Spacing } from "src/shared/token";
 
 interface ButtonProps {
   label: string;
+  loading?: boolean;
   onPress?: () => void;
   disabled?: boolean;
   type?: "primary" | "secondary";

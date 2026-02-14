@@ -14,6 +14,7 @@ import { useMutation } from '@tanstack/react-query'
 import MainInput from 'apps/web/src/shared/ui/input/MainInput/input'
 import CustomSelect from 'apps/web/src/shared/ui/select/select'
 import styles from '../../../styles/auth.module.css'
+
 const companyTypeOptions = [
   'YaTT',
   "Fermer Xo'jaligi",
@@ -26,6 +27,7 @@ const companyTypeOptions = [
   'Oilaviy korxona',
   'Boshqa'
 ].map(v => ({ value: v, label: v }))
+
 const Login: FC = () => {
   const router = useRouter()
 

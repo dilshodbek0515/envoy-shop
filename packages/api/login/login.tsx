@@ -1,9 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { PREFIX } from '../api'
 
-const Login_Api = {
-  api: `${PREFIX}/api/auth/login/`
-}
+const Login_Api = { api: `${PREFIX}/api/auth/login/` }
 
 export interface LoginArgs {
   phone: string

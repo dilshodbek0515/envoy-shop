@@ -7,13 +7,16 @@ const workspaceRoot = path.resolve(projectRoot, "../..");
 
 const config = getDefaultConfig(projectRoot);
 
-// packages papkasini Metro'ga tanitamiz
-config.watchFolders = [workspaceRoot]; // Butun workspace ni kuzat
-
-// node_modules yo'llari
+config.watchFolders = [workspaceRoot];
 config.resolver.nodeModulesPaths = [
   path.resolve(workspaceRoot, "node_modules"),
   path.resolve(projectRoot, "node_modules"),
 ];
+
+// Muhim: resolver.assetExts ni saqlab qolish
+config.resolver.assetExts = config.resolver.assetExts.filter(
+  (ext) => ext !== "svg",
+);
+config.resolver.sourceExts = [...config.resolver.sourceExts, "svg"];
 
 module.exports = config;

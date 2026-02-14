@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "atom": "^1.4.2",
     "expo": "~54.0.33",
-    "expo-constants": "~18.0.13",
+    "expo-constants": "~17.0.8",
     "expo-device": "~8.0.10",
-    "expo-linking": "~8.0.11",
+    "expo-linking": "~7.0.5",
     "expo-router": "~4.0.20",
     "expo-status-bar": "~3.0.9",
     "jotai": "^2.17.1",
@@ -27,14 +29,19 @@
     "react-native-reanimated": "~3.16.0",
     "react-native-safe-area-context": "5.1.0",
     "react-native-screens": "4.4.0",
-    "react-native-svg": "15.8.0",
-    "react-native-worklets-core": "1.6.2"
+    "react-native-svg": "^15.12.1",
+    "react-native-worklets-core": "1.6.2",
+    "web-streams-polyfill": "3.3.3"
   },
   "devDependencies": {
+    "@babel/core": "7.23.9",
+    "@expo/metro-config": "0.17.0",
     "@types/react": "~18.3.0",
     "@types/react-dom": "~18.3.0",
-    "@types/react-native": "^0.73.0",
     "babel-plugin-module-resolver": "^5.0.2",
+    "babel-preset-expo": "~12.0.0",
+    "metro": "0.80.12",
+    "metro-resolver": "0.80.12",
     "typescript": "~5.3.3"
   },
   "private": true

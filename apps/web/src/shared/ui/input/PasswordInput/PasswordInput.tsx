@@ -5,11 +5,7 @@ import CloseIcon from 'apps/web/src/features/auth/assets/icons/close'
 import OpenEyeIcon from 'apps/web/src/features/auth/assets/icons/open-eye-icon'
 import CloseEyeIcon from 'apps/web/src/features/auth/assets/icons/close-eye-icon'
 
-interface PasswordInputProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    'onChange' | 'onBlur' | 'type'
-  > {
+interface PasswordInputProps extends Omit< React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onBlur' | 'type' > {
   label: string
   value: string
   onChange?: (value: string) => void
