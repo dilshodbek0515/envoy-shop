@@ -15,6 +15,7 @@ import {
 import { RegisterFn } from 'packages/api/register/register'
 import { getClientIp, getDeviceId } from 'apps/web/src/utils/device'
 import styles from '../../../styles/auth.module.css'
+
 const InterPhone: FC = () => {
   const router = useRouter()
   const device_name = getDeviceId()
@@ -54,7 +55,7 @@ const InterPhone: FC = () => {
     mutationFn: RegisterFn,
     onSuccess: (res, variables) => {
       localStorage.setItem('reset_phone', variables.phone)
-      console.log(res, variables)
+      console.log('POST', variables)
 
       if (res.message === 'Reset code sent') {
         router.replace('/reset-password/reset-sms')
