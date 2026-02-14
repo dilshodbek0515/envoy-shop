@@ -10,7 +10,7 @@ import { RegisterSmsFn } from 'packages/api/register/register-sms'
 import { useRouter } from 'next/navigation'
 
 type CodeT = {
-  code: ''
+  code: string
 }
 
 const ResetSms: FC = () => {
