@@ -65,10 +65,6 @@ const Register: FC = () => {
         reset()
       }
     },
-<<<<<<< HEAD
-
-=======
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
     onError: err => {
       console.log('OTP send error:', err)
       reset()
@@ -86,10 +82,6 @@ const Register: FC = () => {
       purpose: 'verify_phone'
     }
     registerMutation.mutate(payload)
-<<<<<<< HEAD
-=======
-    console.log(payload)
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
   }
 
   return (
@@ -97,13 +89,8 @@ const Register: FC = () => {
       <div className={styles.login_box}>
         <h2 className={styles.login_title}>Ro'yxatdan o'tish</h2>
 
-<<<<<<< HEAD
         <form className='default_form' onSubmit={handleSubmit(onSubmit)}>
-          <div className='input_group'>
-=======
-        <form className={styles.default_form} onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.input_group}>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
             <Controller
               name='phone'
               control={control}

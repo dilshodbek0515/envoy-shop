@@ -15,6 +15,7 @@ import {
 import { RegisterFn } from 'packages/api/register/register'
 import { getClientIp, getDeviceId } from 'apps/web/src/utils/device'
 import styles from '../../../styles/auth.module.css'
+
 const InterPhone: FC = () => {
   const router = useRouter()
   const device_name = getDeviceId()

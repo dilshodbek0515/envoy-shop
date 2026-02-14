@@ -9,11 +9,7 @@ import { useMutation } from '@tanstack/react-query'
 import { RegisterSmsFn } from '../../../../../../../../packages/api/register/register-sms'
 import { RegisterFn } from '../../../../../../../../packages/api/register/register'
 import SmsCodeInput from '../../../../../shared/ui/input/SmsCodeInput/SmsCodeInput'
-<<<<<<< HEAD
-
-=======
 import styles from '../../../styles/auth.module.css'
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
 interface SmsFormData {
   code: string
 }
@@ -74,37 +70,6 @@ const RegisterSms: FC = () => {
       setValue('code', '') // input clear
     }
   })
-<<<<<<< HEAD
-
-  // =============== MAIN BUTTON HANDLER ===============
-  const handleMainButton = (data: SmsFormData) => {
-    if (!isExpired) {
-      verifyMutation.mutate({
-        phone: localStorage.getItem('register_phone') || '',
-        code: data.code
-      })
-    } else {
-      const rawPayload = localStorage.getItem('register_payload')
-      if (!rawPayload) return
-      resendMutation.mutate(JSON.parse(rawPayload))
-    }
-  }
-
-  const mainLoading = verifyMutation.isPending || resendMutation.isPending
-  const mainLabel = isExpired ? 'SMS ni qayta yuborish' : 'SMS ni tasdiqlash'
-  const mainDisabled = isExpired
-    ? resendMutation.isPending
-    : code.length !== 4 || verifyMutation.isPending
-
-  // =============== UI ===============
-  return (
-    <div className='container'>
-      <div className='login_box'>
-        <h2 className='login_title'>SMS tasdiqlash</h2>
-
-        {!isExpired && (
-          <p className='sms_timer'>
-=======
 
   // =============== MAIN BUTTON HANDLER ===============
   const handleMainButton = (data: SmsFormData) => {
@@ -134,7 +99,6 @@ const RegisterSms: FC = () => {
 
         {!isExpired && (
           <p>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
             Kod amal qilish vaqti:
             <b>
               {mm}:{ss}
@@ -142,16 +106,11 @@ const RegisterSms: FC = () => {
           </p>
         )}
 
-<<<<<<< HEAD
-        <form onSubmit={handleSubmit(handleMainButton)} className='sms_form'>
-          <div className='input_group'>
-=======
         <form
           onSubmit={handleSubmit(handleMainButton)}
           className={styles.sms_form}
         >
           <div className={styles.input_group}>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
             <Controller
               name='code'
               control={control}

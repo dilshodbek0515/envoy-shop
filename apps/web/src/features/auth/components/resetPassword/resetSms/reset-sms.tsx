@@ -8,10 +8,7 @@ import Button from 'apps/web/src/shared/ui/button/button'
 import SmsCodeInput from 'apps/web/src/shared/ui/input/SmsCodeInput/SmsCodeInput'
 import { RegisterSmsFn } from 'packages/api/register/register-sms'
 import Link from 'next/link'
-<<<<<<< HEAD
-=======
 import styles from '../../../styles/auth.module.css'
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
 
 interface SmsFormData {
   code: string
@@ -31,7 +28,7 @@ const ResetSms: FC = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    const expiresIn = Number(localStorage.getItem('expires_in') || '120')
+    const expiresIn = Number(localStorage.getItem('expires_in'))
     const savedAt = Number(
       localStorage.getItem('expires_saved_at') || Date.now()
     )
@@ -85,16 +82,6 @@ const ResetSms: FC = () => {
   const mainDisabled = isExpired
     ? resendMutation.isPending
     : code.length !== 4 || verifyMutation.isPending
-<<<<<<< HEAD
-
-  return (
-    <div className='container'>
-      <div className='login_box'>
-        <h2 className='login_title'>SMS tasdiqlash</h2>
-
-        {!isExpired && (
-          <p className='sms_timer'>
-=======
 
   return (
     <div className={styles.container}>
@@ -103,7 +90,6 @@ const ResetSms: FC = () => {
 
         {!isExpired && (
           <p>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
             Kod amal qilish vaqti:
             <b>
               {mm}:{ss}
@@ -111,16 +97,11 @@ const ResetSms: FC = () => {
           </p>
         )}
 
-<<<<<<< HEAD
-        <form onSubmit={handleSubmit(handleMainButton)} className='sms_form'>
-          <div className='input_group'>
-=======
         <form
           onSubmit={handleSubmit(handleMainButton)}
           className={styles.sms_form}
         >
           <div className={styles.input_group}>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
             <Controller
               name='code'
               control={control}
