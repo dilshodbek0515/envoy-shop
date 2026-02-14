@@ -4,18 +4,18 @@ import { Controller, useForm } from 'react-hook-form'
 import z from 'zod'
 const Api = 'https://dummyjson.com/auth/login'
 
-const loginSchema = z.object({
-  username: z.string().min(3, 'Kamida 3 ta harf kiriting'),
-  password: z.string().min(8, 'Kamida 8 ta belgi kiriting')
-})
-
 type Data = {
   username: string
   password: string
 }
 
+const loginSchema = z.object({
+  username: z.string().min(3, 'Username kamida 3ta harf bulsin'),
+  password: z.string().min(8, 'Password kamida 8ta belgi bulsin')
+})
+
 const Test = () => {
-  const safeParseRes = (values: Data) => {
+  const loginSafeParse = (values: Data) => {
     const result = loginSchema.safeParse(values)
 
     if (result.success) {
@@ -25,12 +25,25 @@ const Test = () => {
       }
     }
 
-    const fieldErrors = result.error.flatten().fieldErrors
+    // return {
+    //   values: {},
+    //   errors: Object.fromEntries(
+    //     Object.entries(fieldErrors).map(([key, val]) => [
+    //       key,
+    //       {
+    //         type: 'validation',
+    //         message: val?.[0]
+    //       }
+    //     ])
+    //   )
+    // }
+
+    const fieldError = result.error.flatten().fieldErrors
 
     return {
       values: {},
       errors: Object.fromEntries(
-        Object.entries(fieldErrors).map(([key, val]) => [
+        Object.entries(fieldError).map(([key, val]) => [
           key,
           { type: 'validation', message: val?.[0] }
         ])
@@ -43,7 +56,7 @@ const Test = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<Data>({
-    resolver: safeParseRes,
+    resolver: loginSafeParse,
     defaultValues: {
       username: '',
       password: ''

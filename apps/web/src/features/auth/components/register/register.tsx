@@ -58,7 +58,6 @@ const Register: FC = () => {
         localStorage.setItem('register_phone', data.phone)
         localStorage.setItem('expires_in', String(res.expires_in))
         localStorage.setItem('expires_saved_at', String(Date.now()))
-        localStorage.setItem('register_payload', JSON.stringify(data))
 
         router.replace('/register/register-sms')
       } else {

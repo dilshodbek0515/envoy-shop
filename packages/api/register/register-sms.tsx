@@ -6,7 +6,7 @@ const RegisterSmsApi = {
 }
 
 export interface RegisterSmsPayload {
-  phone: string
+  phone: any
   code: string
 }
 
@@ -21,7 +21,6 @@ export const RegisterSmsFn = async (data: RegisterSmsPayload) => {
   })
 
   localStorage.setItem('access_token', res.data.token.access)
-
   console.log(res.data)
   return res.data
 }

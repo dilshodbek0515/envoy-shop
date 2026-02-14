@@ -55,7 +55,7 @@ const InterPhone: FC = () => {
     mutationFn: RegisterFn,
     onSuccess: (res, variables) => {
       localStorage.setItem('reset_phone', variables.phone)
-      console.log(res, variables)
+      console.log('POST', variables)
 
       if (res.message === 'Reset code sent') {
         router.replace('/reset-password/reset-sms')
