@@ -10,20 +10,16 @@
 //     }
 //   },
 //   "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts"]
-// }  
-
+// }
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true,
-    "jsx": "react-jsx",
-    "forceConsistentCasingInFileNames": true,
-    // "types": ["react", "react-native"], // Bu qatorni olib tashlang
+    "jsx": "react-native",
     "baseUrl": ".",
     "paths": {
-      "@ui/*": ["../../packages/ui/src/*"]
+      "@api/*": ["../../packages/api/*"],
+      "@schema/*": ["../../packages/schema/*"],
+      "src/*": ["./src/*"]
     }
-  },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts"]
+  }
 }
-

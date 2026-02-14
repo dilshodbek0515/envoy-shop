@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import PhoneInput from "src/components/PhoneInput/PhoneInput";
 import { Spacing } from "src/shared/token";
-import { RegisterFn } from "../../../../../../packages/api/register/register";
 import Constants from "expo-constants";
-import ButtonApp from "src/shared/ui/Button/button";
 import { router } from "expo-router";
+import { RegisterFn } from "@api/register/register";
+import PhoneInput from "src/components/PhoneInput/PhoneInput";
+import ButtonApp from "src/shared/ui/Button/button";
 
 const getClientIp = async (): Promise<string> => {
   try {

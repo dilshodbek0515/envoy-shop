@@ -10,23 +10,12 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import AppInput from "src/components/AppInput/input";
 import CompanySelect from "src/components/CompaniySelect/CompanySelect";
 import ButtonApp from "src/shared/ui/Button/button";
 import PageHeader from "src/components/header/PageHeader";
 import { Colors, Spacing } from "src/shared/token";
-
-// 1️⃣ Zod schema - barcha inputlarni required qilamiz
-const sellerFullSchema = z.object({
-  firstName: z.string().min(1, "Ism kiritilishi shart"),
-  lastName: z.string().min(1, "Familiya kiritilishi shart"),
-  companyName: z.string().min(1, "Korxona nomi kiritilishi shart"),
-  inn: z.string().min(1, "INN kiritilishi shart"),
-  legalAddress: z.string().min(1, "Manzil kiritilishi shart"),
-  companitType: z.string().min(1, "Faoliyat turi kiritilishi shart"),
-  type: z.enum(["seller", "buyer"]),
-});
+import { sellerFullSchema } from "@schema/schema-full-schema";
 
 type FormData = z.infer<typeof sellerFullSchema>;
 
@@ -39,23 +28,29 @@ const RegisterFull = () => {
     formState: { errors, isValid },
   } = useForm<FormData>({
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      companyName: "",
+      first_name: "",
+      last_name: "",
+      company_name: "",
       inn: "",
-      legalAddress: "",
-      companitType: "",
-      type: "buyer",
+      address: "",
+      company_type: "",
+      type: "individual",
     },
-    mode: "onChange",
-    resolver: zodResolver(sellerFullSchema), // 🔥 validation bilan isValid ishlaydi
+    mode: "onChange", // ⚡ onChange bilan isValid ishlaydi
+    resolver: zodResolver(sellerFullSchema), // ⚡ Zod bilan validatsiya
   });
 
   const typeValue = watch("type");
 
   const onSubmit = (data: FormData) => {
-    console.log("Form Data:", data); // 🔥 barcha inputlar shu yerda chiqadi
-    console.log("Errors:", errors);
+    // 🔥 safeParse bilan tekshirish
+    const result = sellerFullSchema.safeParse(data);
+
+    if (result.success) {
+      console.log("Form Data:", result.data); // hamma input to'g'ri
+    } else {
+      console.log("Validation Errors:", result.error.format());
+    }
   };
 
   return (
@@ -74,42 +69,42 @@ const RegisterFull = () => {
             <TouchableOpacity
               style={[
                 styles.roleButton,
-                typeValue === "seller" && styles.activeButton,
+                typeValue === "individual" && styles.activeButton,
               ]}
-              onPress={() => setValue("type", "seller")}
+              onPress={() => setValue("type", "individual")}
             >
               <Text
                 style={[
                   styles.roleTitle,
-                  typeValue === "seller" && styles.activeButtonTitle,
+                  typeValue === "individual" && styles.activeButtonTitle,
                 ]}
               >
-                Yuridik
+                Jismoniy
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[
                 styles.roleButton,
-                typeValue === "buyer" && styles.activeButton,
+                typeValue === "company" && styles.activeButton,
               ]}
-              onPress={() => setValue("type", "buyer")}
+              onPress={() => setValue("type", "company")}
             >
               <Text
                 style={[
                   styles.roleTitle,
-                  typeValue === "buyer" && styles.activeButtonTitle,
+                  typeValue === "company" && styles.activeButtonTitle,
                 ]}
               >
-                Jismoniy
+                Yuridik
               </Text>
             </TouchableOpacity>
           </View>
 
-          {/* Company Select */}
+          {/* Company Type Select */}
           <Controller
             control={control}
-            name="companitType"
+            name="company_type"
             render={({ field: { value, onChange }, fieldState: { error } }) => (
               <CompanySelect
                 value={value}
@@ -122,7 +117,7 @@ const RegisterFull = () => {
           {/* First Name */}
           <Controller
             control={control}
-            name="firstName"
+            name="first_name"
             render={({ field: { value, onChange }, fieldState: { error } }) => (
               <AppInput
                 label="Ism"
@@ -136,7 +131,7 @@ const RegisterFull = () => {
           {/* Last Name */}
           <Controller
             control={control}
-            name="lastName"
+            name="last_name"
             render={({ field: { value, onChange }, fieldState: { error } }) => (
               <AppInput
                 label="Familiya"
@@ -150,7 +145,7 @@ const RegisterFull = () => {
           {/* Company Name */}
           <Controller
             control={control}
-            name="companyName"
+            name="company_name"
             render={({ field: { value, onChange }, fieldState: { error } }) => (
               <AppInput
                 label="Korxona nomi"
@@ -167,7 +162,7 @@ const RegisterFull = () => {
             name="inn"
             render={({ field: { value, onChange }, fieldState: { error } }) => (
               <AppInput
-                label="Stir (INN)"
+                label="INN"
                 value={value}
                 onChangeText={onChange}
                 error={!!error}
@@ -175,13 +170,13 @@ const RegisterFull = () => {
             )}
           />
 
-          {/* Legal Address */}
+          {/* Address */}
           <Controller
             control={control}
-            name="legalAddress"
+            name="address"
             render={({ field: { value, onChange }, fieldState: { error } }) => (
               <AppInput
-                label="Yuridik manzil"
+                label="Manzil"
                 value={value}
                 onChangeText={onChange}
                 error={!!error}
@@ -195,7 +190,7 @@ const RegisterFull = () => {
       <ButtonApp
         label="Davom etish"
         onPress={handleSubmit(onSubmit)}
-        disabled={!isValid} // 🔥 button faqat barcha input to'ldirilganda enabled
+        disabled={!isValid} // ⚡ isValid bilan button faqat hamma to'ldirilganda enabled
       />
     </KeyboardAvoidingView>
   );
