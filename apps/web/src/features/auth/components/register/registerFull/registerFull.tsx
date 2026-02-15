@@ -82,7 +82,7 @@ const Login: FC = () => {
   const mutation = useMutation({
     mutationFn: SellerInformationFn,
     onSuccess: () => {
-      router.replace('/')
+      router.replace('/login')
     },
     onError: e => console.log('SELLER ERROR:', e)
   })

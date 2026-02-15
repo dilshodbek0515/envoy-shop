@@ -1,3 +1,5 @@
+'use client'
+
 import axios, { AxiosResponse } from 'axios'
 import { PREFIX } from '../api'
 
@@ -24,6 +26,8 @@ export const PasswordFn = async (
     { password: data.password },
     { headers: { Authorization: `Bearer ${token}` } }
   )
+
+  console.log(res.data.message)
 
   return res.data
 }
