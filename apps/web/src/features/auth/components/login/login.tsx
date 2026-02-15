@@ -75,9 +75,7 @@ const Login: FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.login_box}>
-        <h2 className={styles.login_title} onClick={() => router.push('/test')}>
-          Kirish
-        </h2>
+        <h2 className={styles.login_title}>Kirish</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           {/* Phone input */}
