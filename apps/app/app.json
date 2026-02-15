@@ -27,6 +27,6 @@
       "favicon": "./assets/favicon.png"
     },
     "scheme": "EnvoyShop",
-    "plugins": []
+    "plugins": ["expo-router"]
   }
 }
