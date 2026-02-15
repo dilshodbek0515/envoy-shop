@@ -8,6 +8,7 @@ import SmsCodeInput from 'apps/web/src/shared/ui/input/SmsCodeInput/SmsCodeInput
 import { Controller, useForm } from 'react-hook-form'
 import { RegisterSmsFn } from 'packages/api/register/register-sms'
 import { useRouter } from 'next/navigation'
+import { useMutation } from '@tanstack/react-query'
 
 type CodeT = {
   code: string
@@ -15,25 +16,22 @@ type CodeT = {
 
 const ResetSms: FC = () => {
   const router = useRouter()
-  const {
-    control,
-    formState: { errors },
-    handleSubmit
-  } = useForm<CodeT>({
-    defaultValues: {
-      code: ''
+  const { control, handleSubmit } = useForm<CodeT>({
+    defaultValues: { code: '' }
+  })
+
+  const verifyMutation = useMutation({
+    mutationFn: RegisterSmsFn,
+    onSuccess: () => {
+      router.replace('/reset-password/change-password')
     }
   })
 
-  const onSubmit = (dataa: CodeT) => {
-    const phone = localStorage.getItem('reset_phone')
-    const access_token = localStorage.getItem('access_token')
-    const data = { phone, ...dataa }
-    RegisterSmsFn(data)
-    console.log(data)
-    if (access_token) {
-      router.replace('reset-password/change-password')
-    }
+  const onSubmit = (data: CodeT) => {
+    verifyMutation.mutate({
+      phone: localStorage.getItem('reset_phone'),
+      code: data.code
+    })
   }
 
   return (
@@ -53,7 +51,11 @@ const ResetSms: FC = () => {
           </div>
 
           <div className={styles.sms_button_container}>
-            <Button type='submit' label={'Davom etish'} />
+            <Button
+              type='submit'
+              label={'Davom etish'}
+              loading={verifyMutation.isPending}
+            />
           </div>
         </form>
 
