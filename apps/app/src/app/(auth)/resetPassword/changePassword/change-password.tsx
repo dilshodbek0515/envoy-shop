@@ -1,42 +1,80 @@
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Animated, Keyboard, Platform, Text, TouchableWithoutFeedback, View } from "react-native";
+import {
+  Animated,
+  Keyboard,
+  Platform,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import PageHeader from "src/components/header/PageHeader";
 import PasswordInput from "src/components/PasswordInput/PasswordInput";
 import { Spacing } from "src/shared/token";
-import { PasswordFn } from "../../../../../../../packages/api/resetPassword/change-password"
+import { PasswordFn } from "@api/resetPassword/change-password";
 import ButtonApp from "src/shared/ui/Button/button";
 import { router } from "expo-router";
 
 export default function ChangePassword() {
-  const {
-    handleSubmit,
-    control,
-    watch,
-  } = useForm({
-    defaultValues: { new_password: "", change_password: "" }
+  const { handleSubmit, control, watch } = useForm({
+    defaultValues: { new_password: "", change_password: "" },
   });
 
   const newPassword = watch("new_password") || "";
-  const changePassword = watch("change_password");
+  const changePassword = watch("change_password") || "";
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const hasMinLength = newPassword.length >= 6;
   const hasUpperCase = /[A-Z]/.test(newPassword);
   const hasNumber = /\d/.test(newPassword);
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const isFormValid =
-    newPassword?.length >= 6 &&
-    changePassword?.length >= 6 &&
+    newPassword.length >= 6 &&
+    changePassword.length >= 6 &&
     newPassword === changePassword;
-  
+
+  // Keyboard animatsiya uchun
+  const buttonBottom = useRef(new Animated.Value(Spacing.horizontal)).current;
+
+  useEffect(() => {
+    const keyboardWillShow = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
+      (e) => {
+        const keyboardHeight = e.endCoordinates.height;
+        const targetBottom = keyboardHeight + 10;
+
+        Animated.timing(buttonBottom, {
+          toValue: targetBottom,
+          duration: 300,
+          useNativeDriver: false,
+        }).start();
+      },
+    );
+
+    const keyboardWillHide = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
+      () => {
+        Animated.timing(buttonBottom, {
+          toValue: Spacing.horizontal,
+          duration: 250,
+          useNativeDriver: false,
+        }).start();
+      },
+    );
+
+    return () => {
+      keyboardWillShow.remove();
+      keyboardWillHide.remove();
+    };
+  }, []);
+
   const buttonPress = async (formData: any) => {
     setIsLoading(true);
 
     try {
       const data = {
-        access_token: "", // token bolish kere
+        access_token: "", // token bo'lishi kerak
         password: formData.new_password,
       };
 
@@ -57,12 +95,7 @@ export default function ChangePassword() {
       <View style={{ flex: 1 }}>
         <PageHeader title="Parol O'zgartirish" isEnabledBack />
 
-        <View
-          style={{
-            flex: 1,
-            paddingHorizontal: Spacing.horizontal,
-          }}
-        >
+        <View style={{ flex: 1, paddingHorizontal: Spacing.horizontal }}>
           <Controller
             name="new_password"
             control={control}
@@ -115,7 +148,7 @@ export default function ChangePassword() {
             </Text>
 
             <Text style={{ color: isFormValid ? "#00ff99" : "#999" }}>
-              {isFormValid ? "✔" : "•"} Parol bir biriga mosmi
+              {isFormValid ? "✔" : "•"} Parol bir-biriga mosmi
             </Text>
           </View>
 
