@@ -1,11 +1,11 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Spacing } from "src/shared/token";
-import Constants from "expo-constants";
-import { router } from "expo-router";
-import { RegisterFn } from "@api/register/register";
 import PhoneInput from "src/components/PhoneInput/PhoneInput";
+import { Colors, Spacing } from "src/shared/token";
 import ButtonApp from "src/shared/ui/Button/button";
+import Constants from "expo-constants";
+import { RegisterFn } from "../../../../../../packages/api/register/register";
 
 const getClientIp = async (): Promise<string> => {
   try {
@@ -19,7 +19,7 @@ const getClientIp = async (): Promise<string> => {
 
 const getDeviceId = () => Constants.deviceId ?? "unknown-device-id";
 
-const Register = () => {
+export default function Register() {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -63,9 +63,7 @@ const Register = () => {
       />
     </View>
   );
-};
-
-export default Register;
+}
 
 const styles = StyleSheet.create({
   container: {

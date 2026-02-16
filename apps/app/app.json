@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "EnvoyShop",
+    "name": "app",
     "slug": "app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,12 +21,11 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "scheme": "EnvoyShop",
-    "plugins": ["expo-router"]
+    }
   }
 }
