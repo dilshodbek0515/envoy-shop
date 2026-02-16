@@ -1,5 +1,5 @@
-import { api, REGISTER_FULL_API } from 'packages/lib/axios'
-
+import { REGISTER_FULL_API } from '../../lib/endpoints'
+import { api } from '../../lib/api'
 export interface SellerProfilePayload {
   first_name: string
   last_name: string

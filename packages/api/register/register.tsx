@@ -1,4 +1,5 @@
-import { api, SEND_OTP_API } from 'packages/lib/axios'
+import { SEND_OTP_API } from '../../lib/endpoints'
+import { api } from '../../lib/api'
 
 export interface RegistrationData {
   phone: string
