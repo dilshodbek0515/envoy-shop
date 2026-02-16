@@ -1,5 +1,4 @@
-import { api } from '../../lib/api'
-import { LOGIN_API } from '../../lib/endpoints'
+import { api, LOGIN_API } from '../../lib/endpoints'
 import { tokenManager } from '../../lib/tokenManager'
 
 export interface LoginArgs {
@@ -19,6 +18,7 @@ export const LoginFn = async ({ phone, password }: LoginArgs) => {
       tokenManager.setAccess(data.access)
     }
 
+    console.log(data)
     return data
   } catch (error) {
     throw error

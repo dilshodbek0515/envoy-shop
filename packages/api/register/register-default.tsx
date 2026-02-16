@@ -1,5 +1,4 @@
-import { api, REGISTER_DEFAULT_API } from 'packages/lib/axios'
-
+import { api, REGISTER_DEFAULT_API } from '../../lib/endpoints'
 export interface RegisterDefaultPayload {
   role: 'buyer' | 'seller'
   email?: string
