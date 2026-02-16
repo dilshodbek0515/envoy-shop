@@ -1,5 +1,4 @@
-import { SMS_API } from '../../lib/endpoints'
-import { api } from '../../lib/api'
+import { api, SMS_API } from '../../lib/endpoints'
 export interface RegisterSmsPayload {
   phone: any
   code: string

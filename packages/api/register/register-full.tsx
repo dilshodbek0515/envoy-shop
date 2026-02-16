@@ -1,5 +1,4 @@
-import { REGISTER_FULL_API } from '../../lib/endpoints'
-import { api } from '../../lib/api'
+import { api, REGISTER_FULL_API } from '../../lib/endpoints'
 export interface SellerProfilePayload {
   first_name: string
   last_name: string

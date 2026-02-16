@@ -1,5 +1,4 @@
-import { SEND_OTP_API } from '../../lib/endpoints'
-import { api } from '../../lib/api'
+import { api, SEND_OTP_API } from '../../lib/endpoints'
 
 export interface RegistrationData {
   phone: string

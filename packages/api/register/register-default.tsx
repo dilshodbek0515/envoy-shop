@@ -1,5 +1,4 @@
-import { REGISTER_DEFAULT_API } from '../../lib/endpoints'
-import { api } from '../../lib/api'
+import { api, REGISTER_DEFAULT_API } from '../../lib/endpoints'
 export interface RegisterDefaultPayload {
   role: 'buyer' | 'seller'
   email?: string
