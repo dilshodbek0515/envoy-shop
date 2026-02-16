@@ -1,9 +1,4 @@
-import axios from 'axios'
-import { PREFIX } from '../api'
-
-const Register_Api = {
-  api: `${PREFIX}/api/auth/verify-phone/send-otp/`
-}
+import { api, SEND_OTP_API } from 'packages/lib/axios'
 
 export interface RegistrationData {
   phone: string
@@ -19,7 +14,7 @@ export const RegisterFn = async (data: RegistrationData) => {
   formData.append('device_id', data.device_id)
   formData.append('purpose', data.purpose)
 
-  const res = await axios.post(Register_Api.api, formData, {
+  const res = await api.post(SEND_OTP_API, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }

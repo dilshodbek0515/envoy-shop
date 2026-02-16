@@ -1,12 +1,6 @@
 'use client'
-
-import axios, { AxiosResponse } from 'axios'
-import { PREFIX } from '../api'
-
-const ChangePasswordApi = {
-  api: `${PREFIX}/api/auth/password-reset/`
-}
-
+import { AxiosResponse } from 'axios'
+import { api, CHANGE_PASSWORD_API } from 'packages/lib/axios'
 export interface PasswordArgs {
   password: string
 }
@@ -17,12 +11,12 @@ export interface PasswordResponse {
   [key: string]: any
 }
 
-export const PasswordFn = async (
-  data: PasswordArgs
-): Promise<PasswordResponse> => {
+export const PasswordFn = async ( data: PasswordArgs): Promise<PasswordResponse> => {
+
   const token = localStorage.getItem('access_token')
-  const res: AxiosResponse<PasswordResponse> = await axios.put(
-    ChangePasswordApi.api,
+  
+  const res: AxiosResponse<PasswordResponse> = await api.put(
+    CHANGE_PASSWORD_API,
     { password: data.password },
     { headers: { Authorization: `Bearer ${token}` } }
   )

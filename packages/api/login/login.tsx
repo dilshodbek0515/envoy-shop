@@ -1,30 +1,24 @@
-import axios, { AxiosResponse } from 'axios'
-import { PREFIX } from '../api'
-
-const Login_Api = { api: `${PREFIX}/api/auth/login/` }
+import { api } from '../../lib/api'
+import { LOGIN_API } from '../../lib/endpoints'
+import { tokenManager } from '../../lib/tokenManager'
 
 export interface LoginArgs {
   phone: string
   password: string
 }
 
-export interface LoginResponse {
-  token: {
-    access: string
-    refresh: string
-  }
-}
-
-export const LoginFn = async ({
-  phone,
-  password
-}: LoginArgs): Promise<LoginResponse> => {
+export const LoginFn = async ({ phone, password }: LoginArgs) => {
   try {
-    const { data }: AxiosResponse<LoginResponse> = await axios.post(
-      Login_Api.api,
-      { phone, password }
+    const { data } = await api.post(
+      LOGIN_API,
+      { phone, password },
+      { skipAuth: true }
     )
-    localStorage.setItem('token', data.token.access)
+
+    if (data.access) {
+      tokenManager.setAccess(data.access)
+    }
+
     return data
   } catch (error) {
     throw error

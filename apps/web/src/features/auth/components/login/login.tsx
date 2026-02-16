@@ -86,7 +86,7 @@ const Login: FC = () => {
               render={({ field, fieldState }) => (
                 <InputPhone
                   label='Telefon raqam'
-                  value={field.value || ''}
+                  value={field.value}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
                   error={fieldState.invalid}
