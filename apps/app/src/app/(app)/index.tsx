@@ -1,53 +1,53 @@
-import { useRef, useState } from 'react'
+import { useRef, useState } from "react";
 import {
   Animated,
   FlatList,
   Keyboard,
   Pressable,
   StyleSheet,
-  View
-} from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Colors, Screens } from 'src/shared/token'
-import Register from '../(auth)/Register'
-import Login from '../(auth)/Login'
+  View,
+} from "react-native";
+// import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Colors, Screens } from "src/shared/token";
+import Register from "../(auth)/Register";
+import Login from "../(auth)/Login";
 
 const pages = [
   {
     id: 1,
-    component: <Login />
+    component: <Login />,
   },
   {
     id: 2,
-    component: <Register />
-  }
-]
+    component: <Register />,
+  },
+];
 
-export default function Auth () {
-  const [activePage, setActivePage] = useState(0)
-  const pageRef = useRef<FlatList>(null)
-  const scrollX = useRef(new Animated.Value(0)).current
+export default function Auth() {
+  const [activePage, setActivePage] = useState(0);
+  const pageRef = useRef<FlatList>(null);
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   const viewablePage = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
-      setActivePage(viewableItems[0].index)
+      setActivePage(viewableItems[0].index);
     }
-  }).current
+  }).current;
 
   const viewableConfig = useRef({
-    viewAreaCoveragePercentThreshold: 50
-  }).current
+    viewAreaCoveragePercentThreshold: 50,
+  }).current;
 
   const goToPage = (index: number) => {
     pageRef.current?.scrollToIndex({
       index,
-      animated: true
-    })
-    Keyboard.dismiss()
-  }
+      animated: true,
+    });
+    Keyboard.dismiss();
+  };
   const renderPage = ({ item }: any) => {
-    const isLogin = item.id === 1
-    const isRegister = item.id === 2
+    const isLogin = item.id === 1;
+    const isRegister = item.id === 2;
 
     return (
       <View style={styles.page}>
@@ -59,8 +59,8 @@ export default function Auth () {
           </View>
         )} */}
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -70,7 +70,7 @@ export default function Auth () {
         ref={pageRef}
         data={pages}
         renderItem={renderPage}
-        keyExtractor={page => page.id.toString()}
+        keyExtractor={(page) => page.id.toString()}
         horizontal
         pagingEnabled
         onViewableItemsChanged={viewablePage}
@@ -78,38 +78,38 @@ export default function Auth () {
         showsHorizontalScrollIndicator={false}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: false }
+          { useNativeDriver: false },
         )}
       />
     </View>
-  )
+  );
 }
 
 const AuthTab = ({ goToPage, activePage, scrollX }: any) => {
-  const insetTop = useSafeAreaInsets().top
-  const height = 70 + insetTop
+  // const insetTop = useSafeAreaInsets().top;
+  // const height = 70 + insetTop;
 
-  const tabWidth = Screens.width / 2
+  const tabWidth = Screens.width / 2;
 
-  const inputRange = [0, Screens.width]
+  const inputRange = [0, Screens.width];
 
   const translateX = scrollX.interpolate({
     inputRange,
-    outputRange: [0, tabWidth]
-  })
+    outputRange: [0, tabWidth],
+  });
 
   const loginColor = scrollX.interpolate({
     inputRange,
-    outputRange: [Colors.primary, Colors.textPrimary]
-  })
+    outputRange: [Colors.primary, Colors.textPrimary],
+  });
 
   const registerColor = scrollX.interpolate({
     inputRange,
-    outputRange: [Colors.textPrimary, Colors.primary]
-  })
+    outputRange: [Colors.textPrimary, Colors.primary],
+  });
 
   return (
-    <View style={[styles.tabContainer, { height }]}>
+    <View style={[styles.tabContainer /* { height } */]}>
       <Pressable style={styles.tabBox} onPress={() => goToPage(0)}>
         <Animated.Text style={[styles.tabTitle, { color: loginColor }]}>
           Dasturga kirish
@@ -127,41 +127,41 @@ const AuthTab = ({ goToPage, activePage, scrollX }: any) => {
           styles.indicator,
           {
             width: tabWidth,
-            transform: [{ translateX }]
-          }
+            transform: [{ translateX }],
+          },
         ]}
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
 
   page: {
     width: Screens.width,
-    flex: 1
+    flex: 1,
   },
 
   tabContainer: {
-    backgroundColor: '#262e3d',
-    flexDirection: 'row',
-    alignItems: 'flex-end'
+    backgroundColor: "#262e3d",
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
 
   tabBox: {
     flex: 1,
     height: 50,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   tabTitle: {
     fontSize: 18,
-    fontWeight: '400',
-    color: Colors.textPrimary
+    fontWeight: "400",
+    color: Colors.textPrimary,
   },
 
   indicator: {
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    position: 'absolute',
-    bottom: 0
-  }
-})
+    position: "absolute",
+    bottom: 0,
+  },
+});

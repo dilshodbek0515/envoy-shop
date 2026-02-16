@@ -1,23 +1,19 @@
+import { Controller, useForm } from "react-hook-form";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import AppInput from "src/components/AppInput/input";
 import CompanySelect from "src/components/CompaniySelect/CompanySelect";
-import ButtonApp from "src/shared/ui/Button/button";
 import PageHeader from "src/components/header/PageHeader";
 import { Colors, Spacing } from "src/shared/token";
-import { sellerFullSchema } from "@schema/schema-full-schema";
-
-type FormData = z.infer<typeof sellerFullSchema>;
+import ButtonApp from "src/shared/ui/Button/button";
+import z from "zod";
 
 const RegisterFull = () => {
   const {
@@ -26,7 +22,7 @@ const RegisterFull = () => {
     watch,
     setValue,
     formState: { errors, isValid },
-  } = useForm<FormData>({
+  } = useForm({
     defaultValues: {
       first_name: "",
       last_name: "",
@@ -37,20 +33,13 @@ const RegisterFull = () => {
       type: "individual",
     },
     mode: "onChange", // ⚡ onChange bilan isValid ishlaydi
-    resolver: zodResolver(sellerFullSchema), // ⚡ Zod bilan validatsiya
   });
 
   const typeValue = watch("type");
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: any) => {
     // 🔥 safeParse bilan tekshirish
-    const result = sellerFullSchema.safeParse(data);
-
-    if (result.success) {
-      console.log("Form Data:", result.data); // hamma input to'g'ri
-    } else {
-      console.log("Validation Errors:", result.error.format());
-    }
+    console.log(data);
   };
 
   return (

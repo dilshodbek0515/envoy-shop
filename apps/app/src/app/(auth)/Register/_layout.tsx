@@ -7,7 +7,7 @@ const Layout = () => {
         headerShown: false,
         contentStyle: { backgroundColor: "#171c26" },
       }}
-    ></Stack>
+    />
   );
 };
 

@@ -11,9 +11,9 @@ import {
 import PageHeader from "src/components/header/PageHeader";
 import PasswordInput from "src/components/PasswordInput/PasswordInput";
 import { Spacing } from "src/shared/token";
-import { PasswordFn } from "@api/resetPassword/change-password";
 import ButtonApp from "src/shared/ui/Button/button";
 import { router } from "expo-router";
+import { PasswordFn } from "../../../../../../../packages/api/resetPassword/change-password";
 
 export default function ChangePassword() {
   const { handleSubmit, control, watch } = useForm({
