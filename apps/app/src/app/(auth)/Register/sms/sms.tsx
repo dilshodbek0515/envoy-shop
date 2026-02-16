@@ -1,6 +1,6 @@
 import { router, useNavigation } from "expo-router";
-import { useState, useEffect } from "react";
-import { View, Text, Pressable, SafeAreaView, StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import PageHeader from "src/components/header/PageHeader";
 import { Spacing } from "src/shared/token";
 

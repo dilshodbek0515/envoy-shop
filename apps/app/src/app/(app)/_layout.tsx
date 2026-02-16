@@ -1,16 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
 import { Stack } from "expo-router";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 const AppLayout = () => {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: "#171c26" },
-      }}
-    ></Stack>
+    <SafeAreaProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: "#171c26" },
+        }}
+      ></Stack>
+    </SafeAreaProvider>
   );
 };
 
 export default AppLayout;
-
-const styles = StyleSheet.create({});
