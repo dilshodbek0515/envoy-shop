@@ -1,5 +1,4 @@
-import { api, SMS_API } from 'packages/lib/axios'
-
+import { api, SMS_API } from '../../lib/endpoints'
 export interface RegisterSmsPayload {
   phone: any
   code: string

@@ -1,4 +1,10 @@
-// /endpoints.ts
+import axios from 'axios'
+
+export const api = axios.create({
+  baseURL: 'http://envoyshop.webcoder.uz',
+  withCredentials: true, // refresh cookie uchun SHART
+  timeout: 15000
+})
 
 export const LOGIN_API = '/api/auth/login/'
 export const SEND_OTP_API = '/api/auth/verify-phone/send-otp/'
