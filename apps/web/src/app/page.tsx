@@ -1,6 +1,7 @@
 'use client'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import AddProducts from './(products)/add-products/page'
 
 const Page = () => {
   const router = useRouter()
@@ -14,17 +15,9 @@ const Page = () => {
   }, [router])
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        fontSize: '50px'
-      }}
-    >
-      Asosiy sahifa
-    </div>
+    <>
+      <AddProducts />
+    </>
   )
 }
 

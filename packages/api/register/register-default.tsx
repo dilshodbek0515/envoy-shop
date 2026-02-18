@@ -1,10 +1,4 @@
-import axios from 'axios'
-import { PREFIX } from '../api'
-
-const RegisterDefaultApi = {
-  api: `${PREFIX}/api/auth/register/`
-}
-
+import { api, REGISTER_DEFAULT_API } from '../../lib/endpoints'
 export interface RegisterDefaultPayload {
   role: 'buyer' | 'seller'
   email?: string
@@ -19,7 +13,7 @@ export const RegisterDefaultFn = async (data: RegisterDefaultPayload) => {
   formData.append('password', data.password)
   if (data.email) formData.append('email', data.email)
 
-  const res = await axios.put(RegisterDefaultApi.api, formData, {
+  const res = await api.put(REGISTER_DEFAULT_API, formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'multipart/form-data'

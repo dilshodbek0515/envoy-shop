@@ -1,10 +1,4 @@
-import axios from 'axios'
-import { PREFIX } from '../api'
-
-const RegisterFullApi = {
-  api: `${PREFIX}/api/auth/seller-profile-create/`
-}
-
+import { api, REGISTER_FULL_API } from '../../lib/endpoints'
 export interface SellerProfilePayload {
   first_name: string
   last_name: string
@@ -19,7 +13,7 @@ export const SellerInformationFn = async (data: SellerProfilePayload) => {
   const token = localStorage.getItem('access_token')
   if (!token) throw new Error('Token yo‘q')
 
-  const res = await axios.post(RegisterFullApi.api, data, {
+  const res = await api.post(REGISTER_FULL_API, data, {
     headers: {
       Authorization: `Bearer ${token}`
     }

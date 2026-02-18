@@ -4,11 +4,7 @@ import './input.css'
 import '../inputGlobal.css'
 import CloseIcon from 'apps/web/src/features/auth/assets/icons/close'
 
-interface MainInputProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    'onChange' | 'onBlur'
-  > {
+interface MainInputProps extends Omit< React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onBlur' > {
   label: string
   value: string
   onChange?: (value: string) => void
@@ -81,5 +77,4 @@ const MainInput = forwardRef<HTMLInputElement, MainInputProps>(
 )
 
 MainInput.displayName = 'MainInput'
-
 export default MainInput

@@ -13,11 +13,7 @@ const formatPhone = (v: string) =>
     [a, b, c, d].filter(Boolean).join(' ')
   )
 
-interface InputPhoneProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    'onChange' | 'onBlur'
-  > {
+interface InputPhoneProps extends Omit< React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onBlur' > {
   label: string
   value: string
   onChange?: (value: string) => void

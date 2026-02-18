@@ -1,12 +1,6 @@
-import axios from 'axios'
-import { PREFIX } from '../api'
-
-const RegisterSmsApi = {
-  api: `${PREFIX}/api/auth/verify-phone/confirm/`
-}
-
+import { api, SMS_API } from '../../lib/endpoints'
 export interface RegisterSmsPayload {
-  phone: string
+  phone: any
   code: string
 }
 
@@ -16,12 +10,11 @@ export const RegisterSmsFn = async (data: RegisterSmsPayload) => {
   formData.append('phone', data.phone)
   formData.append('code', data.code)
 
-  const res = await axios.post(RegisterSmsApi.api, formData, {
+  const res = await api.post(SMS_API, formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   })
 
   localStorage.setItem('access_token', res.data.token.access)
-
   console.log(res.data)
   return res.data
 }

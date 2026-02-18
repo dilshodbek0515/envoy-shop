@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import {
   Keyboard,
@@ -7,13 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
 import AppInput from "src/components/AppInput/input";
 import PageHeader from "src/components/header/PageHeader";
 import PasswordInput from "src/components/PasswordInput/PasswordInput";
-import ButtonApp from "src/shared/ui/Button/button";
 import { Colors, Spacing } from "src/shared/token";
-import { router } from "expo-router";
+import ButtonApp from "src/shared/ui/Button/button";
 
 type Role = "seller" | "buyer" | null;
 

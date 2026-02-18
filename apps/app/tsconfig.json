@@ -1,24 +1,9 @@
-// {
-//   "extends": "../../tsconfig.base.json",
-//   "compilerOptions": {
-//     "strict": true,
-//     "jsx": "react-jsx",
-//     "types": ["react", "react-native"],
-//     "baseUrl": ".",
-//     "paths": {
-//       "@ui/*": ["../../packages/ui/src/*"]
-//     }
-//   },
-//   "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts"]
-// }  
-
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "strict": true,
     "jsx": "react-jsx",
-    "forceConsistentCasingInFileNames": true,
-    // "types": ["react", "react-native"], // Bu qatorni olib tashlang
+    "types": ["react", "react-native"],
     "baseUrl": ".",
     "paths": {
       "@ui/*": ["../../packages/ui/src/*"]
@@ -26,4 +11,3 @@
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts"]
 }
-

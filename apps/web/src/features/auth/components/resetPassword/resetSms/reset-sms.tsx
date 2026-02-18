@@ -1,136 +1,51 @@
 'use client'
 import './reset-sms.css'
-import { FC, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Controller, useForm } from 'react-hook-form'
-import { useMutation } from '@tanstack/react-query'
+import { FC } from 'react'
+import Link from 'next/link'
+import styles from '../../../styles/auth.module.css'
 import Button from 'apps/web/src/shared/ui/button/button'
 import SmsCodeInput from 'apps/web/src/shared/ui/input/SmsCodeInput/SmsCodeInput'
+import { Controller, useForm } from 'react-hook-form'
 import { RegisterSmsFn } from 'packages/api/register/register-sms'
-import Link from 'next/link'
-<<<<<<< HEAD
-=======
-import styles from '../../../styles/auth.module.css'
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
+import { useRouter } from 'next/navigation'
+import { useMutation } from '@tanstack/react-query'
 
-interface SmsFormData {
+type CodeT = {
   code: string
 }
 
 const ResetSms: FC = () => {
   const router = useRouter()
-  const phone = localStorage.getItem('reset_phone') || ''
-  const { handleSubmit, control, watch, setValue } = useForm<SmsFormData>({
+  const { control, handleSubmit } = useForm<CodeT>({
     defaultValues: { code: '' }
   })
 
-  const code = watch('code') || ''
-  const [seconds, setSeconds] = useState<number>(0)
-
-  // ================= TIMER INIT =================
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    const expiresIn = Number(localStorage.getItem('expires_in') || '120')
-    const savedAt = Number(
-      localStorage.getItem('expires_saved_at') || Date.now()
-    )
-    const passed = Math.floor((Date.now() - savedAt) / 1000)
-    const remain = Math.max(expiresIn - passed, 0)
-    setSeconds(remain)
-  }, [])
-
-  // ================= TIMER TICK =================
-  useEffect(() => {
-    if (seconds <= 0) return
-    const id = setInterval(() => setSeconds(s => s - 1), 1000)
-    return () => clearInterval(id)
-  }, [seconds])
-
-  const mm = String(Math.floor(seconds / 60)).padStart(2, '0')
-  const ss = String(seconds % 60).padStart(2, '0')
-  const isExpired = seconds === 0
-
-  // ================= VERIFY MUTATION =================
   const verifyMutation = useMutation({
-    mutationFn: (data: { phone: string; code: string }) => RegisterSmsFn(data),
+    mutationFn: RegisterSmsFn,
     onSuccess: () => {
       router.replace('/reset-password/change-password')
     }
   })
 
-  // ================= RESEND MUTATION =================
-  const resendMutation = useMutation({
-    mutationFn: (data: { phone: string; code: string }) => RegisterSmsFn(data),
-    onSuccess: () => {
-      const exp = 120
-      localStorage.setItem('expires_in', String(exp))
-      localStorage.setItem('expires_saved_at', String(Date.now()))
-      setSeconds(exp)
-      setValue('code', '') // input clear
-    }
-  })
-
-  // ================= MAIN BUTTON HANDLER =================
-  const handleMainButton = (data: SmsFormData) => {
-    if (!isExpired) {
-      verifyMutation.mutate({ phone, code: data.code })
-    } else {
-      resendMutation.mutate({ phone, code: '' })
-    }
+  const onSubmit = (data: CodeT) => {
+    verifyMutation.mutate({
+      phone: localStorage.getItem('reset_phone'),
+      code: data.code
+    })
   }
-
-  const mainLoading = verifyMutation.isPending || resendMutation.isPending
-  const mainLabel = isExpired ? 'SMS ni qayta yuborish' : 'SMS ni tasdiqlash'
-  const mainDisabled = isExpired
-    ? resendMutation.isPending
-    : code.length !== 4 || verifyMutation.isPending
-<<<<<<< HEAD
-
-  return (
-    <div className='container'>
-      <div className='login_box'>
-        <h2 className='login_title'>SMS tasdiqlash</h2>
-
-        {!isExpired && (
-          <p className='sms_timer'>
-=======
 
   return (
     <div className={styles.container}>
       <div className={styles.login_box}>
         <h2 className={styles.login_title}>SMS tasdiqlash</h2>
 
-        {!isExpired && (
-          <p>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
-            Kod amal qilish vaqti:
-            <b>
-              {mm}:{ss}
-            </b>
-          </p>
-        )}
-
-<<<<<<< HEAD
-        <form onSubmit={handleSubmit(handleMainButton)} className='sms_form'>
-          <div className='input_group'>
-=======
-        <form
-          onSubmit={handleSubmit(handleMainButton)}
-          className={styles.sms_form}
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.sms_form}>
           <div className={styles.input_group}>
->>>>>>> 92d0c4977ad75ba94125ce3eb5d0b74a6f584033
             <Controller
               name='code'
               control={control}
               render={({ field }) => (
-                <SmsCodeInput
-                  value={field.value}
-                  onChange={value =>
-                    field.onChange(value.replace(/\D/g, '').slice(0, 4))
-                  }
-                />
+                <SmsCodeInput value={field.value} onChange={field.onChange} />
               )}
             />
           </div>
@@ -138,9 +53,8 @@ const ResetSms: FC = () => {
           <div className={styles.sms_button_container}>
             <Button
               type='submit'
-              label={mainLabel}
-              disabled={mainDisabled}
-              loading={mainLoading}
+              label={'Davom etish'}
+              loading={verifyMutation.isPending}
             />
           </div>
         </form>

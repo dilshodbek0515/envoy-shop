@@ -7,11 +7,10 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+// import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors, Screens } from "src/shared/token";
 import Register from "../(auth)/Register";
 import Login from "../(auth)/Login";
-import ButtonApp from "src/shared/ui/Button/button";
 
 const pages = [
   {
@@ -28,7 +27,7 @@ export default function Auth() {
   const [activePage, setActivePage] = useState(0);
   const pageRef = useRef<FlatList>(null);
   const scrollX = useRef(new Animated.Value(0)).current;
-  
+
   const viewablePage = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
       setActivePage(viewableItems[0].index);
@@ -48,13 +47,11 @@ export default function Auth() {
   };
   const renderPage = ({ item }: any) => {
     const isLogin = item.id === 1;
-    const isRegister = item.id === 2; 
+    const isRegister = item.id === 2;
 
     return (
       <View style={styles.page}>
-        <View style={{flex: 1}}>
-        {item.component}
-        </View>
+        <View style={{ flex: 1 }}>{item.component}</View>
 
         {/* {!isRegister && (
           <View style={{padding: 20}}>
@@ -67,7 +64,7 @@ export default function Auth() {
 
   return (
     <View style={styles.container}>
-      <AuthTab goToPage={goToPage} activePage={activePage}  scrollX={scrollX} />
+      <AuthTab goToPage={goToPage} activePage={activePage} scrollX={scrollX} />
 
       <Animated.FlatList
         ref={pageRef}
@@ -80,8 +77,8 @@ export default function Auth() {
         viewabilityConfig={viewableConfig}
         showsHorizontalScrollIndicator={false}
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: {x: scrollX}}}],
-          { useNativeDriver: false}
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: false },
         )}
       />
     </View>
@@ -89,47 +86,38 @@ export default function Auth() {
 }
 
 const AuthTab = ({ goToPage, activePage, scrollX }: any) => {
-  const insetTop = useSafeAreaInsets().top;
-  const height = 70 + insetTop;
-  
+  // const insetTop = useSafeAreaInsets().top;
+  // const height = 70 + insetTop;
+
   const tabWidth = Screens.width / 2;
-  
+
   const inputRange = [0, Screens.width];
-  
+
   const translateX = scrollX.interpolate({
     inputRange,
-    outputRange: [0, tabWidth]
+    outputRange: [0, tabWidth],
   });
-  
+
   const loginColor = scrollX.interpolate({
     inputRange,
-    outputRange: [Colors.primary, Colors.textPrimary]
+    outputRange: [Colors.primary, Colors.textPrimary],
   });
-  
+
   const registerColor = scrollX.interpolate({
     inputRange,
-    outputRange: [Colors.textPrimary, Colors.primary]
-  })
-  
-  
+    outputRange: [Colors.textPrimary, Colors.primary],
+  });
+
   return (
-    <View style={[styles.tabContainer, { height }]}>
+    <View style={[styles.tabContainer /* { height } */]}>
       <Pressable style={styles.tabBox} onPress={() => goToPage(0)}>
-        <Animated.Text
-          style={[styles.tabTitle, 
-          {color: loginColor}
-          ]}
-        >
+        <Animated.Text style={[styles.tabTitle, { color: loginColor }]}>
           Dasturga kirish
         </Animated.Text>
       </Pressable>
 
       <Pressable style={styles.tabBox} onPress={() => goToPage(1)}>
-        <Animated.Text
-          style={[styles.tabTitle, 
-          {color: registerColor}
-          ]}
-        >
+        <Animated.Text style={[styles.tabTitle, { color: registerColor }]}>
           Register
         </Animated.Text>
       </Pressable>
@@ -185,5 +173,4 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
   },
-
 });
